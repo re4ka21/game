@@ -13,54 +13,52 @@ import { useBackgroundStore } from "@/features/background/model/store";
 import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
-export type RootStackParamList = {
-  Tabs: { screen?: string } | undefined;
-};
+import { RootStackParamList } from "@/app/navigation/AppNavigator";
 
-type NavigationProp = NativeStackNavigationProp<RootStackParamList, "Tabs">;
+type NavigationProp = NativeStackNavigationProp<RootStackParamList, "BuyCard">;
 
-export default function UpgradeScreen() {
-  const { count, purchase } = useCounterStore();
+export default function BackgroundsScreen() {
+  const { count } = useCounterStore();
+  const { purchasedBackgrounds } = useBackgroundStore();
   const formattedCount = count.toFixed(2).replace(".", ",");
-  const { setBackground } = useBackgroundStore();
   const navigation = useNavigation<NavigationProp>();
 
   const backgrounds = [
     {
+      id: "1",
       image: require("../../../../assets/images/backgroundbox.png"),
-      price: null, // базовий фон
+      price: null,
     },
     {
+      id: "2",
       image: require("../../../../assets/images/money.png"),
       price: 5000,
     },
     {
+      id: "3",
       image: require("../../../../assets/images/react-logo.png"),
       price: 10000,
     },
   ];
 
-  const changeBackground = (bg: any, price: number | null) => {
-    if (price && count >= price) {
-      purchase(price);
-      setBackground(bg);
-      navigation.navigate("Tabs", { screen: "Earnings" });
-    } else if (price === null) {
-      setBackground(bg);
-      navigation.navigate("Tabs", { screen: "Earnings" });
-    }
-  };
-
   return (
     <View style={styles.container}>
       {backgrounds.map((bg, index) => {
-        const locked = bg.price ? count < bg.price : false;
+        const isPurchased = !bg.price || purchasedBackgrounds.includes(bg.id);
+
+        const locked = bg.price && !isPurchased && count < bg.price;
 
         return (
           <TouchableOpacity
-            key={index}
+            key={bg.id}
             style={[styles.countBox, locked && styles.lockedBox]}
-            onPress={() => changeBackground(bg.image, bg.price)}
+            onPress={() =>
+              navigation.navigate("BuyCard", {
+                id: bg.id,
+                image: bg.image,
+                price: bg.price,
+              })
+            }
             disabled={locked}
           >
             {locked ? (
@@ -86,7 +84,10 @@ export default function UpgradeScreen() {
                 </View>
                 <Text style={styles.text}>Balance</Text>
                 <Text style={styles.countText}>
-                  ${""} {index === 0 ? formattedCount : bg.price}
+                  ${" "}
+                  {index === 0
+                    ? formattedCount
+                    : bg.price?.toLocaleString() ?? formattedCount}
                 </Text>
               </ImageBackground>
             )}

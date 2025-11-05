@@ -2,11 +2,13 @@ import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import BottomTabs from "./BottomTabs";
 import { UpgradeScreen } from "@/screens/Upgrade";
-import LoadingScreen from "@/screens/Loading/ui/LoadingScreen";
+import { LoadingScreen } from "@/screens/Loading";
+import { BuyCardScreen } from "@/screens/BuyCard";
 export type RootStackParamList = {
-  Tabs: undefined;
+  Tabs: { screen?: string } | undefined;
   Upgrade: undefined;
   Loading: undefined;
+  BuyCard: { id: number; image: any; price?: number };
 };
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -28,6 +30,15 @@ export default function AppNavigator() {
         }}
       />
       <Stack.Screen name="Loading" component={LoadingScreen} />
+      <Stack.Screen
+        name="BuyCard"
+        component={BuyCardScreen}
+        options={{
+          title: "Покупка фону",
+          headerBackTitle: "Назад",
+          headerShown: true,
+        }}
+      />
     </Stack.Navigator>
   );
 }

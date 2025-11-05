@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   ImageBackground,
   Image,
-  Alert,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { CounterZone } from "@/features/counter";

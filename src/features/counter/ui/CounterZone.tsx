@@ -11,7 +11,7 @@ import { useCounterStore } from "../model/store";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 export default function CounterZone() {
-  const { increment, clear } = useCounterStore();
+  const { increment, clear, reset } = useCounterStore();
   const { height } = useWindowDimensions();
   const [active, setActive] = useState(false);
   const [dollars, setDollars] = useState<
@@ -65,6 +65,13 @@ export default function CounterZone() {
         activeOpacity={0.8}
       >
         <Text style={styles.clearText}>Clear</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.clearAsyncButton}
+        onPress={reset}
+        activeOpacity={0.8}
+      >
+        <Text style={styles.clearText}>Clear asyncStorage</Text>
       </TouchableOpacity>
     </View>
   );
@@ -143,6 +150,13 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 20,
     right: 20,
+    padding: 10,
+    zIndex: 2,
+  },
+  clearAsyncButton: {
+    position: "absolute",
+    top: 20,
+    left: 20,
     padding: 10,
     zIndex: 2,
   },
