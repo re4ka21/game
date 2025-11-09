@@ -4,11 +4,17 @@ import BottomTabs from "./BottomTabs";
 import { UpgradeScreen } from "@/screens/Upgrade";
 import { LoadingScreen } from "@/screens/Loading";
 import { BuyCardScreen } from "@/screens/BuyCard";
+import { BuyBusinessScreen } from "@/screens/BuyBusiness";
+import { BusinessDetailsScreen } from "@/screens/BusinessDetails";
+import { ChooseShopSizeScreen } from "@/screens/ChooseShopSize";
 export type RootStackParamList = {
   Tabs: { screen?: string } | undefined;
   Upgrade: undefined;
   Loading: undefined;
-  BuyCard: { id: number; image: any; price?: number };
+  BuyCard: { id: string; image: any; price?: number };
+  BuyBusiness: undefined;
+  BusinessDetails: { business: any };
+  ChooseShopSize: { baseBusiness: any };
 };
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -35,6 +41,33 @@ export default function AppNavigator() {
         component={BuyCardScreen}
         options={{
           title: "Покупка фону",
+          headerBackTitle: "Назад",
+          headerShown: true,
+        }}
+      />
+      <Stack.Screen
+        name="BuyBusiness"
+        component={BuyBusinessScreen}
+        options={{
+          title: "Покупка бізнесу",
+          headerBackTitle: "Назад",
+          headerShown: true,
+        }}
+      />
+      <Stack.Screen
+        name="BusinessDetails"
+        component={BusinessDetailsScreen}
+        options={{
+          title: "Бизнес",
+          headerBackTitle: "Назад",
+          headerShown: true,
+        }}
+      />
+      <Stack.Screen
+        name="ChooseShopSize"
+        component={ChooseShopSizeScreen}
+        options={{
+          title: "Бизнес",
           headerBackTitle: "Назад",
           headerShown: true,
         }}

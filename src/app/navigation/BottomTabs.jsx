@@ -12,6 +12,7 @@ const Tab = createBottomTabNavigator();
 export default function BottomTabs() {
   return (
     <Tab.Navigator
+      initialRouteName="Earnings"
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: true,
