@@ -32,7 +32,7 @@ export default function ChooseShopSizeScreen() {
             navigation.navigate("BusinessDetails", {
               business: {
                 ...baseBusiness,
-                name: `${baseBusiness.name} (${size.name})`,
+                name: `${baseBusiness.name}`,
                 price: Math.round(baseBusiness.price * size.multiplier),
                 incomePerHour: Math.round(
                   baseBusiness.incomePerHour * size.multiplier

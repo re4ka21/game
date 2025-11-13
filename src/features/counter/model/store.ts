@@ -5,6 +5,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 export type BusinessType = {
   id: number;
   name: string;
+  type: string;
   incomePerHour: number;
   price: number;
 };
@@ -23,11 +24,12 @@ type CounterState = {
   addCount: (amount: number) => void;
   reset: () => void;
   cheat: () => void;
+  updateOfflineEarnings: () => void; // нова функція
 };
 
 export const useCounterStore = create<CounterState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       count: 0,
       clickValue: 2.5,
       level: 1,
@@ -75,6 +77,27 @@ export const useCounterStore = create<CounterState>()(
         }),
 
       cheat: () => set((state) => ({ count: state.count + 1000000 })),
+
+      updateOfflineEarnings: async () => {
+        try {
+          const lastTimeStr = await AsyncStorage.getItem("lastTime");
+          const lastTime = lastTimeStr ? parseInt(lastTimeStr, 10) : Date.now();
+          const now = Date.now();
+          const elapsedSec = (now - lastTime) / 1000;
+
+          const incomePerHour = get().myBusinesses.reduce(
+            (acc, b) => acc + b.incomePerHour,
+            0
+          );
+          const earned = (incomePerHour / 3600) * elapsedSec;
+
+          if (earned > 0) set({ count: get().count + earned });
+
+          await AsyncStorage.setItem("lastTime", now.toString());
+        } catch (e) {
+          console.log("Error calculating offline earnings", e);
+        }
+      },
     }),
     {
       name: "counter-storage",

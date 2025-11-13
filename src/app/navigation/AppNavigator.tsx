@@ -7,6 +7,7 @@ import { BuyCardScreen } from "@/screens/BuyCard";
 import { BuyBusinessScreen } from "@/screens/BuyBusiness";
 import { BusinessDetailsScreen } from "@/screens/BusinessDetails";
 import { ChooseShopSizeScreen } from "@/screens/ChooseShopSize";
+import { BusinessMergerScreen } from "@/screens/BusinessMerger";
 export type RootStackParamList = {
   Tabs: { screen?: string } | undefined;
   Upgrade: undefined;
@@ -15,6 +16,7 @@ export type RootStackParamList = {
   BuyBusiness: undefined;
   BusinessDetails: { business: any };
   ChooseShopSize: { baseBusiness: any };
+  BusinessMerger: undefined;
 };
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -66,6 +68,15 @@ export default function AppNavigator() {
       <Stack.Screen
         name="ChooseShopSize"
         component={ChooseShopSizeScreen}
+        options={{
+          title: "Бизнес",
+          headerBackTitle: "Назад",
+          headerShown: true,
+        }}
+      />
+      <Stack.Screen
+        name="BusinessMerger"
+        component={BusinessMergerScreen}
         options={{
           title: "Бизнес",
           headerBackTitle: "Назад",

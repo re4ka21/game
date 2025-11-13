@@ -7,19 +7,21 @@ import {
   StyleSheet,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { useCounterStore } from "@/features/counter";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
+
 type BusinessType = {
   id: number;
   name: string;
+  type: string;
   incomePerHour: number;
   price: number;
   icon: string;
   color: string;
   isChain?: boolean;
 };
+
 type NavigationProp = NativeStackNavigationProp<
   RootStackParamList,
   "BuyBusiness"
@@ -29,6 +31,7 @@ const availableBusinesses: BusinessType[] = [
   {
     id: 1,
     name: "Продажа",
+    type: "sale",
     incomePerHour: 50,
     price: 4899,
     icon: "cart-outline",
@@ -38,6 +41,7 @@ const availableBusinesses: BusinessType[] = [
   {
     id: 2,
     name: "Таксопарк",
+    type: "taxi",
     incomePerHour: 100,
     price: 9999,
     icon: "car-outline",
@@ -46,6 +50,7 @@ const availableBusinesses: BusinessType[] = [
   {
     id: 3,
     name: "Перевозки",
+    type: "transportation",
     incomePerHour: 200,
     price: 19899,
     icon: "cube-outline",
@@ -54,6 +59,7 @@ const availableBusinesses: BusinessType[] = [
   {
     id: 4,
     name: "Производство",
+    type: "production",
     incomePerHour: 400,
     price: 24999,
     icon: "business-outline",
@@ -62,6 +68,7 @@ const availableBusinesses: BusinessType[] = [
   {
     id: 5,
     name: "Строительство",
+    type: "construction",
     incomePerHour: 700,
     price: 35400,
     icon: "construct-outline",
@@ -70,15 +77,52 @@ const availableBusinesses: BusinessType[] = [
   {
     id: 6,
     name: "Автодилер",
+    type: "cardealer",
     incomePerHour: 1000,
     price: 40000,
     icon: "car-sport-outline",
     color: "#2c3e50",
   },
+
+  {
+    id: 7,
+    name: "Ресторан",
+    type: "restaurant",
+    incomePerHour: 1500,
+    price: 55000,
+    icon: "restaurant-outline",
+    color: "#d35400",
+  },
+  {
+    id: 8,
+    name: "IT-компания",
+    type: "itcompany",
+    incomePerHour: 2500,
+    price: 80000,
+    icon: "laptop-outline",
+    color: "#8e44ad",
+  },
+  {
+    id: 9,
+    name: "Отель",
+    type: "hotel",
+    incomePerHour: 4000,
+    price: 120000,
+    icon: "bed-outline",
+    color: "#16a085",
+  },
+  {
+    id: 10,
+    name: "Авиакомпания",
+    type: "airline",
+    incomePerHour: 7000,
+    price: 200000,
+    icon: "airplane-outline",
+    color: "#3498db",
+  },
 ];
 
 export default function BuyBusinessScreen() {
-  const { count, myBusinesses } = useCounterStore();
   const navigation = useNavigation<NavigationProp>();
 
   const handleSelectBusiness = (b: BusinessType) => {
@@ -91,31 +135,26 @@ export default function BuyBusinessScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Выберите категорию нового бизнеса</Text>
-
       <FlatList
         data={availableBusinesses}
         numColumns={2}
         keyExtractor={(item) => item.id.toString()}
         columnWrapperStyle={{ justifyContent: "space-between" }}
-        renderItem={({ item }) => {
-          return (
-            <TouchableOpacity
-              style={styles.card}
-              onPress={() => handleSelectBusiness(item)}
-            >
-              <View
-                style={[styles.iconCircle, { backgroundColor: item.color }]}
-              >
-                <Ionicons name={item.icon as any} size={28} color="#fff" />
-              </View>
-              <Text style={styles.name}>{item.name}</Text>
-              <Text style={styles.price}>
-                От ${item.price.toLocaleString()}
-              </Text>
-            </TouchableOpacity>
-          );
-        }}
+        ListHeaderComponent={
+          <Text style={styles.title}>Выберите категорию нового бизнеса</Text>
+        }
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            style={styles.card}
+            onPress={() => handleSelectBusiness(item)}
+          >
+            <View style={[styles.iconCircle, { backgroundColor: item.color }]}>
+              <Ionicons name={item.icon as any} size={28} color="#fff" />
+            </View>
+            <Text style={styles.name}>{item.name}</Text>
+            <Text style={styles.price}>От ${item.price.toLocaleString()}</Text>
+          </TouchableOpacity>
+        )}
       />
     </View>
   );
@@ -132,7 +171,6 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: "700",
     marginVertical: 15,
-    textAlign: "center",
   },
   card: {
     backgroundColor: "#f4f6fa",

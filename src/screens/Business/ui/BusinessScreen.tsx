@@ -5,16 +5,17 @@ import { useCounterStore } from "@/features/counter";
 
 export default function Business() {
   const navigation = useNavigation();
-  const { myBusinesses, addCount } = useCounterStore();
+  const { myBusinesses, addCount, updateOfflineEarnings } = useCounterStore();
   const [totalIncome, setTotalIncome] = useState(0);
-
   useEffect(() => {
+    updateOfflineEarnings();
+
     const income = myBusinesses.reduce((acc, b) => acc + b.incomePerHour, 0);
     setTotalIncome(income);
 
     const interval = setInterval(() => {
-      addCount(income / 3600);
-    }, 1000);
+      addCount((income / 3600) * 4);
+    }, 4000);
 
     return () => clearInterval(interval);
   }, [myBusinesses]);
@@ -63,7 +64,7 @@ export default function Business() {
 
         <TouchableOpacity
           style={[styles.buttonBase, styles.secondButton]}
-          onPress={() => Alert.alert("💡 Злиття бізнесів ще не реалізовано!")}
+          onPress={() => navigation.navigate("BusinessMerger" as never)}
         >
           <Text style={styles.secondButtonText}>Злиття{"\n"}бізнесів</Text>
         </TouchableOpacity>
@@ -79,7 +80,11 @@ export default function Business() {
       ) : (
         myBusinesses.map((b) => (
           <View key={b.id} style={styles.businessRow}>
-            <Text style={styles.myBusiness}>
+            <Text
+              style={styles.myBusiness}
+              numberOfLines={1}
+              ellipsizeMode="tail"
+            >
               • {b.name} (+{b.incomePerHour}$/год)
             </Text>
             <TouchableOpacity
@@ -166,16 +171,22 @@ const styles = StyleSheet.create({
   },
   businessRow: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    alignItems: "center",
     marginVertical: 5,
   },
+
   myBusiness: {
     fontSize: 16,
+    flexShrink: 1,
+    marginRight: 10,
+    flexWrap: "wrap",
+    flex: 1,
   },
   sellButton: {
     paddingVertical: 5,
     paddingHorizontal: 10,
     borderRadius: 8,
+    flexShrink: 0,
   },
   sellText: {
     color: "#d50000",

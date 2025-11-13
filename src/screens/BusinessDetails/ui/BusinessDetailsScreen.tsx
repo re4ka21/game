@@ -35,16 +35,75 @@ export default function BusinessDetailsScreen() {
   const route = useRoute<any>();
   const navigation = useNavigation<NavigationProp>();
   const { business } = route.params;
-  const { count, purchase, addBusiness } = useCounterStore();
+  const { count, purchase, addBusiness, myBusinesses } = useCounterStore();
   const [customName, setCustomName] = useState("");
   const [showWarning, setShowWarning] = useState(false);
   const handleOpenBusiness = () => {
+    if (myBusinesses.length >= 10)
+      return alert("Вы достигли максимума — можно открыть только 10 бизнесов!");
+
     if (count < business.price) return setShowWarning(true);
+
     if (customName.trim().length < 3)
       return alert("Название должно быть не менее 3 символов");
+
     purchase(business.price);
-    addBusiness({ ...business, name: customName || business.name });
+    addBusiness({
+      ...business,
+      id: Date.now(),
+      name: customName || business.name,
+    });
+
     navigation.navigate("Tabs", { screen: "Business" });
+  };
+
+  const getBaseCategory = (fullName: string) => {
+    return fullName.split(" (")[0];
+  };
+
+  const getRandomName = (category: string) => {
+    const namesByCategory: Record<string, string[]> = {
+      Продажа: [
+        "Market Pro",
+        "Shopify Hub",
+        "Deal Mart",
+        "Buy&Go",
+        "CityStore",
+      ],
+      Таксопарк: ["GoTaxi", "FastCab", "CityRide", "SpeedyTaxi", "MegaDrive"],
+      Перевозки: ["CargoX", "MoveIt", "TransLine", "RoadPro", "QuickCargo"],
+      Производство: [
+        "BuildCore",
+        "ProFactory",
+        "Industro",
+        "NovaPlant",
+        "SteelWorks",
+      ],
+      Строительство: [
+        "BuildMaster",
+        "SkyRise",
+        "Constructo",
+        "DreamBuild",
+        "CityMakers",
+      ],
+      Автодилер: ["AutoHub", "DrivePro", "SpeedMotors", "CarWorld", "AutoCity"],
+    };
+
+    const names = namesByCategory[category] || ["My Business"];
+    return names[Math.floor(Math.random() * names.length)];
+  };
+
+  const handleRandomName = () => {
+    const baseCategory = getBaseCategory(business.name);
+    const random = getRandomName(baseCategory);
+
+    const isNetwork = business.name.includes("(");
+    if (isNetwork) {
+      const suffix = business.name.match(/\((.*?)\)/)?.[0] || "";
+      setCustomName(`${random} ${suffix}`);
+    } else {
+      setCustomName(random);
+    }
   };
 
   return (
@@ -55,12 +114,17 @@ export default function BusinessDetailsScreen() {
           Недостаточно средств
         </Text>
       )}
-      <TextInput
-        placeholder="Название"
-        style={styles.input}
-        value={customName}
-        onChangeText={setCustomName}
-      />
+      <View style={styles.inputContainer}>
+        <TouchableOpacity style={styles.diceButton} onPress={handleRandomName}>
+          <Text style={styles.diceIcon}>🎲</Text>
+        </TouchableOpacity>
+        <TextInput
+          placeholder="Название"
+          style={styles.input}
+          value={customName}
+          onChangeText={setCustomName}
+        />
+      </View>
 
       <View style={styles.infoBox}>
         <Text style={styles.infoText}>Стоимость открытия</Text>
@@ -80,7 +144,6 @@ export default function BusinessDetailsScreen() {
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -93,17 +156,26 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     marginBottom: 20,
   },
-  label: {
-    fontSize: 16,
-    fontWeight: "500",
-  },
-  input: {
-    borderWidth: 1,
+  inputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    borderBottomWidth: 1,
     borderColor: "#ccc",
     borderRadius: 10,
-    padding: 10,
+    paddingHorizontal: 10,
     marginTop: 5,
     marginBottom: 15,
+  },
+  diceButton: {
+    marginRight: 8,
+  },
+  diceIcon: {
+    fontSize: 22,
+  },
+  input: {
+    flex: 1,
+    paddingVertical: 10,
+    fontSize: 16,
   },
   infoBox: {
     padding: 15,
@@ -120,7 +192,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   button: {
-    backgroundColor: "#27ae60",
+    backgroundColor: "blue",
     borderRadius: 12,
     paddingVertical: 12,
   },
