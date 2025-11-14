@@ -8,6 +8,8 @@ export type BusinessType = {
   type: string;
   incomePerHour: number;
   price: number;
+  capacity?: number;
+  cars?: number;
 };
 
 type CounterState = {
@@ -24,7 +26,9 @@ type CounterState = {
   addCount: (amount: number) => void;
   reset: () => void;
   cheat: () => void;
-  updateOfflineEarnings: () => void; // нова функція
+  updateOfflineEarnings: () => void;
+  addBusinessCapacity: (id: number, value: number) => void;
+  buyCarForBusiness: (id: number, count: number) => void;
 };
 
 export const useCounterStore = create<CounterState>()(
@@ -98,7 +102,21 @@ export const useCounterStore = create<CounterState>()(
           console.log("Error calculating offline earnings", e);
         }
       },
+      addBusinessCapacity: (id: number, value: number) =>
+        set((state) => ({
+          myBusinesses: state.myBusinesses.map((b) =>
+            b.id === id ? { ...b, capacity: (b.capacity || 5) + value } : b
+          ),
+        })),
+
+      buyCarForBusiness: (id: number, count: number) =>
+        set((state) => ({
+          myBusinesses: state.myBusinesses.map((b) =>
+            b.id === id ? { ...b, cars: (b.cars || 0) + count } : b
+          ),
+        })),
     }),
+
     {
       name: "counter-storage",
       storage: createJSONStorage(() => AsyncStorage),

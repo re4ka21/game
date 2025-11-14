@@ -4,10 +4,12 @@ import BottomTabs from "./BottomTabs";
 import { UpgradeScreen } from "@/screens/Upgrade";
 import { LoadingScreen } from "@/screens/Loading";
 import { BuyCardScreen } from "@/screens/BuyCard";
-import { BuyBusinessScreen } from "@/screens/BuyBusiness";
-import { BusinessDetailsScreen } from "@/screens/BusinessDetails";
-import { ChooseShopSizeScreen } from "@/screens/ChooseShopSize";
-import { BusinessMergerScreen } from "@/screens/BusinessMerger";
+import { BuyBusinessScreen } from "@/screens/Business";
+import { BusinessDetailsScreen } from "@/screens/Business";
+import { ChooseShopSizeScreen } from "@/screens/Business";
+import { BusinessMergerScreen } from "@/screens/Business";
+import { DetailsDependentScreen } from "@/screens/Business";
+import { DetailsInDependentScreen } from "@/screens/Business";
 export type RootStackParamList = {
   Tabs: { screen?: string } | undefined;
   Upgrade: undefined;
@@ -17,6 +19,8 @@ export type RootStackParamList = {
   BusinessDetails: { business: any };
   ChooseShopSize: { baseBusiness: any };
   BusinessMerger: undefined;
+  DetailsDependent: { business: any };
+  DetailsInDependent: { business: any };
 };
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -77,6 +81,22 @@ export default function AppNavigator() {
       <Stack.Screen
         name="BusinessMerger"
         component={BusinessMergerScreen}
+        options={{
+          title: "Бизнес",
+          headerBackTitle: "Назад",
+          headerShown: true,
+        }}
+      />
+      <Stack.Screen
+        name="DetailsDependent"
+        component={DetailsDependentScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="DetailsInDependent"
+        component={DetailsInDependentScreen}
         options={{
           title: "Бизнес",
           headerBackTitle: "Назад",

@@ -6,26 +6,10 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
+import { RootStackParamList } from "@/app/navigation/AppNavigator";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { useCounterStore } from "@/features/counter";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-type TabParamList = {
-  Business: undefined;
-  Earnings: undefined;
-  Investments: undefined;
-  Profile: undefined;
-  Items: undefined;
-};
-
-type RootStackParamList = {
-  Tabs: { screen?: keyof TabParamList } | undefined;
-  BusinessDetails: { business: any };
-  Upgrade: undefined;
-  Loading: undefined;
-  BuyCard: { id: string; image: any; price?: number };
-  BuyBusiness: undefined;
-  ChooseShopSize: { baseBusiness: any };
-};
 
 type NavigationProp = NativeStackNavigationProp<
   RootStackParamList,

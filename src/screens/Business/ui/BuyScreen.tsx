@@ -20,6 +20,7 @@ type BusinessType = {
   icon: string;
   color: string;
   isChain?: boolean;
+  dependent?: boolean;
 };
 
 type NavigationProp = NativeStackNavigationProp<
@@ -31,7 +32,7 @@ const availableBusinesses: BusinessType[] = [
   {
     id: 1,
     name: "Продажа",
-    type: "sale",
+    type: "shop",
     incomePerHour: 50,
     price: 4899,
     icon: "cart-outline",
@@ -46,6 +47,7 @@ const availableBusinesses: BusinessType[] = [
     price: 9999,
     icon: "car-outline",
     color: "#f1c40f",
+    dependent: true,
   },
   {
     id: 3,
@@ -82,6 +84,7 @@ const availableBusinesses: BusinessType[] = [
     price: 40000,
     icon: "car-sport-outline",
     color: "#2c3e50",
+    dependent: true,
   },
 
   {
@@ -119,6 +122,7 @@ const availableBusinesses: BusinessType[] = [
     price: 200000,
     icon: "airplane-outline",
     color: "#3498db",
+    dependent: true,
   },
 ];
 

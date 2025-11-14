@@ -7,12 +7,27 @@ import {
   FlatList,
   Alert,
 } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { useCounterStore } from "@/features/counter";
-
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList } from "@/app/navigation/AppNavigator";
+type NavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  "BusinessDetails"
+>;
 export default function BusinessMergerScreen() {
   const { myBusinesses, count } = useCounterStore();
+  const navigation = useNavigation<NavigationProp>();
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
+
+  const selected = myBusinesses.filter((b) => selectedIds.includes(b.id));
+  const totalIncome = selected.reduce((acc, b) => acc + b.incomePerHour, 0);
+  const totalPrice = selected.reduce((acc, b) => acc + b.price, 0);
+  const mergeCost = Math.round(totalPrice * 0.8);
+
+  const types = [...new Set(selected.map((b) => b.type))];
+  const differentTypes = selected.length >= 2 && types.length > 1;
 
   const toggleSelect = (id: number) => {
     setSelectedIds((prev) =>
@@ -22,12 +37,8 @@ export default function BusinessMergerScreen() {
 
   const potentialEffect = (() => {
     if (selectedIds.length < 2) return "Виберіть хоча б 2 бізнеси для злиття";
-    const selected = myBusinesses.filter((b) => selectedIds.includes(b.id));
+    if (differentTypes) return "Можна зливати лише бізнеси одного типу";
 
-    const types = [...new Set(selected.map((b) => b.type))];
-    if (types.length > 1) return "Можна зливати лише бізнеси одного типу";
-
-    const totalIncome = selected.reduce((acc, b) => acc + b.incomePerHour, 0);
     return `Якщо злити ${
       selected.length
     } бізнесів, потенційний прибуток може зрости до ~${(
@@ -36,27 +47,6 @@ export default function BusinessMergerScreen() {
   })();
 
   const performMerge = () => {
-    const selected = myBusinesses.filter((b) => selectedIds.includes(b.id));
-
-    if (selected.length < 2) {
-      Alert.alert("Помилка", "Потрібно обрати хоча б 2 бізнеси.");
-      return;
-    }
-
-    const types = [...new Set(selected.map((b) => b.type))];
-    if (types.length > 1) {
-      Alert.alert("Помилка", "Можна зливати лише бізнеси одного типу.");
-      return;
-    }
-
-    if (selected.length > 5) {
-      Alert.alert("Помилка", "Максимальна кількість бізнесів для злиття: 5.");
-      return;
-    }
-
-    const totalIncome = selected.reduce((acc, b) => acc + b.incomePerHour, 0);
-    const totalPrice = selected.reduce((acc, b) => acc + b.price, 0);
-    const mergeCost = Math.round(totalPrice * 0.8);
     if (count < mergeCost) {
       Alert.alert(
         "Недостатньо коштів",
@@ -65,59 +55,39 @@ export default function BusinessMergerScreen() {
       return;
     }
 
-    Alert.alert(
-      "Підтвердити злиття",
-      `Ви дійсно хочете об'єднати ${
-        selected.length
-      } бізнес(и) в один?\n\nДоход/год: ${totalIncome}\nСума вартостей: $${totalPrice.toLocaleString()}\nсума вартості злиття: $${Math.round(
-        totalPrice * 0.8
-      ).toLocaleString()}`,
-      [
-        { text: "Скасувати", style: "cancel" },
-        {
-          text: "Злити",
-          onPress: () => {
-            const mergedName =
-              selected.length === 1
-                ? selected[0].name
-                : `Merged: ${selected
-                    .map((s) => s.name)
-                    .slice(0, 3)
-                    .join(" + ")}`;
+    const mergedName =
+      selected.length === 1
+        ? selected[0].name
+        : `Merged: ${selected
+            .map((s) => s.name)
+            .slice(0, 3)
+            .join(" + ")}`;
 
-            const mergedIncome = Math.round(totalIncome * 1.2);
+    const mergedIncome = Math.round(totalIncome * 1.2);
 
-            const mergedBusiness = {
-              id: Date.now(),
-              name: mergedName,
-              incomePerHour: mergedIncome,
-              price: Math.round(totalPrice),
-              icon: "layers-outline",
-              color: "#34495e",
-              type: types[0],
-            } as any;
+    const mergedBusiness = {
+      id: Date.now(),
+      name: mergedName,
+      incomePerHour: mergedIncome,
+      price: Math.round(totalPrice),
+      icon: "layers-outline",
+      color: "#34495e",
+      type: types[0],
+    };
 
-            useCounterStore.setState((state) => {
-              const remaining = state.myBusinesses.filter(
-                (b) => !selectedIds.includes(b.id)
-              );
-              return {
-                myBusinesses: [...remaining, mergedBusiness],
-                count: state.count - mergeCost,
-              } as any;
-            });
+    useCounterStore.setState((state) => {
+      const remaining = state.myBusinesses.filter(
+        (b) => !selectedIds.includes(b.id)
+      );
+      return {
+        myBusinesses: [...remaining, mergedBusiness],
+        count: state.count - mergeCost,
+      };
+    });
 
-            setSelectedIds([]);
-            Alert.alert("Успіх", "Бізнеси успішно об'єднані.");
-          },
-        },
-      ]
-    );
+    setSelectedIds([]);
+    navigation.navigate("Tabs", { screen: "Business" });
   };
-
-  const selected = myBusinesses.filter((b) => selectedIds.includes(b.id));
-  const differentTypes =
-    selected.length >= 2 && new Set(selected.map((b) => b.type)).size > 1;
 
   return (
     <View style={styles.container}>
@@ -193,7 +163,9 @@ export default function BusinessMergerScreen() {
             styles.mergeButton,
             (selectedIds.length < 2 || differentTypes) && { opacity: 0.5 },
           ]}
-          disabled={selectedIds.length < 2 || differentTypes}
+          disabled={
+            selectedIds.length < 2 || differentTypes || selected.length > 5
+          }
           onPress={performMerge}
         >
           <Text style={styles.mergeButtonText}>Злити вибрані бізнеси</Text>

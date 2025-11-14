@@ -1,1 +1,7 @@
 export { default as Business } from "./ui/BusinessScreen";
+export { default as BusinessDetailsScreen } from "./ui/DetailsScreen";
+export { default as BusinessMergerScreen } from "./ui/MergerScreen";
+export { default as BuyBusinessScreen } from "./ui/BuyScreen";
+export { default as ChooseShopSizeScreen } from "../Business/ui/ChooseShopSizeScreen";
+export { default as DetailsDependentScreen } from "./ui/DetailsDependentScreen";
+export { default as DetailsInDependentScreen } from "./ui/DetailsInDependentScreen";

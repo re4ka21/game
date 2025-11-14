@@ -1,12 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  FlatList,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useCounterStore } from "@/features/counter";
+import { BusinessCard } from "@/shared";
 
 export default function Business() {
   const navigation = useNavigation();
   const { myBusinesses, addCount, updateOfflineEarnings } = useCounterStore();
   const [totalIncome, setTotalIncome] = useState(0);
+
   useEffect(() => {
     updateOfflineEarnings();
 
@@ -14,34 +22,15 @@ export default function Business() {
     setTotalIncome(income);
 
     const interval = setInterval(() => {
-      addCount((income / 3600) * 4);
-    }, 4000);
+      addCount((income / 3600) * 60);
+    }, 60000);
 
     return () => clearInterval(interval);
   }, [myBusinesses]);
 
-  const sellBusiness = (bId: number) => {
-    const businessToSell = myBusinesses.find((b) => b.id === bId);
-    if (!businessToSell) return;
-
-    Alert.alert(
-      "Продати бізнес",
-      `Ти справді хочеш продати "${businessToSell.name}" за ${(
-        businessToSell.price * 0.5
-      ).toFixed(2)}$?`,
-      [
-        { text: "Скасувати", style: "cancel" },
-        {
-          text: "Продати",
-          onPress: () =>
-            useCounterStore.setState((state) => ({
-              myBusinesses: state.myBusinesses.filter((b) => b.id !== bId),
-              count: state.count + businessToSell.price * 0.5,
-            })),
-        },
-      ]
-    );
-  };
+  const renderBusiness = ({ item }: { item: (typeof myBusinesses)[0] }) => (
+    <BusinessCard key={item.id} business={item} />
+  );
 
   return (
     <View style={styles.container}>
@@ -75,33 +64,24 @@ export default function Business() {
         <Text style={styles.counterText}>{myBusinesses.length}/10</Text>
       </View>
 
-      {myBusinesses.length === 0 ? (
-        <Text style={styles.emptyText}>У вас немає бізнесів</Text>
-      ) : (
-        myBusinesses.map((b) => (
-          <View key={b.id} style={styles.businessRow}>
-            <Text
-              style={styles.myBusiness}
-              numberOfLines={1}
-              ellipsizeMode="tail"
-            >
-              • {b.name} (+{b.incomePerHour}$/год)
-            </Text>
-            <TouchableOpacity
-              style={styles.sellButton}
-              onPress={() => sellBusiness(b.id)}
-            >
-              <Text style={styles.sellText}>Продати</Text>
-            </TouchableOpacity>
-          </View>
-        ))
-      )}
+      <FlatList
+        data={myBusinesses}
+        renderItem={renderBusiness}
+        keyExtractor={(item) => item.id.toString()}
+        ListEmptyComponent={
+          <Text style={styles.emptyText}>У вас ще немає бізнесів</Text>
+        }
+      />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20, backgroundColor: "#fff" },
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: "#fff",
+  },
   header: {
     fontSize: 30,
     fontWeight: "bold",
@@ -169,31 +149,9 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: "#2196f3",
   },
-  businessRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginVertical: 5,
-  },
-
-  myBusiness: {
-    fontSize: 16,
-    flexShrink: 1,
-    marginRight: 10,
-    flexWrap: "wrap",
-    flex: 1,
-  },
-  sellButton: {
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-    borderRadius: 8,
-    flexShrink: 0,
-  },
-  sellText: {
-    color: "#d50000",
-    fontWeight: "600",
-  },
   emptyText: {
     color: "#888",
     marginTop: 10,
+    textAlign: "center",
   },
 });
