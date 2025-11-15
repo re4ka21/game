@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
 import { useRoute, useNavigation } from "@react-navigation/native";
+import { useBusinessStore } from "@/features/business";
 import { useCounterStore } from "@/features/counter";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
@@ -19,7 +20,8 @@ export default function BusinessDetailsScreen() {
   const route = useRoute<any>();
   const navigation = useNavigation<NavigationProp>();
   const { business } = route.params;
-  const { count, purchase, addBusiness, myBusinesses } = useCounterStore();
+  const { count, purchase } = useCounterStore();
+  const { addBusiness, myBusinesses } = useBusinessStore();
   const [customName, setCustomName] = useState("");
   const [showWarning, setShowWarning] = useState(false);
   const handleOpenBusiness = () => {

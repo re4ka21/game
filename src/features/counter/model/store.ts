@@ -1,34 +1,22 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
-export type BusinessType = {
-  id: number;
-  name: string;
-  type: string;
-  incomePerHour: number;
-  price: number;
-  capacity?: number;
-  cars?: number;
-};
+import { useBusinessStore } from "@/features/business";
 
 type CounterState = {
   count: number;
   clickValue: number;
   level: number;
   nextUpgradeCost: number;
-  myBusinesses: BusinessType[];
+
   increment: () => void;
   clear: () => void;
   upgrade: () => void;
-  purchase: (price: number) => void;
-  addBusiness: (b: BusinessType) => void;
   addCount: (amount: number) => void;
+  purchase: (price: number) => void;
   reset: () => void;
   cheat: () => void;
-  updateOfflineEarnings: () => void;
-  addBusinessCapacity: (id: number, value: number) => void;
-  buyCarForBusiness: (id: number, count: number) => void;
+  updateOfflineEarnings: () => Promise<void>;
 };
 
 export const useCounterStore = create<CounterState>()(
@@ -38,7 +26,6 @@ export const useCounterStore = create<CounterState>()(
       clickValue: 2.5,
       level: 1,
       nextUpgradeCost: 1000,
-      myBusinesses: [],
 
       increment: () =>
         set((state) => ({ count: state.count + state.clickValue })),
@@ -48,28 +35,22 @@ export const useCounterStore = create<CounterState>()(
       upgrade: () =>
         set((state) => {
           if (state.count < state.nextUpgradeCost) return state;
-          const newLevel = state.level + 1;
-          const newClickValue = state.clickValue * 2;
-          const newUpgradeCost = state.nextUpgradeCost * 4;
+
           return {
             count: state.count - state.nextUpgradeCost,
-            clickValue: newClickValue,
-            level: newLevel,
-            nextUpgradeCost: newUpgradeCost,
+            clickValue: state.clickValue * 2,
+            level: state.level + 1,
+            nextUpgradeCost: state.nextUpgradeCost * 4,
           };
         }),
 
       purchase: (price) =>
         set((state) => {
           if (state.count < price) return state;
-          return { ...state, count: state.count - price };
+          return { count: state.count - price };
         }),
 
-      addBusiness: (b: BusinessType) =>
-        set((state) => ({ myBusinesses: [...state.myBusinesses, b] })),
-
-      addCount: (amount: number) =>
-        set((state) => ({ count: state.count + amount })),
+      addCount: (amount) => set((state) => ({ count: state.count + amount })),
 
       reset: () =>
         set({
@@ -77,46 +58,37 @@ export const useCounterStore = create<CounterState>()(
           clickValue: 2.5,
           level: 1,
           nextUpgradeCost: 1000,
-          myBusinesses: [],
         }),
 
-      cheat: () => set((state) => ({ count: state.count + 1000000 })),
+      cheat: () => set((state) => ({ count: state.count + 1_000_000 })),
 
+      // 📌 ОФЛАЙН ДОХІД
       updateOfflineEarnings: async () => {
         try {
-          const lastTimeStr = await AsyncStorage.getItem("lastTime");
-          const lastTime = lastTimeStr ? parseInt(lastTimeStr, 10) : Date.now();
+          const lastStr = await AsyncStorage.getItem("lastTime");
+          const lastTime = lastStr ? Number(lastStr) : Date.now();
           const now = Date.now();
           const elapsedSec = (now - lastTime) / 1000;
 
-          const incomePerHour = get().myBusinesses.reduce(
+          const businesses = useBusinessStore.getState().myBusinesses;
+
+          const incomePerHour = businesses.reduce(
             (acc, b) => acc + b.incomePerHour,
             0
           );
+
           const earned = (incomePerHour / 3600) * elapsedSec;
 
-          if (earned > 0) set({ count: get().count + earned });
+          if (earned > 0) {
+            set({ count: get().count + earned });
+          }
 
-          await AsyncStorage.setItem("lastTime", now.toString());
+          await AsyncStorage.setItem("lastTime", String(now));
         } catch (e) {
-          console.log("Error calculating offline earnings", e);
+          console.log("Offline earnings error:", e);
         }
       },
-      addBusinessCapacity: (id: number, value: number) =>
-        set((state) => ({
-          myBusinesses: state.myBusinesses.map((b) =>
-            b.id === id ? { ...b, capacity: (b.capacity || 5) + value } : b
-          ),
-        })),
-
-      buyCarForBusiness: (id: number, count: number) =>
-        set((state) => ({
-          myBusinesses: state.myBusinesses.map((b) =>
-            b.id === id ? { ...b, cars: (b.cars || 0) + count } : b
-          ),
-        })),
     }),
-
     {
       name: "counter-storage",
       storage: createJSONStorage(() => AsyncStorage),

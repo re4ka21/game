@@ -5,7 +5,9 @@ import { useNavigation, useRoute, RouteProp } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
 import { useCounterStore } from "@/features/counter";
-
+import { useBusinessStore } from "@/features/business";
+import AntDesign from "@expo/vector-icons/AntDesign";
+import { LinearGradient } from "expo-linear-gradient";
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, "BuyCard">;
 type BusinessDetailsRouteProp = RouteProp<
   RootStackParamList,
@@ -17,19 +19,18 @@ export default function DetailsDependent() {
   const { business } = route.params;
   const navigation = useNavigation<NavigationProp>();
 
-  const currentBusiness = useCounterStore((state) =>
+  const currentBusiness = useBusinessStore((state) =>
     state.myBusinesses.find((b) => b.id === business.id)
   );
 
-  const addBusinessCapacity = useCounterStore(
+  const addBusinessCapacity = useBusinessStore(
     (state) => state.addBusinessCapacity
   );
-
   const purchase = useCounterStore((state) => state.purchase);
   const count = useCounterStore((state) => state.count);
 
+  const formattedCount = count.toFixed(2).replace(".", ",");
   if (!currentBusiness) return null;
-
   const handleAddCapacity = (value: number) => {
     const costMap: { [key: number]: number } = {
       5: 17500,
@@ -38,6 +39,11 @@ export default function DetailsDependent() {
     };
     const cost = costMap[value];
 
+    if ((currentBusiness.capacity || 5) + value > 40) {
+      alert("Максимальна місткість — 40!");
+      return;
+    }
+
     purchase(cost);
     addBusinessCapacity(currentBusiness.id, value);
   };
@@ -45,10 +51,16 @@ export default function DetailsDependent() {
   const handleBuyCar = () => {
     navigation.navigate("Tabs", { screen: "Earnings" });
   };
-
+  const busColor = business.color;
   return (
     <View style={styles.container}>
-      <View style={[styles.header, { backgroundColor: business.color }]}>
+      <TouchableOpacity
+        style={styles.arrow}
+        onPress={() => navigation.goBack()}
+      >
+        <AntDesign name="arrow-left" size={24} color="black" />
+      </TouchableOpacity>
+      <View style={[styles.header, { backgroundColor: busColor }]}>
         <Ionicons name={business.icon} size={40} color="#000000ff" />
         <Text style={styles.title}>{business.name}</Text>
       </View>
@@ -60,6 +72,8 @@ export default function DetailsDependent() {
       </View>
       <View style={styles.secondContainer}>
         <Text style={styles.sectionTitle}>Расширить вместимость автопарка</Text>
+        <Text style={styles.balance}>Баланс: $ {formattedCount}</Text>
+
         <View style={styles.btnRow}>
           {[5, 10, 20].map((value) => {
             const costMap: { [key: number]: number } = {
@@ -68,7 +82,10 @@ export default function DetailsDependent() {
               20: 140000,
             };
             const cost = costMap[value];
-            const isDisabled = count < cost;
+
+            const currentCapacity = currentBusiness.capacity || 5;
+            const isDisabled = count < cost || currentCapacity + value > 40;
+
             return (
               <TouchableOpacity
                 key={value}
@@ -86,15 +103,42 @@ export default function DetailsDependent() {
             );
           })}
         </View>
+        <View style={styles.info}>
+          <View style={styles.parkBox}>
+            <Text style={styles.parkTitle}>Автопарк</Text>
 
-        <View style={styles.parkBox}>
-          <Text style={styles.parkTitle}>Автопарк</Text>
-          <Text style={styles.value}>
-            Автомобилей: {currentBusiness.cars || 0}
-          </Text>
-          <Text style={styles.value}>
-            Вместимость: {currentBusiness.capacity || 5}
-          </Text>
+            <View style={styles.progressBackground}>
+              <View
+                style={[
+                  styles.progressFill,
+                  {
+                    width: `${
+                      ((currentBusiness.cars || 0) /
+                        (currentBusiness.capacity || 5)) *
+                      100
+                    }%`,
+                  },
+                ]}
+              />
+            </View>
+
+            <LinearGradient
+              colors={["#f8b834", "#f2f2f2"]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.carsBox}
+            >
+              <Text style={styles.value}>
+                Автомобилей: {currentBusiness.cars || 0}
+              </Text>
+            </LinearGradient>
+          </View>
+          <View style={styles.capacityBox}>
+            <Text style={styles.value}>
+              Вместимость: {`\n`}
+              {currentBusiness.capacity || 5}
+            </Text>
+          </View>
         </View>
 
         <TouchableOpacity style={styles.buyBtn} onPress={handleBuyCar}>
@@ -107,6 +151,12 @@ export default function DetailsDependent() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#fff" },
+  arrow: {
+    position: "absolute",
+    top: 40,
+    left: 20,
+    zIndex: 3,
+  },
   header: {
     height: 200,
     justifyContent: "center",
@@ -125,6 +175,19 @@ const styles = StyleSheet.create({
   capacityBtnDisabled: {
     backgroundColor: "#ccc",
   },
+  progressBackground: {
+    height: 12,
+    width: "100%",
+    backgroundColor: "#e0e0e0",
+    borderRadius: 6,
+    marginTop: 10,
+    overflow: "hidden",
+  },
+  progressFill: {
+    height: "100%",
+    backgroundColor: "#f8b834",
+    borderRadius: 6,
+  },
   incomeBox: {
     backgroundColor: "#f2f3f7",
     padding: 20,
@@ -142,7 +205,9 @@ const styles = StyleSheet.create({
   },
   income: { fontSize: 34, fontWeight: "700" },
   incomeText: { color: "#777", marginTop: 4 },
-
+  balance: {
+    color: "#777",
+  },
   sectionTitle: {
     marginTop: 16,
     fontSize: 18,
@@ -161,16 +226,53 @@ const styles = StyleSheet.create({
     width: "30%",
     alignItems: "center",
   },
-
+  info: {
+    flexDirection: "row",
+    paddingVertical: 20,
+  },
   parkBox: {
     backgroundColor: "#f2f3f7",
-    padding: 20,
+    padding: 10,
     borderRadius: 16,
+    flex: 1,
+    justifyContent: "flex-end",
     marginTop: 20,
   },
-  parkTitle: { fontSize: 16, fontWeight: "700" },
-  value: { fontSize: 16, marginTop: 6 },
-
+  capacityBox: {
+    backgroundColor: "#f2f3f7",
+    padding: 30,
+    borderRadius: 16,
+    marginTop: 20,
+    flex: 1,
+    justifyContent: "flex-end",
+    alignItems: "center",
+    marginLeft: 5,
+  },
+  parkTitle: {
+    fontSize: 16,
+    fontWeight: "700",
+  },
+  value: {
+    fontSize: 16,
+    marginTop: 1,
+    textAlign: "center",
+  },
+  carsBox: {
+    marginLeft: 2,
+    marginRight: 2,
+    marginBottom: 4,
+    marginTop: 10,
+    paddingVertical: 20,
+    paddingHorizontal: 16,
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "flex-end",
+  },
+  cars: {
+    fontSize: 18,
+    fontWeight: "700",
+    color: "#000000ff",
+  },
   buyBtn: {
     marginTop: 25,
     backgroundColor: "#ffde59",

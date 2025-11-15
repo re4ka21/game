@@ -7,12 +7,14 @@ import {
   FlatList,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { useCounterStore } from "@/features/counter";
+import { useBusinessStore } from "@/features/business";
 import { BusinessCard } from "@/shared";
+import { useCounterStore } from "@/features/counter";
 
 export default function Business() {
   const navigation = useNavigation();
-  const { myBusinesses, addCount, updateOfflineEarnings } = useCounterStore();
+  const { addCount } = useCounterStore();
+  const { myBusinesses, updateOfflineEarnings } = useBusinessStore();
   const [totalIncome, setTotalIncome] = useState(0);
 
   useEffect(() => {

@@ -12,12 +12,14 @@ import { Ionicons } from "@expo/vector-icons";
 import { useCounterStore } from "@/features/counter";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
+import { useBusinessStore } from "@/features/business";
 type NavigationProp = NativeStackNavigationProp<
   RootStackParamList,
   "BusinessDetails"
 >;
 export default function BusinessMergerScreen() {
-  const { myBusinesses, count } = useCounterStore();
+  const { myBusinesses } = useBusinessStore();
+  const { count } = useCounterStore();
   const navigation = useNavigation<NavigationProp>();
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
 
@@ -75,16 +77,18 @@ export default function BusinessMergerScreen() {
       type: types[0],
     };
 
-    useCounterStore.setState((state) => {
+    useBusinessStore.setState((state: any) => {
       const remaining = state.myBusinesses.filter(
         (b) => !selectedIds.includes(b.id)
       );
       return {
         myBusinesses: [...remaining, mergedBusiness],
-        count: state.count - mergeCost,
       };
     });
 
+    useCounterStore.setState((state) => ({
+      count: state.count - mergeCost,
+    }));
     setSelectedIds([]);
     navigation.navigate("Tabs", { screen: "Business" });
   };

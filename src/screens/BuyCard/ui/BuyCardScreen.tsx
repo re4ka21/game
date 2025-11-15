@@ -10,7 +10,7 @@ import {
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useCounterStore } from "@/features/counter/model/store";
-import { useBackgroundStore } from "@/features/background/model/store";
+import { useBackgroundStore } from "@/features/background";
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
 
 type BuyCardRouteProp = RouteProp<RootStackParamList, "BuyCard">;
