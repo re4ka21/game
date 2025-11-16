@@ -10,6 +10,7 @@ import { ChooseShopSizeScreen } from "@/screens/Business";
 import { BusinessMergerScreen } from "@/screens/Business";
 import { DetailsDependentScreen } from "@/screens/Business";
 import { DetailsInDependentScreen } from "@/screens/Business";
+import { SettingsScreen } from "@/screens/Business";
 export type RootStackParamList = {
   Tabs: { screen?: string } | undefined;
   Upgrade: undefined;
@@ -21,6 +22,7 @@ export type RootStackParamList = {
   BusinessMerger: undefined;
   DetailsDependent: { business: any };
   DetailsInDependent: { business: any };
+  Settings: undefined;
 };
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -101,6 +103,13 @@ export default function AppNavigator() {
           title: "Бизнес",
           headerBackTitle: "Назад",
           headerShown: true,
+        }}
+      />
+      <Stack.Screen
+        name="Settings"
+        component={SettingsScreen}
+        options={{
+          headerShown: false,
         }}
       />
     </Stack.Navigator>

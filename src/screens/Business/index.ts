@@ -5,3 +5,4 @@ export { default as BuyBusinessScreen } from "./ui/BuyScreen";
 export { default as ChooseShopSizeScreen } from "../Business/ui/ChooseShopSizeScreen";
 export { default as DetailsDependentScreen } from "./ui/DetailsDependentScreen";
 export { default as DetailsInDependentScreen } from "./ui/DetailsInDependentScreen";
+export { default as SettingsScreen } from "./ui/SettingsScreen";

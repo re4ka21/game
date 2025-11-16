@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation, useRoute, RouteProp } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -111,6 +111,7 @@ export default function DetailsDependent() {
               <View
                 style={[
                   styles.progressFill,
+                  { backgroundColor: busColor },
                   {
                     width: `${
                       ((currentBusiness.cars || 0) /
@@ -123,25 +124,33 @@ export default function DetailsDependent() {
             </View>
 
             <LinearGradient
-              colors={["#f8b834", "#f2f2f2"]}
+              colors={[busColor, "#f2f2f2"]}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
               style={styles.carsBox}
             >
               <Text style={styles.value}>
-                Автомобилей: {currentBusiness.cars || 0}
+                Автомобилей: {`\n`}
+                {currentBusiness.cars || 0}
               </Text>
             </LinearGradient>
           </View>
           <View style={styles.capacityBox}>
-            <Text style={styles.value}>
-              Вместимость: {`\n`}
+            <Image
+              source={require("../../../../assets/images/parking.png")}
+              style={styles.parkingImage}
+            />
+            <Text style={styles.value}>Вместимость:</Text>
+            <Text style={styles.valueNumber}>
               {currentBusiness.capacity || 5}
             </Text>
           </View>
         </View>
 
-        <TouchableOpacity style={styles.buyBtn} onPress={handleBuyCar}>
+        <TouchableOpacity
+          style={[styles.buyBtn, { backgroundColor: busColor }]}
+          onPress={handleBuyCar}
+        >
           <Text style={styles.buyBtnText}>Приобрести новый автомобиль</Text>
         </TouchableOpacity>
       </View>
@@ -166,6 +175,13 @@ const styles = StyleSheet.create({
   secondContainer: {
     padding: 20,
   },
+  parkingImage: {
+    position: "absolute",
+    width: 160,
+    height: 245,
+    resizeMode: "contain",
+    marginBottom: 8,
+  },
   title: {
     fontSize: 22,
     fontWeight: "700",
@@ -185,7 +201,7 @@ const styles = StyleSheet.create({
   },
   progressFill: {
     height: "100%",
-    backgroundColor: "#f8b834",
+
     borderRadius: 6,
   },
   incomeBox: {
@@ -221,9 +237,10 @@ const styles = StyleSheet.create({
   },
   capacityBtn: {
     backgroundColor: "#eef1f6",
-    padding: 12,
+    padding: 4,
     borderRadius: 12,
     width: "30%",
+    height: 45,
     alignItems: "center",
   },
   info: {
@@ -234,16 +251,17 @@ const styles = StyleSheet.create({
     backgroundColor: "#f2f3f7",
     padding: 10,
     borderRadius: 16,
-    flex: 1,
+    flex: 1.4,
     justifyContent: "flex-end",
     marginTop: 20,
   },
+
   capacityBox: {
     backgroundColor: "#f2f3f7",
     padding: 30,
     borderRadius: 16,
     marginTop: 20,
-    flex: 1,
+    flex: 0.8,
     justifyContent: "flex-end",
     alignItems: "center",
     marginLeft: 5,
@@ -253,9 +271,13 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
   value: {
-    fontSize: 16,
-    marginTop: 1,
+    fontSize: 15,
+    marginTop: 4,
     textAlign: "center",
+  },
+  valueNumber: {
+    fontSize: 30,
+    fontWeight: "700",
   },
   carsBox: {
     marginLeft: 2,
@@ -275,7 +297,7 @@ const styles = StyleSheet.create({
   },
   buyBtn: {
     marginTop: 25,
-    backgroundColor: "#ffde59",
+
     padding: 16,
     borderRadius: 14,
     alignItems: "center",

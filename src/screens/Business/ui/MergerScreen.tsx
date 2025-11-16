@@ -75,6 +75,7 @@ export default function BusinessMergerScreen() {
       icon: "layers-outline",
       color: "#34495e",
       type: types[0],
+      dependent: selected[0]?.dependent || false,
     };
 
     useBusinessStore.setState((state: any) => {

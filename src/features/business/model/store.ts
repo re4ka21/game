@@ -10,6 +10,7 @@ export type BusinessType = {
   price: number;
   capacity?: number;
   cars: number;
+  dependent?: boolean;
 };
 
 type BusinessState = {
