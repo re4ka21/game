@@ -9,26 +9,21 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { useBusinessStore } from "@/features/business";
 import { BusinessCard } from "@/shared";
-import { useCounterStore } from "@/features/counter";
 
 export default function Business() {
   const navigation = useNavigation();
-  const { addCount } = useCounterStore();
   const { myBusinesses, updateOfflineEarnings } = useBusinessStore();
   const [totalIncome, setTotalIncome] = useState(0);
 
   useEffect(() => {
     updateOfflineEarnings();
 
-    const income = myBusinesses.reduce((acc, b) => acc + b.incomePerHour, 0);
-    setTotalIncome(income);
-
     const interval = setInterval(() => {
-      addCount((income / 3600) * 60);
+      updateOfflineEarnings();
     }, 60000);
 
     return () => clearInterval(interval);
-  }, [myBusinesses]);
+  }, []);
 
   const renderBusiness = ({ item }: { item: (typeof myBusinesses)[0] }) => (
     <BusinessCard key={item.id} business={item} />
@@ -84,6 +79,7 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: "#fff",
   },
+
   header: {
     fontSize: 30,
     fontWeight: "bold",

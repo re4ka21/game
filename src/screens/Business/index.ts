@@ -6,3 +6,4 @@ export { default as ChooseShopSizeScreen } from "../Business/ui/ChooseShopSizeSc
 export { default as DetailsDependentScreen } from "./ui/DetailsDependentScreen";
 export { default as DetailsInDependentScreen } from "./ui/DetailsInDependentScreen";
 export { default as SettingsScreen } from "./ui/SettingsScreen";
+export { default as ChangeNameScreen } from "./ui/ChangeNameScreen";

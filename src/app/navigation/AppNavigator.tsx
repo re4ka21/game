@@ -11,6 +11,7 @@ import { BusinessMergerScreen } from "@/screens/Business";
 import { DetailsDependentScreen } from "@/screens/Business";
 import { DetailsInDependentScreen } from "@/screens/Business";
 import { SettingsScreen } from "@/screens/Business";
+import { ChangeNameScreen } from "@/screens/Business";
 export type RootStackParamList = {
   Tabs: { screen?: string } | undefined;
   Upgrade: undefined;
@@ -22,7 +23,8 @@ export type RootStackParamList = {
   BusinessMerger: undefined;
   DetailsDependent: { business: any };
   DetailsInDependent: { business: any };
-  Settings: undefined;
+  Settings: { business: any };
+  ChangeName: any;
 };
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -108,6 +110,13 @@ export default function AppNavigator() {
       <Stack.Screen
         name="Settings"
         component={SettingsScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="ChangeName"
+        component={ChangeNameScreen}
         options={{
           headerShown: false,
         }}

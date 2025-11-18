@@ -62,7 +62,6 @@ export const useCounterStore = create<CounterState>()(
 
       cheat: () => set((state) => ({ count: state.count + 1_000_000 })),
 
-      // 📌 ОФЛАЙН ДОХІД
       updateOfflineEarnings: async () => {
         try {
           const lastStr = await AsyncStorage.getItem("lastTime");

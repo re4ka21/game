@@ -7,15 +7,16 @@ import { RootStackParamList } from "@/app/navigation/AppNavigator";
 import { useCounterStore } from "@/features/counter";
 import { useBusinessStore } from "@/features/business";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import Feather from "@expo/vector-icons/Feather";
 import { LinearGradient } from "expo-linear-gradient";
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, "BuyCard">;
-type BusinessDetailsRouteProp = RouteProp<
+type DetailsDependentRouteProp = RouteProp<
   RootStackParamList,
-  "BusinessDetails"
+  "DetailsDependent"
 >;
 
 export default function DetailsDependent() {
-  const route = useRoute<BusinessDetailsRouteProp>();
+  const route = useRoute<DetailsDependentRouteProp>();
   const { business } = route.params;
   const navigation = useNavigation<NavigationProp>();
 
@@ -59,6 +60,12 @@ export default function DetailsDependent() {
         onPress={() => navigation.goBack()}
       >
         <AntDesign name="arrow-left" size={24} color="black" />
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.settings}
+        onPress={() => navigation.navigate("Settings", { business })}
+      >
+        <Feather name="settings" size={24} color="black" />
       </TouchableOpacity>
       <View style={[styles.header, { backgroundColor: busColor }]}>
         <Ionicons name={business.icon} size={40} color="#000000ff" />
@@ -190,6 +197,12 @@ const styles = StyleSheet.create({
   },
   capacityBtnDisabled: {
     backgroundColor: "#ccc",
+  },
+  settings: {
+    position: "absolute",
+    top: 40,
+    right: 20,
+    zIndex: 3,
   },
   progressBackground: {
     height: 12,
