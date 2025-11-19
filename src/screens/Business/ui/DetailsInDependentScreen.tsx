@@ -1,98 +1,248 @@
-import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { useRoute } from "@react-navigation/native";
-import { RouteProp } from "@react-navigation/native";
+import { useNavigation, useRoute, RouteProp } from "@react-navigation/native";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
 
-type BusinessDetailsRouteProp = RouteProp<
-  RootStackParamList,
-  "BusinessDetails"
->;
-export default function DetailsInDependent() {
-  const route = useRoute<BusinessDetailsRouteProp>();
-  const { business } = route.params;
+import { useCounterStore } from "@/features/counter";
+import { useBusinessStore, BusinessType } from "@/features/business";
 
+import AntDesign from "@expo/vector-icons/AntDesign";
+import Feather from "@expo/vector-icons/Feather";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+
+type NavigationProp = NativeStackNavigationProp<RootStackParamList, "BuyCard">;
+type DetailsDependentRouteProp = RouteProp<
+  RootStackParamList,
+  "DetailsDependent"
+>;
+
+export default function DetailsDependent() {
+  const route = useRoute<DetailsDependentRouteProp>();
+  const { business } = route.params;
+  const navigation = useNavigation<NavigationProp>();
+
+  const currentBusiness = useBusinessStore((state) =>
+    state.myBusinesses.find((b) => b.id === business.id)
+  );
+  const upgradeStage = useBusinessStore((state) => state.upgradeBusinessStage);
+  const purchase = useCounterStore((state) => state.purchase);
+  const count = useCounterStore((state) => state.count);
+
+  const setUpgradeEndTime = useBusinessStore(
+    (state) => state.setUpgradeEndTime
+  );
+  const upgradeEndTime = currentBusiness?.upgradeEndTime ?? null;
+
+  const [timer, setTimer] = useState(0);
+
+  const stage = currentBusiness?.stage ?? 1;
+  const nextPointIncomeIncrease = (currentBusiness?.incomePerHour ?? 0) * 0.1;
+
+  const nextPointCost = (currentBusiness?.price ?? 0) * (1 + 0.25 * stage);
+  const formattedCount = count.toFixed(2).replace(".", ",");
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+
+    if (upgradeEndTime) {
+      const updateTimer = () => {
+        const remaining = Math.max(
+          Math.ceil((upgradeEndTime - Date.now()) / 1000),
+          0
+        );
+        setTimer(remaining);
+        if (remaining === 0) {
+          purchase(nextPointCost);
+          upgradeStage(currentBusiness.id);
+          setUpgradeEndTime(currentBusiness.id, null);
+        }
+      };
+      updateTimer();
+      interval = setInterval(updateTimer, 1000);
+    }
+
+    return () => clearInterval(interval);
+  }, [upgradeEndTime]);
+
+  const handleUpgradeStage = () => {
+    if (stage >= 5) return Alert.alert("Достигнута максимальная стадия!");
+    if (count < nextPointCost) return Alert.alert("Недостатньо грошей!");
+    if (!upgradeEndTime) {
+      const endTime = Date.now() + 60 * 1000;
+      setUpgradeEndTime(currentBusiness.id, endTime);
+    }
+  };
+
+  const busColor = business.color;
+  const isUpgrading = !!upgradeEndTime;
+  if (!currentBusiness) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Text>Бізнес не знайдено</Text>
+      </View>
+    );
+  }
   return (
     <View style={styles.container}>
-      <View style={[styles.header, { backgroundColor: business.color }]}>
-        <Ionicons name={business.icon} size={40} color="#fff" />
+      <TouchableOpacity
+        style={styles.arrow}
+        onPress={() => navigation.goBack()}
+      >
+        <AntDesign name="arrow-left" size={24} color="black" />
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={styles.settings}
+        onPress={() => navigation.navigate("Settings", { business })}
+      >
+        <Feather name="settings" size={24} color="black" />
+      </TouchableOpacity>
+
+      <View style={[styles.header, { backgroundColor: busColor }]}>
+        <Ionicons name={business.icon} size={40} color="#000000ff" />
         <Text style={styles.title}>{business.name}</Text>
       </View>
 
       <View style={styles.incomeBox}>
-        <Text style={styles.income}>$ {business.incomePerHour.toFixed(2)}</Text>
+        <Text style={styles.income}>
+          $ {currentBusiness.incomePerHour.toFixed(2)}
+        </Text>
         <Text style={styles.incomeText}>Доход в час</Text>
       </View>
 
-      <View style={styles.infoCard}>
-        <Text style={styles.stage}>2 стадия</Text>
-        <Text style={styles.category}>{business.type}</Text>
-      </View>
+      <View style={styles.secondContainer}>
+        <View style={styles.info}>
+          <View style={styles.parkBox}>
+            <AntDesign name="stock" size={24} color="black" />
+            <Text style={styles.mainText}>{currentBusiness.stage || 1}</Text>
+            <Text style={styles.secondaryText}>Стадия</Text>
+          </View>
 
-      <View style={styles.openCard}>
-        <Text style={styles.label}>Необходимые вложения</Text>
-        <Text style={styles.cost}>$ {Math.round(business.price * 0.4)}</Text>
+          <View style={styles.capacityBox}>
+            <MaterialIcons name="category" size={24} color={busColor} />
+            <Text style={styles.mainText}>{business.type}</Text>
+            <Text style={styles.secondaryText}>Категория</Text>
+          </View>
+        </View>
 
-        <Text style={styles.label}>Ожидаемый рост прибыли</Text>
-        <Text style={styles.growth}>
-          + {Math.round(business.incomePerHour * 0.35)}
+        <View style={styles.newPointsSale}>
+          <View style={styles.headerBox}>
+            <AntDesign name="shop" size={24} color={busColor} />
+            <Text style={styles.headerText}>Расширение</Text>
+          </View>
+          {isUpgrading ? (
+            <Text style={styles.mainText}>Обновление... {timer} секунд</Text>
+          ) : currentBusiness.stage < 5 ? (
+            <>
+              <Text style={styles.mainText}>${nextPointCost.toFixed(2)}</Text>
+              <Text style={styles.secondaryText}>Необходимые вложения</Text>
+              <View style={styles.arrowRow}>
+                <AntDesign name="arrow-up" size={18} color={busColor} />
+                <Text style={styles.moneyText}>
+                  +${nextPointIncomeIncrease.toFixed(2)}
+                </Text>
+              </View>
+              <Text style={styles.secondaryText}>Прирост прибыли в час</Text>
+              <TouchableOpacity
+                style={[styles.buyBtn, { backgroundColor: busColor }]}
+                onPress={handleUpgradeStage}
+              >
+                <Text style={styles.buyBtnText}>
+                  Открыть новые точки продаж
+                </Text>
+              </TouchableOpacity>
+            </>
+          ) : (
+            <Text style={styles.mainText}>Максимальна стадия досягнута</Text>
+          )}
+        </View>
+
+        <Text style={[styles.balance, { color: busColor }]}>
+          Баланс: $ {formattedCount}
         </Text>
       </View>
-
-      <TouchableOpacity style={styles.openBtn}>
-        <Text style={styles.openText}>Открыть новые точки продаж</Text>
-      </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20, backgroundColor: "#fff" },
-
+  container: { flex: 1, backgroundColor: "#fff" },
+  arrow: { position: "absolute", top: 40, left: 20, zIndex: 3 },
+  settings: { position: "absolute", top: 40, right: 20, zIndex: 3 },
   header: {
-    height: 120,
-    borderRadius: 18,
+    height: 200,
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 20,
+    marginBottom: 60,
   },
-  title: { color: "#fff", fontSize: 22, fontWeight: "700", marginTop: 8 },
-
+  secondContainer: { padding: 20 },
+  title: { fontSize: 22, fontWeight: "700", color: "#000000ff", marginTop: 6 },
   incomeBox: {
     backgroundColor: "#f2f3f7",
     padding: 20,
-    borderRadius: 18,
+    borderRadius: 13,
     alignItems: "center",
-    marginBottom: 20,
+    position: "absolute",
+    top: 150,
+    alignSelf: "center",
+    width: "80%",
+    zIndex: 1,
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+    elevation: 5,
   },
-  income: { fontSize: 32, fontWeight: "700" },
-  incomeText: { color: "#777" },
-
-  infoCard: {
-    padding: 20,
-    borderRadius: 16,
-    backgroundColor: "#eef7ee",
+  income: { fontSize: 34, fontWeight: "700" },
+  incomeText: { color: "#777", marginTop: 4 },
+  balance: { alignSelf: "center", marginTop: 10, fontWeight: "600" },
+  info: { flexDirection: "row", paddingVertical: 6 },
+  parkBox: {
+    backgroundColor: "#f2f3f7",
+    paddingVertical: 6,
+    paddingHorizontal: 8,
+    borderRadius: 12,
+    flex: 0.7,
+    justifyContent: "flex-start",
+    marginTop: 10,
+    minHeight: 90,
   },
-  stage: { fontSize: 18, fontWeight: "700" },
-  category: { fontSize: 16, marginTop: 4, color: "#555" },
-
-  openCard: {
+  capacityBox: {
+    backgroundColor: "#f2f3f7",
+    paddingVertical: 6,
+    paddingHorizontal: 8,
+    borderRadius: 12,
+    marginTop: 10,
+    flex: 1.3,
+    marginLeft: 5,
+    minHeight: 90,
+  },
+  mainText: { fontSize: 18, marginTop: 20, fontWeight: "600" },
+  moneyText: { fontSize: 18, fontWeight: "600", marginLeft: 6 },
+  secondaryText: { fontSize: 12, marginTop: 2, color: "#777" },
+  arrowRow: { flexDirection: "row", alignItems: "center", marginTop: 10 },
+  headerBox: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 4,
+    paddingTop: 4,
+  },
+  headerText: { marginLeft: 6 },
+  newPointsSale: {
+    backgroundColor: "#f2f3f7",
+    paddingVertical: 6,
+    paddingHorizontal: 8,
+    borderRadius: 12,
     marginTop: 20,
-    padding: 20,
-    borderRadius: 16,
-    backgroundColor: "#e8f5e9",
+    marginLeft: 5,
+    minHeight: 90,
   },
-  label: { color: "#777", marginTop: 6 },
-  cost: { fontSize: 20, fontWeight: "700" },
-  growth: { fontSize: 18, fontWeight: "700", color: "#32cd32" },
-
-  openBtn: {
-    marginTop: 25,
-    backgroundColor: "#8acf8a",
-    padding: 16,
-    borderRadius: 14,
+  buyBtn: {
+    marginTop: 15,
+    padding: 14,
+    borderRadius: 12,
     alignItems: "center",
   },
-  openText: { color: "#fff", fontSize: 16, fontWeight: "700" },
+  buyBtnText: { fontSize: 16, fontWeight: "700", color: "#fff" },
 });

@@ -7,6 +7,7 @@ export type BusinessType = {
   name: string;
   type: string;
   incomePerHour: number;
+  baseIncome?: number;
   price: number;
   capacity?: number;
   cars: number;
@@ -16,16 +17,22 @@ export type BusinessType = {
   dependent?: boolean;
   color?: string;
   icon?: string;
+  stage?: number;
+  upgradeEndTime?: number;
 };
 
 type BusinessState = {
   myBusinesses: BusinessType[];
   addBusiness: (b: BusinessType) => void;
   addBusinessCapacity: (id: number, value: number) => void;
+  upgradeBusinessStage: (id: number) => void;
+  addBusinessCar: (id: number) => void;
   updateOfflineEarnings: () => Promise<void>;
   removeBusiness: (id: number) => void;
-  closeBusiness: (id: number) => number; // повертає 30% від ціни
+  closeBusiness: (id: number) => number;
   renameBusiness: (id: number, newName: string) => void;
+  setUpgradeEndTime: (id: number, timestamp: number) => void;
+  reset: () => void;
 };
 
 export const useBusinessStore = create<BusinessState>()(
@@ -42,6 +49,8 @@ export const useBusinessStore = create<BusinessState>()(
               earnings: 0,
               totalEarnings: 0,
               taxPercent: b.taxPercent || 10,
+              stage: 1,
+              baseIncome: b.incomePerHour,
             },
           ],
         }),
@@ -50,6 +59,29 @@ export const useBusinessStore = create<BusinessState>()(
         set({
           myBusinesses: get().myBusinesses.map((b) =>
             b.id === id ? { ...b, capacity: (b.capacity || 5) + value } : b
+          ),
+        }),
+
+      upgradeBusinessStage: (id) =>
+        set({
+          myBusinesses: get().myBusinesses.map((b) =>
+            b.id === id
+              ? {
+                  ...b,
+                  stage: b.stage ? b.stage + 1 : 1,
+                  incomePerHour: b.baseIncome
+                    ? b.baseIncome * (1 + (b.stage || 1) * 0.25)
+                    : b.incomePerHour,
+                  upgradeEndTime: null,
+                }
+              : b
+          ),
+        }),
+
+      addBusinessCar: (id) =>
+        set({
+          myBusinesses: get().myBusinesses.map((b) =>
+            b.id === id ? { ...b, cars: b.cars + 1 } : b
           ),
         }),
 
@@ -105,6 +137,18 @@ export const useBusinessStore = create<BusinessState>()(
           myBusinesses: get().myBusinesses.map((b) =>
             b.id === id ? { ...b, name: newName } : b
           ),
+        }),
+
+      setUpgradeEndTime: (id, timestamp) =>
+        set({
+          myBusinesses: get().myBusinesses.map((b) =>
+            b.id === id ? { ...b, upgradeEndTime: timestamp } : b
+          ),
+        }),
+
+      reset: () =>
+        set({
+          myBusinesses: [],
         }),
     }),
     {

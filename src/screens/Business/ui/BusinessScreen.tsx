@@ -12,8 +12,11 @@ import { BusinessCard } from "@/shared";
 
 export default function Business() {
   const navigation = useNavigation();
-  const { myBusinesses, updateOfflineEarnings } = useBusinessStore();
-  const [totalIncome, setTotalIncome] = useState(0);
+  const { myBusinesses, updateOfflineEarnings, reset } = useBusinessStore();
+  const totalIncome = myBusinesses.reduce(
+    (sum, b) => sum + (b.incomePerHour || 0),
+    0
+  );
 
   useEffect(() => {
     updateOfflineEarnings();
@@ -33,7 +36,7 @@ export default function Business() {
     <View style={styles.container}>
       <Text style={styles.header}>Бізнес</Text>
 
-      <TouchableOpacity style={styles.capitalBox}>
+      <TouchableOpacity style={styles.capitalBox} onPress={reset}>
         <Text style={styles.incomeNumber}>
           $ {totalIncome.toFixed(2).replace(".", ",")}
         </Text>

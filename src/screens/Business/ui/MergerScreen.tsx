@@ -76,6 +76,7 @@ export default function BusinessMergerScreen() {
       color: "#34495e",
       type: types[0],
       dependent: selected[0]?.dependent || false,
+      stage: 1,
     };
 
     useBusinessStore.setState((state: any) => {
@@ -114,9 +115,9 @@ export default function BusinessMergerScreen() {
                 <View style={styles.row}>
                   <View style={styles.leftRow}>
                     <Ionicons
-                      name="business-outline"
+                      name={item.icon as any}
                       size={24}
-                      color={isSelected ? "#fff" : "#2196f3"}
+                      color={item.color}
                     />
                     <Text
                       style={[
@@ -194,14 +195,29 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   businessCard: {
-    backgroundColor: "#f2f4f8",
-    padding: 16,
-    borderRadius: 14,
+    backgroundColor: "#eef1f6",
+    padding: 20,
+    borderRadius: 35,
     marginBottom: 12,
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 5,
   },
   selectedCard: {
     backgroundColor: "#2196f3",
   },
+  businessName: {
+    fontSize: 20,
+    fontWeight: "bold",
+  },
+  subText: {
+    fontSize: 15,
+    color: "#555",
+    marginTop: 4,
+  },
+  whiteText: { color: "#fff" },
   row: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -212,18 +228,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 10,
   },
-  businessName: {
-    fontSize: 17,
-    fontWeight: "600",
-  },
-  subText: {
-    color: "#555",
-    marginTop: 4,
-    fontSize: 14,
-  },
-  whiteText: {
-    color: "#fff",
-  },
+
   effectBox: {
     marginTop: 25,
     backgroundColor: "#eef1f6",

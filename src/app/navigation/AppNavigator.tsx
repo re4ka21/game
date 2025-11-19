@@ -102,9 +102,7 @@ export default function AppNavigator() {
         name="DetailsInDependent"
         component={DetailsInDependentScreen}
         options={{
-          title: "Бизнес",
-          headerBackTitle: "Назад",
-          headerShown: true,
+          headerShown: false,
         }}
       />
       <Stack.Screen
