@@ -5,11 +5,12 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  Alert,
 } from "react-native";
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
 import { useRoute, useNavigation } from "@react-navigation/native";
-import { useBusinessStore } from "@/features/business";
-import { useCounterStore } from "@/features/counter";
+import { useRandomBusinessName } from "@/shared/hooks/useRandomBusinessName";
+import { useBusinessPurchase } from "@/shared/hooks/useBusinessPurchase";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 type NavigationProp = NativeStackNavigationProp<
@@ -20,77 +21,19 @@ export default function BusinessDetailsScreen() {
   const route = useRoute<any>();
   const navigation = useNavigation<NavigationProp>();
   const { business } = route.params;
-  const { count, purchase } = useCounterStore();
-  const { addBusiness, myBusinesses } = useBusinessStore();
+  const { canOpenBusiness, openBusiness } = useBusinessPurchase();
+  const generateRandomName = useRandomBusinessName(business.name);
   const [customName, setCustomName] = useState("");
-  const [showWarning, setShowWarning] = useState(false);
+  const [showWarning] = useState(false);
   const handleOpenBusiness = () => {
-    if (myBusinesses.length >= 10)
-      return alert("Вы достигли максимума — можно открыть только 10 бизнесов!");
-
-    if (count < business.price) return setShowWarning(true);
-
+    if (!canOpenBusiness(business.price)) return;
     if (customName.trim().length < 3)
-      return alert("Название должно быть не менее 3 символов");
-
-    purchase(business.price);
-    addBusiness({
-      ...business,
-      id: Date.now(),
-      name: customName || business.name,
-    });
-
+      return Alert.alert("Название должно быть не менее 3 символов");
+    openBusiness(business, customName);
     navigation.navigate("Tabs", { screen: "Business" });
   };
 
-  const getBaseCategory = (fullName: string) => {
-    return fullName.split(" (")[0];
-  };
-
-  const getRandomName = (category: string) => {
-    const namesByCategory: Record<string, string[]> = {
-      Продажа: [
-        "Market Pro",
-        "Shopify Hub",
-        "Deal Mart",
-        "Buy&Go",
-        "CityStore",
-      ],
-      Таксопарк: ["GoTaxi", "FastCab", "CityRide", "SpeedyTaxi", "MegaDrive"],
-      Перевозки: ["CargoX", "MoveIt", "TransLine", "RoadPro", "QuickCargo"],
-      Производство: [
-        "BuildCore",
-        "ProFactory",
-        "Industro",
-        "NovaPlant",
-        "SteelWorks",
-      ],
-      Строительство: [
-        "BuildMaster",
-        "SkyRise",
-        "Constructo",
-        "DreamBuild",
-        "CityMakers",
-      ],
-      Автодилер: ["AutoHub", "DrivePro", "SpeedMotors", "CarWorld", "AutoCity"],
-    };
-
-    const names = namesByCategory[category] || ["My Business"];
-    return names[Math.floor(Math.random() * names.length)];
-  };
-
-  const handleRandomName = () => {
-    const baseCategory = getBaseCategory(business.name);
-    const random = getRandomName(baseCategory);
-
-    const isNetwork = business.name.includes("(");
-    if (isNetwork) {
-      const suffix = business.name.match(/\((.*?)\)/)?.[0] || "";
-      setCustomName(`${random} ${suffix}`);
-    } else {
-      setCustomName(random);
-    }
-  };
+  const handleRandomName = () => setCustomName(generateRandomName(customName));
 
   return (
     <View style={styles.container}>
@@ -115,17 +58,12 @@ export default function BusinessDetailsScreen() {
       <View style={styles.infoBox}>
         <Text style={styles.infoText}>Стоимость открытия</Text>
         <Text style={styles.price}>
-          $ {""}
-          {business.price.toFixed(2).replace(".", ",")}
+          ${business.price.toFixed(2).replace(".", ",")}
         </Text>
       </View>
 
       <TouchableOpacity style={styles.button} onPress={handleOpenBusiness}>
         <Text style={styles.buttonText}>Открыть бизнес</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.back} onPress={() => navigation.goBack()}>
-        <Text style={styles.backText}>⬅️ Назад</Text>
       </TouchableOpacity>
     </View>
   );

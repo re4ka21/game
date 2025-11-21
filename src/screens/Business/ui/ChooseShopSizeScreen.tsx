@@ -4,11 +4,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
 
-const sizes = [
-  { id: 1, name: "Невеликий магазин", multiplier: 1 },
-  { id: 2, name: "Середня мережа", multiplier: 1.5 },
-  { id: 3, name: "Крупна мережа", multiplier: 2 },
-];
+import { SHOP_SIZES } from "@/screens/Business";
 
 type NavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -24,7 +20,7 @@ export default function ChooseShopSizeScreen() {
     <View style={styles.container}>
       <Text style={styles.title}>Виберіть розмір вашого бізнесу</Text>
 
-      {sizes.map((size) => (
+      {SHOP_SIZES.map((size) => (
         <TouchableOpacity
           key={size.id}
           style={styles.option}
@@ -32,7 +28,6 @@ export default function ChooseShopSizeScreen() {
             navigation.navigate("BusinessDetails", {
               business: {
                 ...baseBusiness,
-                name: `${baseBusiness.name}`,
                 price: Math.round(baseBusiness.price * size.multiplier),
                 incomePerHour: Math.round(
                   baseBusiness.incomePerHour * size.multiplier

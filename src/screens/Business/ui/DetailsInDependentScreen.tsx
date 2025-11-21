@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation, useRoute, RouteProp } from "@react-navigation/native";
@@ -6,11 +6,14 @@ import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
 
 import { useCounterStore } from "@/features/counter";
-import { useBusinessStore, BusinessType } from "@/features/business";
+import { useBusinessStore } from "@/features/business";
 
 import AntDesign from "@expo/vector-icons/AntDesign";
 import Feather from "@expo/vector-icons/Feather";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+
+import InfoCard from "@/shared/ui/InfoCard";
+import { useUpgradeTimer } from "@/shared/hooks/useUpgradeTimer";
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, "BuyCard">;
 type DetailsDependentRouteProp = RouteProp<
@@ -26,45 +29,35 @@ export default function DetailsDependent() {
   const currentBusiness = useBusinessStore((state) =>
     state.myBusinesses.find((b) => b.id === business.id)
   );
+
   const upgradeStage = useBusinessStore((state) => state.upgradeBusinessStage);
   const purchase = useCounterStore((state) => state.purchase);
   const count = useCounterStore((state) => state.count);
-
   const setUpgradeEndTime = useBusinessStore(
     (state) => state.setUpgradeEndTime
   );
-  const upgradeEndTime = currentBusiness?.upgradeEndTime ?? null;
 
-  const [timer, setTimer] = useState(0);
+  if (!currentBusiness) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Text>Бізнес не знайдено</Text>
+      </View>
+    );
+  }
 
-  const stage = currentBusiness?.stage ?? 1;
-  const nextPointIncomeIncrease = (currentBusiness?.incomePerHour ?? 0) * 0.1;
-
-  const nextPointCost = (currentBusiness?.price ?? 0) * (1 + 0.25 * stage);
+  const stage = currentBusiness.stage ?? 1;
+  const nextPointIncomeIncrease = currentBusiness.incomePerHour * 0.1;
+  const nextPointCost = currentBusiness.price * (1 + 0.25 * stage);
   const formattedCount = count.toFixed(2).replace(".", ",");
+  const busColor = business.color;
+  const upgradeEndTime = currentBusiness.upgradeEndTime ?? null;
+  const isUpgrading = !!upgradeEndTime;
 
-  useEffect(() => {
-    let interval: NodeJS.Timeout;
-
-    if (upgradeEndTime) {
-      const updateTimer = () => {
-        const remaining = Math.max(
-          Math.ceil((upgradeEndTime - Date.now()) / 1000),
-          0
-        );
-        setTimer(remaining);
-        if (remaining === 0) {
-          purchase(nextPointCost);
-          upgradeStage(currentBusiness.id);
-          setUpgradeEndTime(currentBusiness.id, null);
-        }
-      };
-      updateTimer();
-      interval = setInterval(updateTimer, 1000);
-    }
-
-    return () => clearInterval(interval);
-  }, [upgradeEndTime]);
+  const timer = useUpgradeTimer(upgradeEndTime, () => {
+    purchase(nextPointCost);
+    upgradeStage(currentBusiness.id);
+    setUpgradeEndTime(currentBusiness.id, null);
+  });
 
   const handleUpgradeStage = () => {
     if (stage >= 5) return Alert.alert("Достигнута максимальная стадия!");
@@ -75,15 +68,6 @@ export default function DetailsDependent() {
     }
   };
 
-  const busColor = business.color;
-  const isUpgrading = !!upgradeEndTime;
-  if (!currentBusiness) {
-    return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <Text>Бізнес не знайдено</Text>
-      </View>
-    );
-  }
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -114,17 +98,18 @@ export default function DetailsDependent() {
 
       <View style={styles.secondContainer}>
         <View style={styles.info}>
-          <View style={styles.parkBox}>
-            <AntDesign name="stock" size={24} color="black" />
-            <Text style={styles.mainText}>{currentBusiness.stage || 1}</Text>
-            <Text style={styles.secondaryText}>Стадия</Text>
-          </View>
-
-          <View style={styles.capacityBox}>
-            <MaterialIcons name="category" size={24} color={busColor} />
-            <Text style={styles.mainText}>{business.type}</Text>
-            <Text style={styles.secondaryText}>Категория</Text>
-          </View>
+          <InfoCard
+            icon={<AntDesign name="stock" size={24} color="black" />}
+            mainText={stage}
+            secondaryText="Стадия"
+            style={{ flex: 0.7 }}
+          />
+          <InfoCard
+            icon={<MaterialIcons name="category" size={24} color={busColor} />}
+            mainText={business.type}
+            secondaryText="Категория"
+            style={{ flex: 1.3 }}
+          />
         </View>
 
         <View style={styles.newPointsSale}>
@@ -132,9 +117,10 @@ export default function DetailsDependent() {
             <AntDesign name="shop" size={24} color={busColor} />
             <Text style={styles.headerText}>Расширение</Text>
           </View>
+
           {isUpgrading ? (
             <Text style={styles.mainText}>Обновление... {timer} секунд</Text>
-          ) : currentBusiness.stage < 5 ? (
+          ) : stage < 5 ? (
             <>
               <Text style={styles.mainText}>${nextPointCost.toFixed(2)}</Text>
               <Text style={styles.secondaryText}>Необходимые вложения</Text>
@@ -198,37 +184,6 @@ const styles = StyleSheet.create({
   incomeText: { color: "#777", marginTop: 4 },
   balance: { alignSelf: "center", marginTop: 10, fontWeight: "600" },
   info: { flexDirection: "row", paddingVertical: 6 },
-  parkBox: {
-    backgroundColor: "#f2f3f7",
-    paddingVertical: 6,
-    paddingHorizontal: 8,
-    borderRadius: 12,
-    flex: 0.7,
-    justifyContent: "flex-start",
-    marginTop: 10,
-    minHeight: 90,
-  },
-  capacityBox: {
-    backgroundColor: "#f2f3f7",
-    paddingVertical: 6,
-    paddingHorizontal: 8,
-    borderRadius: 12,
-    marginTop: 10,
-    flex: 1.3,
-    marginLeft: 5,
-    minHeight: 90,
-  },
-  mainText: { fontSize: 18, marginTop: 20, fontWeight: "600" },
-  moneyText: { fontSize: 18, fontWeight: "600", marginLeft: 6 },
-  secondaryText: { fontSize: 12, marginTop: 2, color: "#777" },
-  arrowRow: { flexDirection: "row", alignItems: "center", marginTop: 10 },
-  headerBox: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 4,
-    paddingTop: 4,
-  },
-  headerText: { marginLeft: 6 },
   newPointsSale: {
     backgroundColor: "#f2f3f7",
     paddingVertical: 6,
@@ -238,6 +193,17 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     minHeight: 90,
   },
+  headerBox: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 4,
+    paddingTop: 4,
+  },
+  headerText: { marginLeft: 6 },
+  mainText: { fontSize: 18, marginTop: 20, fontWeight: "600" },
+  secondaryText: { fontSize: 12, marginTop: 2, color: "#777" },
+  moneyText: { fontSize: 18, fontWeight: "600", marginLeft: 6 },
+  arrowRow: { flexDirection: "row", alignItems: "center", marginTop: 10 },
   buyBtn: {
     marginTop: 15,
     padding: 14,

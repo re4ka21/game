@@ -1,99 +1,29 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   View,
   Text,
-  StyleSheet,
-  TouchableOpacity,
   FlatList,
-  Alert,
+  TouchableOpacity,
+  StyleSheet,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
-import { useCounterStore } from "@/features/counter";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { RootStackParamList } from "@/app/navigation/AppNavigator";
-import { useBusinessStore } from "@/features/business";
-type NavigationProp = NativeStackNavigationProp<
-  RootStackParamList,
-  "BusinessDetails"
->;
+import { useBusinessSelection } from "@/shared/hooks/useBusinessSelection";
+import { useMergeBusinesses } from "@/shared/hooks/useMergeBusinesses";
+
 export default function BusinessMergerScreen() {
-  const { myBusinesses } = useBusinessStore();
-  const { count } = useCounterStore();
-  const navigation = useNavigation<NavigationProp>();
-  const [selectedIds, setSelectedIds] = useState<number[]>([]);
+  const {
+    myBusinesses,
+    selectedIds,
+    toggleSelect,
+    selected,
+    types,
+    differentTypes,
+    mergeCost,
+    potentialEffect,
+    setSelectedIds,
+  } = useBusinessSelection();
 
-  const selected = myBusinesses.filter((b) => selectedIds.includes(b.id));
-  const totalIncome = selected.reduce((acc, b) => acc + b.incomePerHour, 0);
-  const totalPrice = selected.reduce((acc, b) => acc + b.price, 0);
-  const mergeCost = Math.round(totalPrice * 0.8);
-
-  const types = [...new Set(selected.map((b) => b.type))];
-  const differentTypes = selected.length >= 2 && types.length > 1;
-
-  const toggleSelect = (id: number) => {
-    setSelectedIds((prev) =>
-      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
-    );
-  };
-
-  const potentialEffect = (() => {
-    if (selectedIds.length < 2) return "Виберіть хоча б 2 бізнеси для злиття";
-    if (differentTypes) return "Можна зливати лише бізнеси одного типу";
-
-    return `Якщо злити ${
-      selected.length
-    } бізнесів, потенційний прибуток може зрости до ~${(
-      totalIncome * 1.5
-    ).toFixed(0)}$/год`;
-  })();
-
-  const performMerge = () => {
-    if (count < mergeCost) {
-      Alert.alert(
-        "Недостатньо коштів",
-        `Для злиття потрібно $${mergeCost.toLocaleString()}\nУ вас лише $${count.toLocaleString()}.`
-      );
-      return;
-    }
-
-    const mergedName =
-      selected.length === 1
-        ? selected[0].name
-        : `Merged: ${selected
-            .map((s) => s.name)
-            .slice(0, 3)
-            .join(" + ")}`;
-
-    const mergedIncome = Math.round(totalIncome * 1.2);
-
-    const mergedBusiness = {
-      id: Date.now(),
-      name: mergedName,
-      incomePerHour: mergedIncome,
-      price: Math.round(totalPrice),
-      icon: "layers-outline",
-      color: "#34495e",
-      type: types[0],
-      dependent: selected[0]?.dependent || false,
-      stage: 1,
-    };
-
-    useBusinessStore.setState((state: any) => {
-      const remaining = state.myBusinesses.filter(
-        (b) => !selectedIds.includes(b.id)
-      );
-      return {
-        myBusinesses: [...remaining, mergedBusiness],
-      };
-    });
-
-    useCounterStore.setState((state) => ({
-      count: state.count - mergeCost,
-    }));
-    setSelectedIds([]);
-    navigation.navigate("Tabs", { screen: "Business" });
-  };
+  const { performMerge } = useMergeBusinesses();
 
   return (
     <View style={styles.container}>
@@ -138,7 +68,6 @@ export default function BusinessMergerScreen() {
                     />
                   )}
                 </View>
-
                 <Text style={[styles.subText, isSelected && styles.whiteText]}>
                   Дохід: +{item.incomePerHour}$/год
                 </Text>
@@ -172,7 +101,7 @@ export default function BusinessMergerScreen() {
           disabled={
             selectedIds.length < 2 || differentTypes || selected.length > 5
           }
-          onPress={performMerge}
+          onPress={() => performMerge(selected, mergeCost, types)}
         >
           <Text style={styles.mergeButtonText}>Злити вибрані бізнеси</Text>
         </TouchableOpacity>
@@ -180,7 +109,6 @@ export default function BusinessMergerScreen() {
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#fff", padding: 20 },
   header: {
