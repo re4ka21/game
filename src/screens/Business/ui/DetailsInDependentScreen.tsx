@@ -60,7 +60,7 @@ export default function DetailsDependent() {
   });
 
   const handleUpgradeStage = () => {
-    if (stage >= 5) return Alert.alert("Достигнута максимальная стадия!");
+    if (stage >= 5) return Alert.alert("Досягнуто максимальної стадії!");
     if (count < nextPointCost) return Alert.alert("Недостатньо грошей!");
     if (!upgradeEndTime) {
       const endTime = Date.now() + 60 * 1000;
@@ -93,7 +93,7 @@ export default function DetailsDependent() {
         <Text style={styles.income}>
           $ {currentBusiness.incomePerHour.toFixed(2)}
         </Text>
-        <Text style={styles.incomeText}>Доход в час</Text>
+        <Text style={styles.incomeText}>Дохід на годину</Text>
       </View>
 
       <View style={styles.secondContainer}>
@@ -115,33 +115,35 @@ export default function DetailsDependent() {
         <View style={styles.newPointsSale}>
           <View style={styles.headerBox}>
             <AntDesign name="shop" size={24} color={busColor} />
-            <Text style={styles.headerText}>Расширение</Text>
+            <Text style={styles.headerText}>Розширення</Text>
           </View>
 
           {isUpgrading ? (
-            <Text style={styles.mainText}>Обновление... {timer} секунд</Text>
+            <Text style={styles.mainText}>Оновлення... {timer} секунд</Text>
           ) : stage < 5 ? (
             <>
               <Text style={styles.mainText}>${nextPointCost.toFixed(2)}</Text>
-              <Text style={styles.secondaryText}>Необходимые вложения</Text>
+              <Text style={styles.secondaryText}>Необхідні вкладення</Text>
               <View style={styles.arrowRow}>
                 <AntDesign name="arrow-up" size={18} color={busColor} />
                 <Text style={styles.moneyText}>
                   +${nextPointIncomeIncrease.toFixed(2)}
                 </Text>
               </View>
-              <Text style={styles.secondaryText}>Прирост прибыли в час</Text>
+              <Text style={styles.secondaryText}>
+                Приріст прибутку на годину
+              </Text>
               <TouchableOpacity
                 style={[styles.buyBtn, { backgroundColor: busColor }]}
                 onPress={handleUpgradeStage}
               >
                 <Text style={styles.buyBtnText}>
-                  Открыть новые точки продаж
+                  Відкрити нові точки продажу
                 </Text>
               </TouchableOpacity>
             </>
           ) : (
-            <Text style={styles.mainText}>Максимальна стадия досягнута</Text>
+            <Text style={styles.mainText}>Максимальної стадії досягнуто</Text>
           )}
         </View>
 

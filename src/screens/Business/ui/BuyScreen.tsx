@@ -37,7 +37,7 @@ export default function BuyBusinessScreen() {
         keyExtractor={(item) => item.id.toString()}
         columnWrapperStyle={{ justifyContent: "space-between" }}
         ListHeaderComponent={
-          <Text style={styles.title}>Выберите категорию нового бизнеса</Text>
+          <Text style={styles.title}>Виберіть категорію нового бізнесу</Text>
         }
         renderItem={({ item }) => (
           <TouchableOpacity

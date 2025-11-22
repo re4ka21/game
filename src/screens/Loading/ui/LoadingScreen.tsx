@@ -32,7 +32,7 @@ const LoadingScreen = ({ navigation }) => {
 
       <View style={styles.loaderContainer}>
         <ActivityIndicator size="large" color="#40E0D0" />
-        <Text style={styles.loadingText}>Загрузка...</Text>
+        <Text style={styles.loadingText}>Завантаження...</Text>
       </View>
     </LinearGradient>
   );

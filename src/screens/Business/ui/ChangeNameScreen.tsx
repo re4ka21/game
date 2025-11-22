@@ -45,7 +45,7 @@ export default function ChangeNameScreen({ route, navigation }: any) {
       >
         <AntDesign name="arrow-left" size={24} color="black" />
       </TouchableOpacity>
-      <Text style={styles.title}>Смена названия</Text>
+      <Text style={styles.title}>Зміна назви</Text>
 
       <View style={styles.inputContainer}>
         <TextInput
@@ -64,7 +64,7 @@ export default function ChangeNameScreen({ route, navigation }: any) {
       </View>
 
       <TouchableOpacity style={styles.button} onPress={handleRename}>
-        <Text style={styles.buttonText}>Сменить название</Text>
+        <Text style={styles.buttonText}>Змінити назву</Text>
       </TouchableOpacity>
     </View>
   );

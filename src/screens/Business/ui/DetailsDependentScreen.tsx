@@ -74,11 +74,11 @@ export default function DetailsDependent() {
         <Text style={styles.income}>
           $ {currentBusiness.incomePerHour.toFixed(2)}
         </Text>
-        <Text style={styles.incomeText}>Доход в час</Text>
+        <Text style={styles.incomeText}>Дохід на годину</Text>
       </View>
 
       <View style={styles.secondContainer}>
-        <Text style={styles.sectionTitle}>Расширить вместимость автопарка</Text>
+        <Text style={styles.sectionTitle}>Розширити місткість автопарку</Text>
         <Text style={styles.balance}>Баланс: $ {formattedCount}</Text>
 
         <CapacityButtons
@@ -98,7 +98,7 @@ export default function DetailsDependent() {
               style={styles.carsBox}
             >
               <Text style={styles.value}>
-                Автомобилей: {"\n"}
+                Автомобілів: {"\n"}
                 {cars}
               </Text>
             </LinearGradient>
@@ -109,7 +109,7 @@ export default function DetailsDependent() {
               source={require("../../../../assets/images/parking.png")}
               style={styles.parkingImage}
             />
-            <Text style={styles.value}>Вместимость:</Text>
+            <Text style={styles.value}>Місткість:</Text>
             <Text style={styles.valueNumber}>{capacity}</Text>
           </View>
         </View>
@@ -118,7 +118,7 @@ export default function DetailsDependent() {
           style={[styles.buyBtn, { backgroundColor: busColor }]}
           onPress={handleBuyCar}
         >
-          <Text style={styles.buyBtnText}>Приобрести новый автомобиль</Text>
+          <Text style={styles.buyBtnText}>Придбати новий автомобіль</Text>
         </TouchableOpacity>
       </View>
     </View>

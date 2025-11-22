@@ -37,10 +37,10 @@ export default function BusinessDetailsScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Укажите название{"\n"}магазина</Text>
+      <Text style={styles.title}>Вкажіть назву{"\n"}магазину</Text>
       {showWarning && (
         <Text style={{ color: "red", marginBottom: 10 }}>
-          Недостаточно средств
+          Недостатньо коштів
         </Text>
       )}
       <View style={styles.inputContainer}>
@@ -48,7 +48,7 @@ export default function BusinessDetailsScreen() {
           <Text style={styles.diceIcon}>🎲</Text>
         </TouchableOpacity>
         <TextInput
-          placeholder="Название"
+          placeholder="Назва"
           style={styles.input}
           value={customName}
           onChangeText={setCustomName}
@@ -56,14 +56,14 @@ export default function BusinessDetailsScreen() {
       </View>
 
       <View style={styles.infoBox}>
-        <Text style={styles.infoText}>Стоимость открытия</Text>
+        <Text style={styles.infoText}>Вартість відкриття</Text>
         <Text style={styles.price}>
           ${business.price.toFixed(2).replace(".", ",")}
         </Text>
       </View>
 
       <TouchableOpacity style={styles.button} onPress={handleOpenBusiness}>
-        <Text style={styles.buttonText}>Открыть бизнес</Text>
+        <Text style={styles.buttonText}>Відкрити бізнес</Text>
       </TouchableOpacity>
     </View>
   );
