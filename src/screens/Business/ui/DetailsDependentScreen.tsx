@@ -11,7 +11,8 @@ import Feather from "@expo/vector-icons/Feather";
 import { LinearGradient } from "expo-linear-gradient";
 import ProgressBar from "@/shared/ui/ProgressBar";
 import CapacityButtons from "@/shared/ui/CapacityButtons";
-import { CAPACITY_COST_MAP } from "@/screens/Business";
+import { CAPACITY_COST_MAP } from "@/constants/capacity";
+import { colors } from "@/shared";
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, "BuyCard">;
 
@@ -136,7 +137,7 @@ const styles = StyleSheet.create({
   },
   title: { fontSize: 22, fontWeight: "700", color: "#000000ff", marginTop: 6 },
   incomeBox: {
-    backgroundColor: "#f2f3f7",
+    backgroundColor: colors.backgroundWhite,
     padding: 20,
     borderRadius: 13,
     alignItems: "center",
@@ -157,7 +158,7 @@ const styles = StyleSheet.create({
   balance: { color: "#777" },
   info: { flexDirection: "row", paddingVertical: 20 },
   parkBox: {
-    backgroundColor: "#f2f3f7",
+    backgroundColor: colors.backgroundWhite,
     padding: 10,
     borderRadius: 16,
     flex: 1.4,
@@ -165,7 +166,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   capacityBox: {
-    backgroundColor: "#f2f3f7",
+    backgroundColor: colors.backgroundWhite,
     padding: 30,
     borderRadius: 16,
     marginTop: 20,

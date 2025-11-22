@@ -9,6 +9,7 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { useBusinessSelection } from "@/shared/hooks/useBusinessSelection";
 import { useMergeBusinesses } from "@/shared/hooks/useMergeBusinesses";
+import { colors } from "@/shared";
 
 export default function BusinessMergerScreen() {
   const {
@@ -64,7 +65,7 @@ export default function BusinessMergerScreen() {
                     <Ionicons
                       name="ellipse-outline"
                       size={26}
-                      color="#2196f3"
+                      color={colors.blue}
                     />
                   )}
                 </View>
@@ -123,7 +124,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   businessCard: {
-    backgroundColor: "#eef1f6",
+    backgroundColor: colors.backgroundWhite,
     padding: 20,
     borderRadius: 35,
     marginBottom: 12,
@@ -134,7 +135,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   selectedCard: {
-    backgroundColor: "#2196f3",
+    backgroundColor: colors.blue,
   },
   businessName: {
     fontSize: 20,
@@ -159,7 +160,7 @@ const styles = StyleSheet.create({
 
   effectBox: {
     marginTop: 25,
-    backgroundColor: "#eef1f6",
+    backgroundColor: colors.backgroundWhite,
     padding: 16,
     borderRadius: 14,
   },
@@ -174,7 +175,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   mergeButton: {
-    backgroundColor: "#2196f3",
+    backgroundColor: colors.blue,
     paddingVertical: 12,
     borderRadius: 10,
     alignItems: "center",

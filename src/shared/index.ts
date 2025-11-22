@@ -5,3 +5,4 @@ export { useUpgradeTimer } from "./hooks/useUpgradeTimer";
 export { useBusinessPurchase } from "./hooks/useBusinessPurchase";
 export { useRandomBusinessName } from "./hooks/useRandomBusinessName";
 export { BUSINESS_NAMES_BY_CATEGORY } from "./constants/businessNames";
+export * from "./config/theme/colors";

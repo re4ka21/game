@@ -1,5 +1,6 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
+import { colors } from "../config/theme/colors";
 
 type InfoCardProps = {
   icon: React.ReactNode;
@@ -15,25 +16,29 @@ export default function InfoCard({
   style,
 }: InfoCardProps) {
   return (
-    <View
-      style={[
-        {
-          backgroundColor: "#f2f3f7",
-          padding: 6,
-          borderRadius: 12,
-          minHeight: 90,
-          justifyContent: "flex-start",
-        },
-        style,
-      ]}
-    >
+    <View style={[styles.container, style]}>
       {icon}
-      <Text style={{ fontSize: 18, marginTop: 20, fontWeight: "600" }}>
-        {mainText}
-      </Text>
-      <Text style={{ fontSize: 12, marginTop: 2, color: "#777" }}>
-        {secondaryText}
-      </Text>
+      <Text style={styles.mainText}>{mainText}</Text>
+      <Text style={styles.secondaryText}>{secondaryText}</Text>
     </View>
   );
 }
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: colors.backgroundWhite,
+    padding: 6,
+    borderRadius: 12,
+    minHeight: 90,
+    justifyContent: "flex-start",
+  },
+  mainText: {
+    fontSize: 18,
+    marginTop: 20,
+    fontWeight: "600",
+  },
+  secondaryText: {
+    fontSize: 12,
+    marginTop: 2,
+    color: "#777",
+  },
+});

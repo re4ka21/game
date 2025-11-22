@@ -7,12 +7,7 @@ export { default as DetailsDependentScreen } from "./ui/DetailsDependentScreen";
 export { default as DetailsInDependentScreen } from "./ui/DetailsInDependentScreen";
 export { default as SettingsScreen } from "./ui/SettingsScreen";
 export { default as ChangeNameScreen } from "./ui/ChangeNameScreen";
-export {
-  AVAILABLE_BUSINESSES,
-  SHOP_SIZES,
-  CAPACITY_COST_MAP,
-  CAPACITY_VALUES,
-} from "./constants/business";
+export { AVAILABLE_BUSINESSES, SHOP_SIZES } from "./constants/business";
 export type {
   BusinessType,
   ShopSizeType,

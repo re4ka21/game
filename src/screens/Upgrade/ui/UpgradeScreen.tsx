@@ -14,6 +14,7 @@ import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
+import { colors } from "@/shared";
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, "BuyCard">;
 
@@ -135,16 +136,16 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
   text: {
-    color: "#8d8d8d",
+    color: colors.secondary,
     fontSize: 16,
   },
   rightText: {
-    color: "#8d8d8d",
+    color: colors.secondary,
     fontSize: 16,
     marginLeft: "auto",
   },
   lockedBox: {
-    backgroundColor: "#f2f2f2",
+    backgroundColor: colors.backgroundWhite,
   },
   lockedContent: {
     flex: 1,

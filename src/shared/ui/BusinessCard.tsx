@@ -6,6 +6,7 @@ import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
+import { colors } from "../config/theme/colors";
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, "BuyCard">;
 
 export default function BusinessCard({ business }) {
@@ -41,7 +42,7 @@ export default function BusinessCard({ business }) {
 
         <View style={styles.infoWrap}>
           <View style={styles.limitRow}>
-            <Ionicons name="person" size={14} color="#b0b5c0" />
+            <Ionicons name="person" size={14} color={colors.secondary} />
             <Text style={styles.limitText}>
               {business.level || 0}/{business.maxLevel || 5}
             </Text>

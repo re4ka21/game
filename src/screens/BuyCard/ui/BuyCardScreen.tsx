@@ -12,6 +12,7 @@ import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useCounterStore } from "@/features/counter/model/store";
 import { useBackgroundStore } from "@/features/background";
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
+import { colors } from "@/shared";
 
 type BuyCardRouteProp = RouteProp<RootStackParamList, "BuyCard">;
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, "BuyCard">;
@@ -130,11 +131,11 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
   text: {
-    color: "#8d8d8d",
+    color: colors.secondary,
     fontSize: 16,
   },
   rightText: {
-    color: "#8d8d8d",
+    color: colors.secondary,
     fontSize: 16,
     marginLeft: "auto",
   },

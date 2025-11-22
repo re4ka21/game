@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useBusinessStore } from "@/features/business";
-import { BusinessCard } from "@/shared";
+import { BusinessCard, colors } from "@/shared";
 
 export default function Business() {
   const navigation = useNavigation();
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   capitalBox: {
-    backgroundColor: "#eef1f6",
+    backgroundColor: colors.backgroundWhite,
     borderRadius: 35,
     width: "100%",
     height: 130,
@@ -121,10 +121,10 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   firstButton: {
-    backgroundColor: "#2196f3",
+    backgroundColor: colors.blue,
   },
   secondButton: {
-    backgroundColor: "#eef1f6",
+    backgroundColor: colors.backgroundWhite,
   },
   firstButtonText: {
     color: "#fff",
@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   secondButtonText: {
-    color: "#2196f3",
+    color: colors.blue,
     fontSize: 16,
     textAlign: "center",
   },
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
   counterText: {
     fontSize: 18,
     fontWeight: "600",
-    color: "#2196f3",
+    color: colors.blue,
   },
   emptyText: {
     color: "#888",

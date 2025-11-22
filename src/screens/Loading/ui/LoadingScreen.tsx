@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { View, Text, StyleSheet, Image, ActivityIndicator } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { colors } from "@/shared";
 
 const LoadingScreen = ({ navigation }) => {
   useEffect(() => {
@@ -70,7 +71,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   loadingText: {
-    color: "#B8B8B8",
+    color: colors.secondary,
     fontSize: 14,
     marginTop: 10,
   },

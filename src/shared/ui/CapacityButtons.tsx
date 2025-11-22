@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import { CAPACITY_VALUES, CAPACITY_COST_MAP } from "@/screens/Business";
+import { CAPACITY_VALUES, CAPACITY_COST_MAP } from "@/constants/capacity";
+import { colors } from "../config/theme/colors";
 
 export default function CapacityButtons({
   currentCapacity,
@@ -44,7 +45,7 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   capacityBtn: {
-    backgroundColor: "#eef1f6",
+    backgroundColor: colors.backgroundWhite,
     padding: 4,
     borderRadius: 12,
     width: "30%",

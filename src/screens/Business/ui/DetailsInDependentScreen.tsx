@@ -14,7 +14,7 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
 import InfoCard from "@/shared/ui/InfoCard";
 import { useUpgradeTimer } from "@/shared/hooks/useUpgradeTimer";
-
+import { colors } from "@/shared";
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, "BuyCard">;
 type DetailsDependentRouteProp = RouteProp<
   RootStackParamList,
@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
   secondContainer: { padding: 20 },
   title: { fontSize: 22, fontWeight: "700", color: "#000000ff", marginTop: 6 },
   incomeBox: {
-    backgroundColor: "#f2f3f7",
+    backgroundColor: colors.backgroundWhite,
     padding: 20,
     borderRadius: 13,
     alignItems: "center",
@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
   balance: { alignSelf: "center", marginTop: 10, fontWeight: "600" },
   info: { flexDirection: "row", paddingVertical: 6 },
   newPointsSale: {
-    backgroundColor: "#f2f3f7",
+    backgroundColor: colors.backgroundWhite,
     paddingVertical: 6,
     paddingHorizontal: 8,
     borderRadius: 12,

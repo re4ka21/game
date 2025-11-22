@@ -14,6 +14,7 @@ import { useNavigation } from "@react-navigation/native";
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useBackgroundStore } from "@/features/background";
+import { colors } from "@/shared";
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, "Tabs">;
 
@@ -169,11 +170,11 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
   text: {
-    color: "#8d8d8d",
+    color: colors.secondary,
     fontSize: 16,
   },
   rightText: {
-    color: "#8d8d8d",
+    color: colors.secondary,
     fontSize: 16,
     marginLeft: "auto",
   },
@@ -189,7 +190,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   levelText: {
-    color: "#b8b8b8",
+    color: colors.secondary,
     fontSize: 16,
     marginTop: 4,
   },
@@ -213,7 +214,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
   targetText: {
-    color: "#b8b8b8",
+    color: colors.secondary,
   },
   upgradeButton: {
     marginTop: 20,
