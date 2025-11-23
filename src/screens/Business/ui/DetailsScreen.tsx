@@ -8,17 +8,21 @@ import {
   Alert,
 } from "react-native";
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
-import { useRoute, useNavigation } from "@react-navigation/native";
-import { useRandomBusinessName } from "@/shared/hooks/useRandomBusinessName";
-import { useBusinessPurchase } from "@/shared/hooks/useBusinessPurchase";
+import { useRoute, useNavigation, RouteProp } from "@react-navigation/native";
+import { useRandomBusinessName } from "@/shared";
+import { useBusinessPurchase } from "@/shared";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 type NavigationProp = NativeStackNavigationProp<
   RootStackParamList,
   "BusinessDetails"
 >;
+type BusinessDetailsScreenRouteProp = RouteProp<
+  RootStackParamList,
+  "BusinessDetails"
+>;
 export default function BusinessDetailsScreen() {
-  const route = useRoute<any>();
+  const route = useRoute<BusinessDetailsScreenRouteProp>();
   const navigation = useNavigation<NavigationProp>();
   const { business } = route.params;
   const { canOpenBusiness, openBusiness } = useBusinessPurchase();

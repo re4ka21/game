@@ -1,4 +1,4 @@
-import { BUSINESS_NAMES_BY_CATEGORY } from "@/shared/constants/businessNames";
+import { BUSINESS_NAMES_BY_CATEGORY } from "@/entities";
 
 export function useRandomBusinessName(businessName: string) {
   const getBaseCategory = (fullName: string) => fullName.split(" (")[0];

@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute, RouteProp } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
 import { useCounterStore } from "@/features/counter";
@@ -10,14 +10,20 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 import Feather from "@expo/vector-icons/Feather";
 import { LinearGradient } from "expo-linear-gradient";
 import ProgressBar from "@/shared/ui/ProgressBar";
-import CapacityButtons from "@/shared/ui/CapacityButtons";
+import { CapacityButtons } from "@/entities";
 import { CAPACITY_COST_MAP } from "@/constants/capacity";
 import { colors } from "@/shared";
 
-type NavigationProp = NativeStackNavigationProp<RootStackParamList, "BuyCard">;
-
+type NavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  "DetailsDependent"
+>;
+type DetailsDependentRouteProp = RouteProp<
+  RootStackParamList,
+  "DetailsDependent"
+>;
 export default function DetailsDependent() {
-  const route = useRoute<any>();
+  const route = useRoute<DetailsDependentRouteProp>();
   const { business } = route.params;
   const navigation = useNavigation<NavigationProp>();
 

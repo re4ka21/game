@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute, RouteProp } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
 
@@ -10,10 +10,10 @@ type NavigationProp = NativeStackNavigationProp<
   RootStackParamList,
   "ChooseShopSize"
 >;
-
+type RoutePropType = RouteProp<RootStackParamList, "ChooseShopSize">;
 export default function ChooseShopSizeScreen() {
   const navigation = useNavigation<NavigationProp>();
-  const route = useRoute<any>();
+  const route = useRoute<RoutePropType>();
   const { baseBusiness } = route.params;
 
   return (

@@ -13,16 +13,20 @@ import Feather from "@expo/vector-icons/Feather";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
 import InfoCard from "@/shared/ui/InfoCard";
-import { useUpgradeTimer } from "@/shared/hooks/useUpgradeTimer";
+import { useUpgradeTimer } from "@/shared";
 import { colors } from "@/shared";
-type NavigationProp = NativeStackNavigationProp<RootStackParamList, "BuyCard">;
-type DetailsDependentRouteProp = RouteProp<
+
+type NavigationProp = NativeStackNavigationProp<
   RootStackParamList,
-  "DetailsDependent"
+  "DetailsInDependent"
+>;
+type DetailsInDependentRouteProp = RouteProp<
+  RootStackParamList,
+  "DetailsInDependent"
 >;
 
-export default function DetailsDependent() {
-  const route = useRoute<DetailsDependentRouteProp>();
+export default function DetailsInDependent() {
+  const route = useRoute<DetailsInDependentRouteProp>();
   const { business } = route.params;
   const navigation = useNavigation<NavigationProp>();
 
@@ -37,29 +41,28 @@ export default function DetailsDependent() {
     (state) => state.setUpgradeEndTime
   );
 
-  if (!currentBusiness) {
-    return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <Text>Бізнес не знайдено</Text>
-      </View>
-    );
-  }
-
-  const stage = currentBusiness.stage ?? 1;
-  const nextPointIncomeIncrease = currentBusiness.incomePerHour * 0.1;
-  const nextPointCost = currentBusiness.price * (1 + 0.25 * stage);
-  const formattedCount = count.toFixed(2).replace(".", ",");
-  const busColor = business.color;
-  const upgradeEndTime = currentBusiness.upgradeEndTime ?? null;
+  const stage = currentBusiness?.stage ?? 1;
+  const nextPointIncomeIncrease = currentBusiness?.incomePerHour
+    ? currentBusiness.incomePerHour * 0.1
+    : 0;
+  const nextPointCost = currentBusiness?.price
+    ? currentBusiness.price * (1 + 0.25 * stage)
+    : 0;
+  const upgradeEndTime = currentBusiness?.upgradeEndTime ?? null;
   const isUpgrading = !!upgradeEndTime;
 
+  const formattedCount = count.toFixed(2).replace(".", ",");
+  const busColor = business.color ?? "#ccc";
+
   const timer = useUpgradeTimer(upgradeEndTime, () => {
+    if (!currentBusiness) return;
     purchase(nextPointCost);
     upgradeStage(currentBusiness.id);
     setUpgradeEndTime(currentBusiness.id, null);
   });
 
   const handleUpgradeStage = () => {
+    if (!currentBusiness) return;
     if (stage >= 5) return Alert.alert("Досягнуто максимальної стадії!");
     if (count < nextPointCost) return Alert.alert("Недостатньо грошей!");
     if (!upgradeEndTime) {
@@ -69,88 +72,109 @@ export default function DetailsDependent() {
   };
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity
-        style={styles.arrow}
-        onPress={() => navigation.goBack()}
-      >
-        <AntDesign name="arrow-left" size={24} color="black" />
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={styles.settings}
-        onPress={() => navigation.navigate("Settings", { business })}
-      >
-        <Feather name="settings" size={24} color="black" />
-      </TouchableOpacity>
-
-      <View style={[styles.header, { backgroundColor: busColor }]}>
-        <Ionicons name={business.icon} size={40} color="#000000ff" />
-        <Text style={styles.title}>{business.name}</Text>
-      </View>
-
-      <View style={styles.incomeBox}>
-        <Text style={styles.income}>
-          $ {currentBusiness.incomePerHour.toFixed(2)}
-        </Text>
-        <Text style={styles.incomeText}>Дохід на годину</Text>
-      </View>
-
-      <View style={styles.secondContainer}>
-        <View style={styles.info}>
-          <InfoCard
-            icon={<AntDesign name="stock" size={24} color="black" />}
-            mainText={stage}
-            secondaryText="Стадия"
-            style={{ flex: 0.7 }}
-          />
-          <InfoCard
-            icon={<MaterialIcons name="category" size={24} color={busColor} />}
-            mainText={business.type}
-            secondaryText="Категория"
-            style={{ flex: 1.3 }}
-          />
+    <View style={{ flex: 1 }}>
+      {!currentBusiness ? (
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+          <Text>Бізнес не знайдено або видалено</Text>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Text style={{ color: "blue", marginTop: 10 }}>
+              Повернутися назад
+            </Text>
+          </TouchableOpacity>
         </View>
+      ) : (
+        <View style={styles.container}>
+          <TouchableOpacity
+            style={styles.arrow}
+            onPress={() => navigation.goBack()}
+          >
+            <AntDesign name="arrow-left" size={24} color="black" />
+          </TouchableOpacity>
 
-        <View style={styles.newPointsSale}>
-          <View style={styles.headerBox}>
-            <AntDesign name="shop" size={24} color={busColor} />
-            <Text style={styles.headerText}>Розширення</Text>
+          <TouchableOpacity
+            style={styles.settings}
+            onPress={() => navigation.navigate("Settings", { business })}
+          >
+            <Feather name="settings" size={24} color="black" />
+          </TouchableOpacity>
+
+          <View style={[styles.header, { backgroundColor: busColor }]}>
+            <Ionicons name={business.icon} size={40} color="#000000ff" />
+            <Text style={styles.title}>{business.name}</Text>
           </View>
 
-          {isUpgrading ? (
-            <Text style={styles.mainText}>Оновлення... {timer} секунд</Text>
-          ) : stage < 5 ? (
-            <>
-              <Text style={styles.mainText}>${nextPointCost.toFixed(2)}</Text>
-              <Text style={styles.secondaryText}>Необхідні вкладення</Text>
-              <View style={styles.arrowRow}>
-                <AntDesign name="arrow-up" size={18} color={busColor} />
-                <Text style={styles.moneyText}>
-                  +${nextPointIncomeIncrease.toFixed(2)}
-                </Text>
-              </View>
-              <Text style={styles.secondaryText}>
-                Приріст прибутку на годину
-              </Text>
-              <TouchableOpacity
-                style={[styles.buyBtn, { backgroundColor: busColor }]}
-                onPress={handleUpgradeStage}
-              >
-                <Text style={styles.buyBtnText}>
-                  Відкрити нові точки продажу
-                </Text>
-              </TouchableOpacity>
-            </>
-          ) : (
-            <Text style={styles.mainText}>Максимальної стадії досягнуто</Text>
-          )}
-        </View>
+          <View style={styles.incomeBox}>
+            <Text style={styles.income}>
+              $ {currentBusiness.incomePerHour?.toFixed(2) ?? "0.00"}
+            </Text>
+            <Text style={styles.incomeText}>Дохід на годину</Text>
+          </View>
 
-        <Text style={[styles.balance, { color: busColor }]}>
-          Баланс: $ {formattedCount}
-        </Text>
-      </View>
+          <View style={styles.secondContainer}>
+            <View style={styles.info}>
+              <InfoCard
+                icon={<AntDesign name="stock" size={24} color="black" />}
+                mainText={stage}
+                secondaryText="Стадия"
+                style={{ flex: 0.7 }}
+              />
+              <InfoCard
+                icon={
+                  <MaterialIcons name="category" size={24} color={busColor} />
+                }
+                mainText={business.type}
+                secondaryText="Категория"
+                style={{ flex: 1.3 }}
+              />
+            </View>
+
+            <View style={styles.newPointsSale}>
+              <View style={styles.headerBox}>
+                <AntDesign name="shop" size={24} color={busColor} />
+                <Text style={styles.headerText}>Розширення</Text>
+              </View>
+
+              {isUpgrading ? (
+                <Text style={styles.mainText}>Оновлення... {timer} секунд</Text>
+              ) : stage < 5 ? (
+                <>
+                  <Text style={styles.mainText}>
+                    ${nextPointCost.toFixed(2)}
+                  </Text>
+                  <Text style={styles.secondaryText}>Необхідні вкладення</Text>
+                  <View style={styles.arrowRow}>
+                    <AntDesign name="arrow-up" size={18} color={busColor} />
+                    <Text style={styles.moneyText}>
+                      +${nextPointIncomeIncrease.toFixed(2)}
+                    </Text>
+                  </View>
+                  <Text style={styles.secondaryText}>
+                    Приріст прибутку на годину
+                  </Text>
+                  <TouchableOpacity
+                    style={[styles.buyBtn, { backgroundColor: busColor }]}
+                    onPress={handleUpgradeStage}
+                  >
+                    <Text style={styles.buyBtnText}>
+                      Відкрити нові точки продажу
+                    </Text>
+                  </TouchableOpacity>
+                </>
+              ) : (
+                <Text style={styles.mainText}>
+                  Максимальної стадії досягнуто
+                </Text>
+              )}
+            </View>
+
+            <Text style={[styles.balance, { color: busColor }]}>
+              Баланс: $ {formattedCount}
+            </Text>
+          </View>
+        </View>
+      )}
     </View>
   );
 }

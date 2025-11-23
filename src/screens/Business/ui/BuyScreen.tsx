@@ -45,7 +45,7 @@ export default function BuyBusinessScreen() {
             onPress={() => handleSelectBusiness(item)}
           >
             <View style={[styles.iconCircle, { backgroundColor: item.color }]}>
-              <Ionicons name={item.icon as any} size={28} color="#fff" />
+              <Ionicons name={item.icon} size={28} color="#fff" />
             </View>
             <Text style={styles.name}>{item.name}</Text>
             <Text style={styles.price}>От ${item.price.toLocaleString()}</Text>

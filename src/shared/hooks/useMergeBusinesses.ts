@@ -46,6 +46,7 @@ export function useMergeBusinesses() {
       type: types[0],
       dependent: selected[0]?.dependent || false,
       stage: 1,
+      taxPercent: selected[0]?.taxPercent || 10,
     };
 
     useBusinessStore.setState((state: any) => {

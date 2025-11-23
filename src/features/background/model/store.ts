@@ -1,11 +1,11 @@
 import { create } from "zustand";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { persist, createJSONStorage } from "zustand/middleware";
-
+import { ImageSourcePropType } from "react-native";
 type BackgroundStore = {
-  background: any;
+  background: ImageSourcePropType;
   purchasedBackgrounds: string[];
-  setBackground: (bg: any) => void;
+  setBackground: (bg: ImageSourcePropType) => void;
   addPurchasedBackground: (bg: string) => void;
 };
 

@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { CAPACITY_VALUES, CAPACITY_COST_MAP } from "@/constants/capacity";
-import { colors } from "../config/theme/colors";
+import { colors } from "@/shared";
 
 export default function CapacityButtons({
   currentCapacity,

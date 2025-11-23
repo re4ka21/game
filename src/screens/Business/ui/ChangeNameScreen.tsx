@@ -9,7 +9,23 @@ import {
 import { useBusinessStore } from "@/features/business";
 import { useCounterStore } from "@/features/counter";
 import AntDesign from "@expo/vector-icons/AntDesign";
-export default function ChangeNameScreen({ route, navigation }: any) {
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import type { RouteProp } from "@react-navigation/native";
+import { RootStackParamList } from "@/app/navigation/AppNavigator";
+
+type ChangeNameScreenNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  "ChangeName"
+>;
+
+type ChangeNameScreenRouteProp = RouteProp<RootStackParamList, "ChangeName">;
+
+type Props = {
+  navigation: ChangeNameScreenNavigationProp;
+  route: ChangeNameScreenRouteProp;
+};
+
+export default function ChangeNameScreen({ route, navigation }: Props) {
   const { business } = route.params;
   const [newName, setNewName] = useState(business.name);
 
@@ -52,7 +68,7 @@ export default function ChangeNameScreen({ route, navigation }: any) {
           style={styles.input}
           value={newName}
           onChangeText={setNewName}
-          placeholder="Название"
+          placeholder="Назва"
         />
       </View>
 

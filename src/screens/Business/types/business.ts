@@ -1,10 +1,13 @@
+import { Ionicons } from "@expo/vector-icons";
+type IoniconsNames = React.ComponentProps<typeof Ionicons>["name"];
+
 export type BusinessType = {
   id: number;
   name: string;
   type: string;
   incomePerHour: number;
   price: number;
-  icon: string;
+  icon: IoniconsNames;
   color: string;
   isChain?: boolean;
   dependent?: boolean;

@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { colors } from "../config/theme/colors";
+import { colors } from "@/shared";
 
 type InfoCardProps = {
   icon: React.ReactNode;

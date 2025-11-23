@@ -4,27 +4,32 @@ import BottomTabs from "./BottomTabs";
 import { UpgradeScreen } from "@/screens/Upgrade";
 import { LoadingScreen } from "@/screens/Loading";
 import { BuyCardScreen } from "@/screens/BuyCard";
-import { BuyBusinessScreen } from "@/screens/Business";
-import { BusinessDetailsScreen } from "@/screens/Business";
-import { ChooseShopSizeScreen } from "@/screens/Business";
-import { BusinessMergerScreen } from "@/screens/Business";
-import { DetailsDependentScreen } from "@/screens/Business";
-import { DetailsInDependentScreen } from "@/screens/Business";
-import { SettingsScreen } from "@/screens/Business";
-import { ChangeNameScreen } from "@/screens/Business";
+import {
+  BusinessType,
+  BuyBusinessScreen,
+  BusinessDetailsScreen,
+  ChooseShopSizeScreen,
+  BusinessMergerScreen,
+  DetailsDependentScreen,
+  DetailsInDependentScreen,
+  SettingsScreen,
+  ChangeNameScreen,
+} from "@/screens/Business";
+
+import { ImageSourcePropType } from "react-native";
 export type RootStackParamList = {
   Tabs: { screen?: string } | undefined;
   Upgrade: undefined;
   Loading: undefined;
-  BuyCard: { id: string; image: any; price?: number };
+  BuyCard: { id: string; image: ImageSourcePropType; price?: number };
   BuyBusiness: undefined;
-  BusinessDetails: { business: any };
-  ChooseShopSize: { baseBusiness: any };
+  BusinessDetails: { business: BusinessType };
+  ChooseShopSize: { baseBusiness: BusinessType };
   BusinessMerger: undefined;
-  DetailsDependent: { business: any };
-  DetailsInDependent: { business: any };
-  Settings: { business: any };
-  ChangeName: any;
+  DetailsDependent: { business: BusinessType };
+  DetailsInDependent: { business: BusinessType };
+  Settings: { business: BusinessType };
+  ChangeName: { business: BusinessType };
 };
 const Stack = createNativeStackNavigator<RootStackParamList>();
 

@@ -15,8 +15,8 @@ export type BusinessType = {
   earnings: number;
   taxPercent: number;
   dependent?: boolean;
-  color?: string;
-  icon?: string;
+  color: string;
+  icon: string;
   stage?: number;
   upgradeEndTime?: number;
 };

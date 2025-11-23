@@ -7,6 +7,7 @@ import {
   Animated,
   useWindowDimensions,
   Image,
+  GestureResponderEvent,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useCounterStore } from "../model/store";
@@ -20,7 +21,6 @@ export default function CounterZone() {
   const nextId = useRef(0);
 
   const glowAnim = useRef(new Animated.Value(0)).current;
-
   const scaleAnim = useRef(new Animated.Value(1)).current;
 
   const touchZoneHeight = height * 0.47;
@@ -41,7 +41,7 @@ export default function CounterZone() {
     ]).start();
   };
 
-  const handlePress = (e: any) => {
+  const handlePress = (e: GestureResponderEvent) => {
     triggerGlow();
     increment();
 

@@ -7,8 +7,8 @@ import {
   StyleSheet,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { useBusinessSelection } from "@/shared/hooks/useBusinessSelection";
-import { useMergeBusinesses } from "@/shared/hooks/useMergeBusinesses";
+import { useBusinessSelection } from "@/shared";
+import { useMergeBusinesses } from "@/shared";
 import { colors } from "@/shared";
 
 export default function BusinessMergerScreen() {
@@ -21,7 +21,6 @@ export default function BusinessMergerScreen() {
     differentTypes,
     mergeCost,
     potentialEffect,
-    setSelectedIds,
   } = useBusinessSelection();
 
   const { performMerge } = useMergeBusinesses();

@@ -6,7 +6,7 @@ import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
-import { colors } from "../config/theme/colors";
+import { colors } from "@/shared";
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, "BuyCard">;
 
 export default function BusinessCard({ business }) {

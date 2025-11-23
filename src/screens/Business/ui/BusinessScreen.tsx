@@ -8,7 +8,8 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useBusinessStore } from "@/features/business";
-import { BusinessCard, colors } from "@/shared";
+import { colors } from "@/shared";
+import { BusinessCard } from "@/entities";
 
 export default function Business() {
   const navigation = useNavigation();

@@ -1,9 +1,4 @@
-import type {
-  BusinessType,
-  ShopSizeType,
-  CapacityValue,
-  CapacityCostMap,
-} from "@/screens/Business";
+import type { BusinessType, ShopSizeType } from "@/screens/Business";
 
 export const SHOP_SIZES: ShopSizeType[] = [
   { id: 1, name: "Невеликий магазин", multiplier: 1 },
@@ -107,11 +102,3 @@ export const AVAILABLE_BUSINESSES: BusinessType[] = [
     dependent: true,
   },
 ];
-
-export const CAPACITY_VALUES: CapacityValue[] = [5, 10, 20];
-
-export const CAPACITY_COST_MAP: CapacityCostMap = {
-  5: 17500,
-  10: 50000,
-  20: 140000,
-};
