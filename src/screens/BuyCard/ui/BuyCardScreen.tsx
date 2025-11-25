@@ -78,8 +78,8 @@ export default function BuyCard() {
             {isPurchased || !price
               ? "Встановити"
               : price
-              ? `Купити за $ ${price}`
-              : "Купити"}
+                ? `Купити за $ ${price}`
+                : "Купити"}
           </Text>
         </TouchableOpacity>
 

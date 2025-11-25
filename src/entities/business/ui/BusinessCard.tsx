@@ -41,12 +41,17 @@ export default function BusinessCard({ business }) {
         </View>
 
         <View style={styles.infoWrap}>
-          <View style={styles.limitRow}>
-            <Ionicons name="person" size={14} color={colors.secondary} />
-            <Text style={styles.limitText}>
-              {business.level || 0}/{business.maxLevel || 5}
-            </Text>
-          </View>
+          {!business.dependent ? (
+            <View style={styles.limitRow}>
+              <Ionicons name="person" size={14} color={colors.secondary} />
+              <Text style={styles.limitText}>{business.stage || 0}/5</Text>
+            </View>
+          ) : (
+            <View style={styles.limitRow}>
+              <Ionicons name="person" size={14} color={colors.secondary} />
+              <Text style={styles.limitText}>{business.cars || 0}/5</Text>
+            </View>
+          )}
 
           <Text style={styles.income}>
             $ {business.incomePerHour.toFixed(2).replace(".", ",")}{" "}
