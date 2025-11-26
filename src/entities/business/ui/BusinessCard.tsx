@@ -54,7 +54,7 @@ export default function BusinessCard({ business }) {
           )}
 
           <Text style={styles.income}>
-            $ {business.incomePerHour.toFixed(2).replace(".", ",")}{" "}
+            $ {business.incomePerHour?.toFixed(2).replace(".", ",")}{" "}
             <Text style={{ color: "#9aa1ae" }}>в час</Text>
           </Text>
         </View>

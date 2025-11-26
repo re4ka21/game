@@ -72,7 +72,7 @@ export default function DetailsInDependent() {
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={styles.container}>
       {!currentBusiness ? (
         <View
           style={{ flex: 1, justifyContent: "center", alignItems: "center" }}

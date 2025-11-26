@@ -1,5 +1,5 @@
-import type { BusinessType, ShopSizeType } from "@/screens/Business";
-
+import type { BusinessType, ShopSizeType, CarType } from "../types/business";
+import type { CarOption } from "../types/business";
 export const SHOP_SIZES: ShopSizeType[] = [
   { id: 1, name: "Невеликий магазин", multiplier: 1 },
   { id: 2, name: "Середня мережа", multiplier: 1.5 },
@@ -21,7 +21,7 @@ export const AVAILABLE_BUSINESSES: BusinessType[] = [
     id: 2,
     name: "Таксопарк",
     type: "taxi",
-    incomePerHour: 100,
+    incomePerHour: 120,
     price: 9999,
     icon: "car-outline",
     color: "#f1c40f",
@@ -102,3 +102,127 @@ export const AVAILABLE_BUSINESSES: BusinessType[] = [
     dependent: true,
   },
 ];
+
+export const CAR_TYPES: {
+  key: CarType;
+  label: string;
+  price: number;
+  multiplier: number;
+}[] = [
+  { key: "economy", label: "Економ", price: 800, multiplier: 1 },
+  { key: "comfort", label: "Комфорт", price: 1200, multiplier: 1.3 },
+  { key: "comfort_plus", label: "Комфорт +", price: 1800, multiplier: 1.6 },
+  { key: "business", label: "Бізнес", price: 2500, multiplier: 2.2 },
+  { key: "premier", label: "Премʼєр", price: 3500, multiplier: 3 },
+];
+
+export const CAR_OPTIONS: CarOption[] = [
+  {
+    name: "Vada Grand",
+    image: require("../../../../assets/images/mastercard.png"),
+    resource: "300 000 км",
+    income: 560,
+    price: 7853,
+    type: "economy",
+  },
+  {
+    name: "Renolt Logon",
+    image: require("../../../../assets/images/mastercard.png"),
+    resource: "520 000 км",
+    income: 560,
+    price: 10800,
+    type: "economy",
+  },
+  {
+    name: "Hendaji Solaer",
+    image: require("../../../../assets/images/mastercard.png"),
+    resource: "480 000 км",
+    income: 560,
+    price: 12262,
+    type: "economy",
+  },
+
+  {
+    name: "Luma Cruiser",
+    image: require("../../../../assets/images/mastercard.png"),
+    resource: "380 000 км",
+    income: 920,
+    price: 21000,
+    type: "comfort",
+  },
+  {
+    name: "Skotta Octavian",
+    image: require("../../../../assets/images/mastercard.png"),
+    resource: "420 000 км",
+    income: 954,
+    price: 22246,
+    type: "comfort",
+  },
+  {
+    name: "Tovari Comfort",
+    image: require("../../../../assets/images/mastercard.png"),
+    resource: "400 000 км",
+    income: 980,
+    price: 23000,
+    type: "comfort",
+  },
+
+  {
+    name: "Grand Comfort Plus",
+    image: require("../../../../assets/images/mastercard.png"),
+    resource: "350 000 км",
+    income: 1500,
+    price: 35000,
+    type: "comfort_plus",
+  },
+  {
+    name: "Vesta Lux",
+    image: require("../../../../assets/images/mastercard.png"),
+    resource: "340 000 км",
+    income: 1550,
+    price: 36000,
+    type: "comfort_plus",
+  },
+
+  {
+    name: "Biz Elite",
+    image: require("../../../../assets/images/mastercard.png"),
+    resource: "300 000 км",
+    income: 2500,
+    price: 50000,
+    type: "business",
+  },
+  {
+    name: "Executive Car",
+    image: require("../../../../assets/images/mastercard.png"),
+    resource: "280 000 км",
+    income: 2600,
+    price: 52000,
+    type: "business",
+  },
+
+  {
+    name: "Premier Lux",
+    image: require("../../../../assets/images/mastercard.png"),
+    resource: "250 000 км",
+    income: 4000,
+    price: 80000,
+    type: "premier",
+  },
+  {
+    name: "Royal Premier",
+    image: require("../../../../assets/images/mastercard.png"),
+    resource: "240 000 км",
+    income: 4200,
+    price: 85000,
+    type: "premier",
+  },
+];
+
+export const CAR_TYPE_COLORS: Record<CarType, string> = {
+  economy: "#f39c12",
+  comfort: "#2ecc71",
+  comfort_plus: "#9b59b6",
+  business: "#3498db",
+  premier: "#e74c3c",
+};

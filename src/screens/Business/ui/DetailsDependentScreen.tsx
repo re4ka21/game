@@ -22,6 +22,7 @@ type DetailsDependentRouteProp = RouteProp<
   RootStackParamList,
   "DetailsDependent"
 >;
+
 export default function DetailsDependent() {
   const route = useRoute<DetailsDependentRouteProp>();
   const { business } = route.params;
@@ -34,12 +35,12 @@ export default function DetailsDependent() {
     (state) => state.addBusinessCapacity
   );
   const purchase = useCounterStore((state) => state.purchase);
-  const count = useCounterStore((state) => state.count);
+  const count = useCounterStore((state) => state.count) ?? 0;
 
   if (!currentBusiness) return null;
 
   const capacity = currentBusiness.capacity ?? 5;
-  const cars = currentBusiness.cars ?? 0;
+  const cars = currentBusiness.cars ?? 1;
   const busColor = business.color;
   const formattedCount = count.toFixed(2).replace(".", ",");
 
@@ -53,8 +54,7 @@ export default function DetailsDependent() {
     addBusinessCapacity(currentBusiness.id, value);
   };
 
-  const handleBuyCar = () =>
-    navigation.navigate("Tabs", { screen: "Earnings" });
+  const handleBuyCar = () => navigation.navigate("BuyCars", { business });
 
   return (
     <View style={styles.container}>
@@ -64,6 +64,7 @@ export default function DetailsDependent() {
       >
         <AntDesign name="arrow-left" size={24} color="black" />
       </TouchableOpacity>
+
       <TouchableOpacity
         style={styles.settings}
         onPress={() => navigation.navigate("Settings", { business })}
@@ -78,7 +79,7 @@ export default function DetailsDependent() {
 
       <View style={styles.incomeBox}>
         <Text style={styles.income}>
-          $ {currentBusiness.incomePerHour.toFixed(2)}
+          $ {currentBusiness.incomePerHour?.toFixed(2) ?? "0,00"}
         </Text>
         <Text style={styles.incomeText}>Дохід на годину</Text>
       </View>
@@ -94,7 +95,10 @@ export default function DetailsDependent() {
         />
 
         <View style={styles.info}>
-          <View style={styles.parkBox}>
+          <TouchableOpacity
+            style={styles.parkBox}
+            onPress={() => navigation.navigate("CarsPark", { business })}
+          >
             <Text style={styles.parkTitle}>Автопарк</Text>
             <ProgressBar progress={(cars / capacity) * 100} color={busColor} />
             <LinearGradient
@@ -108,7 +112,7 @@ export default function DetailsDependent() {
                 {cars}
               </Text>
             </LinearGradient>
-          </View>
+          </TouchableOpacity>
 
           <View style={styles.capacityBox}>
             <Image

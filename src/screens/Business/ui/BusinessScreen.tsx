@@ -15,7 +15,7 @@ export default function Business() {
   const navigation = useNavigation();
   const { myBusinesses, updateOfflineEarnings, reset } = useBusinessStore();
   const totalIncome = myBusinesses.reduce(
-    (sum, b) => sum + (b.incomePerHour || 0),
+    (sum, b) => sum + (b.incomePerHour ?? 0),
     0
   );
 
@@ -39,7 +39,7 @@ export default function Business() {
 
       <TouchableOpacity style={styles.capitalBox} onPress={reset}>
         <Text style={styles.incomeNumber}>
-          $ {totalIncome.toFixed(2).replace(".", ",")}
+          $ {(totalIncome ?? 0).toFixed(2).replace(".", ",")}
         </Text>
         <Text style={styles.incomeText}>Дохід за годину</Text>
       </TouchableOpacity>

@@ -2,6 +2,13 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+export type CarType =
+  | "economy"
+  | "comfort"
+  | "comfort_plus"
+  | "business"
+  | "premier";
+
 export type BusinessType = {
   id: number;
   name: string;
@@ -11,6 +18,7 @@ export type BusinessType = {
   price: number;
   capacity?: number;
   cars: number;
+  carsList?: CarType[];
   totalEarnings: number;
   earnings: number;
   taxPercent: number;
@@ -26,7 +34,7 @@ type BusinessState = {
   addBusiness: (b: BusinessType) => void;
   addBusinessCapacity: (id: number, value: number) => void;
   upgradeBusinessStage: (id: number) => void;
-  addBusinessCar: (id: number) => void;
+  addBusinessCar: (id: number, type: CarType) => void;
   updateOfflineEarnings: () => Promise<void>;
   removeBusiness: (id: number) => void;
   closeBusiness: (id: number) => number;
@@ -46,6 +54,8 @@ export const useBusinessStore = create<BusinessState>()(
             ...get().myBusinesses,
             {
               ...b,
+              cars: b.cars ?? 0,
+              carsList: [],
               earnings: 0,
               totalEarnings: 0,
               taxPercent: b.taxPercent || 10,
@@ -78,10 +88,16 @@ export const useBusinessStore = create<BusinessState>()(
           ),
         }),
 
-      addBusinessCar: (id) =>
+      addBusinessCar: (id, type: CarType) =>
         set({
           myBusinesses: get().myBusinesses.map((b) =>
-            b.id === id ? { ...b, cars: b.cars + 1 } : b
+            b.id === id
+              ? {
+                  ...b,
+                  cars: (b.cars ?? 0) + 1,
+                  carsList: [...(b.carsList || []), type],
+                }
+              : b
           ),
         }),
 

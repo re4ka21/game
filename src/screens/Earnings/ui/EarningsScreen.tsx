@@ -62,7 +62,7 @@ export default function Earnings() {
           imageStyle={styles.imageBackground}
           style={styles.imageWrapper}
         >
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <View style={styles.contentCard}>
             <Image
               source={require("../../../../assets/images/mastercard.png")}
               style={styles.logo}
@@ -177,6 +177,10 @@ const styles = StyleSheet.create({
     color: colors.secondary,
     fontSize: 16,
     marginLeft: "auto",
+  },
+  contentCard: {
+    flexDirection: "row",
+    alignItems: "center",
   },
   progressBox: {
     marginTop: 25,

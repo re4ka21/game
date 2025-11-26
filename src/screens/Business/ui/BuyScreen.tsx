@@ -23,7 +23,7 @@ export default function BuyBusinessScreen() {
 
   const handleSelectBusiness = (b: BusinessType) => {
     if (b.isChain) {
-      navigation.navigate("ChooseShopSize", { baseBusiness: b });
+      navigation.navigate("ChooseShopSize", { business: b });
     } else {
       navigation.navigate("BusinessDetails", { business: b });
     }

@@ -74,7 +74,7 @@ export default function BackgroundsScreen() {
                 imageStyle={styles.imageBackground}
                 style={styles.imageWrapper}
               >
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <View style={styles.contentCard}>
                   <Image
                     source={require("../../../../assets/images/mastercard.png")}
                     style={styles.logo}
@@ -88,7 +88,7 @@ export default function BackgroundsScreen() {
                   ${" "}
                   {index === 0
                     ? formattedCount
-                    : bg.price?.toLocaleString() ?? formattedCount}
+                    : (bg.price?.toLocaleString() ?? formattedCount)}
                 </Text>
               </ImageBackground>
             )}
@@ -138,6 +138,10 @@ const styles = StyleSheet.create({
   text: {
     color: colors.secondary,
     fontSize: 16,
+  },
+  contentCard: {
+    flexDirection: "row",
+    alignItems: "center",
   },
   rightText: {
     color: colors.secondary,

@@ -30,7 +30,7 @@ export default function Settings() {
   const closeBusiness = useBusinessStore((state) => state.closeBusiness);
 
   const formatMoney = (value: number) =>
-    `$ ${value.toFixed(2).replace(".", ",")}`;
+    `$ ${value?.toFixed(2).replace(".", ",")}`;
 
   const handleCloseBusiness = () => {
     if (!currentBusiness) return;
@@ -145,7 +145,7 @@ export default function Settings() {
         <Text style={styles.closeButtonText}>Закрити бізнес (+30%)</Text>
       </TouchableOpacity>
 
-      <View style={{ height: 100 }} />
+      <View style={styles.space} />
     </ScrollView>
   );
 }
@@ -248,4 +248,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "700",
   },
+  space: { height: 100 },
 });

@@ -1,5 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
-type IoniconsNames = React.ComponentProps<typeof Ionicons>["name"];
+
+export type IoniconsNames = React.ComponentProps<typeof Ionicons>["name"];
 
 export type BusinessType = {
   id: number;
@@ -21,3 +22,19 @@ export type ShopSizeType = {
 
 export type CapacityValue = number;
 export type CapacityCostMap = Record<CapacityValue, number>;
+
+export type CarType =
+  | "economy"
+  | "comfort"
+  | "comfort_plus"
+  | "business"
+  | "premier";
+
+export type CarOption = {
+  name: string;
+  image: any;
+  resource: string;
+  income: number;
+  price: number;
+  type: CarType;
+};

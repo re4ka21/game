@@ -14,6 +14,8 @@ import {
   DetailsInDependentScreen,
   SettingsScreen,
   ChangeNameScreen,
+  CarsParkScreen,
+  BuyCarsScreen,
 } from "@/screens/Business";
 
 import { ImageSourcePropType } from "react-native";
@@ -24,12 +26,14 @@ export type RootStackParamList = {
   BuyCard: { id: string; image: ImageSourcePropType; price?: number };
   BuyBusiness: undefined;
   BusinessDetails: { business: BusinessType };
-  ChooseShopSize: { baseBusiness: BusinessType };
+  ChooseShopSize: { business: BusinessType };
   BusinessMerger: undefined;
   DetailsDependent: { business: BusinessType };
   DetailsInDependent: { business: BusinessType };
   Settings: { business: BusinessType };
   ChangeName: { business: BusinessType };
+  CarsPark: { business: BusinessType };
+  BuyCars: { business: BusinessType };
 };
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -122,6 +126,20 @@ export default function AppNavigator() {
         component={ChangeNameScreen}
         options={{
           headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="CarsPark"
+        component={CarsParkScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="BuyCars"
+        component={BuyCarsScreen}
+        options={{
+          headerShown: true,
         }}
       />
     </Stack.Navigator>

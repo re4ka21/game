@@ -3,7 +3,6 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { useNavigation, useRoute, RouteProp } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
-
 import { SHOP_SIZES } from "@/screens/Business";
 
 type NavigationProp = NativeStackNavigationProp<
@@ -14,7 +13,7 @@ type RoutePropType = RouteProp<RootStackParamList, "ChooseShopSize">;
 export default function ChooseShopSizeScreen() {
   const navigation = useNavigation<NavigationProp>();
   const route = useRoute<RoutePropType>();
-  const { baseBusiness } = route.params;
+  const { business } = route.params;
 
   return (
     <View style={styles.container}>
@@ -27,10 +26,10 @@ export default function ChooseShopSizeScreen() {
           onPress={() =>
             navigation.navigate("BusinessDetails", {
               business: {
-                ...baseBusiness,
-                price: Math.round(baseBusiness.price * size.multiplier),
+                ...business,
+                price: Math.round(business.price * size.multiplier),
                 incomePerHour: Math.round(
-                  baseBusiness.incomePerHour * size.multiplier
+                  business.incomePerHour * size.multiplier
                 ),
               },
             })
