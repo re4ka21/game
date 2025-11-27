@@ -1,13 +1,7 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
-export type CarType =
-  | "economy"
-  | "comfort"
-  | "comfort_plus"
-  | "business"
-  | "premier";
+import { CarOption, CarType } from "@/screens/Business";
 
 export type BusinessType = {
   id: number;
@@ -18,7 +12,7 @@ export type BusinessType = {
   price: number;
   capacity?: number;
   cars: number;
-  carsList?: CarType[];
+  carsList?: CarOption[];
   totalEarnings: number;
   earnings: number;
   taxPercent: number;
@@ -34,13 +28,21 @@ type BusinessState = {
   addBusiness: (b: BusinessType) => void;
   addBusinessCapacity: (id: number, value: number) => void;
   upgradeBusinessStage: (id: number) => void;
-  addBusinessCar: (id: number, type: CarType) => void;
+  addBusinessCar: (id: number, car: CarOption) => void;
   updateOfflineEarnings: () => Promise<void>;
   removeBusiness: (id: number) => void;
   closeBusiness: (id: number) => number;
   renameBusiness: (id: number, newName: string) => void;
   setUpgradeEndTime: (id: number, timestamp: number) => void;
   reset: () => void;
+};
+
+export const CAR_INCOME_BONUS: Record<CarType, number> = {
+  economy: 560,
+  comfort: 920,
+  comfort_plus: 1500,
+  business: 2500,
+  premier: 4200,
 };
 
 export const useBusinessStore = create<BusinessState>()(
@@ -78,9 +80,9 @@ export const useBusinessStore = create<BusinessState>()(
             b.id === id
               ? {
                   ...b,
-                  stage: b.stage ? b.stage + 1 : 1,
+                  stage: (b.stage ?? 1) + 1,
                   incomePerHour: b.baseIncome
-                    ? b.baseIncome * (1 + (b.stage || 1) * 0.25)
+                    ? b.baseIncome * (1 + (b.stage ?? 1) * 0.25)
                     : b.incomePerHour,
                   upgradeEndTime: null,
                 }
@@ -88,14 +90,15 @@ export const useBusinessStore = create<BusinessState>()(
           ),
         }),
 
-      addBusinessCar: (id, type: CarType) =>
+      addBusinessCar: (id, car: CarOption) =>
         set({
           myBusinesses: get().myBusinesses.map((b) =>
             b.id === id
               ? {
                   ...b,
                   cars: (b.cars ?? 0) + 1,
-                  carsList: [...(b.carsList || []), type],
+                  carsList: [...(b.carsList || []), car],
+                  incomePerHour: b.incomePerHour + CAR_INCOME_BONUS[car.type],
                 }
               : b
           ),
@@ -120,6 +123,21 @@ export const useBusinessStore = create<BusinessState>()(
                 ...b,
                 earnings: newEarnings >= 0 ? newEarnings : 0,
                 totalEarnings: b.totalEarnings + earned,
+                carsList: b.carsList?.map((car) => {
+                  const carBonus = CAR_INCOME_BONUS[car.type] ?? 0;
+                  const carEarned = car.broken
+                    ? 0
+                    : (carBonus / 3600) * elapsedSec;
+                  const newMileage = (car.mileage ?? 0) + elapsedSec * 0.1;
+                  return {
+                    ...car,
+                    income: (car.income ?? 0) + carEarned,
+                    mileage: newMileage,
+                    broken:
+                      newMileage >=
+                      parseFloat(car.resource.replace(/\s|км/g, "")),
+                  };
+                }),
               };
             }),
           });
@@ -138,13 +156,10 @@ export const useBusinessStore = create<BusinessState>()(
       closeBusiness: (id) => {
         const business = get().myBusinesses.find((b) => b.id === id);
         if (!business) return 0;
-
         const refund = business.price * 0.3;
-
         set({
           myBusinesses: get().myBusinesses.filter((b) => b.id !== id),
         });
-
         return refund;
       },
 

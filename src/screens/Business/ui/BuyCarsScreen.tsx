@@ -10,8 +10,9 @@ import {
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
 import { useCounterStore } from "@/features/counter";
-import { useBusinessStore, CarType } from "@/features/business/model/store";
+import { useBusinessStore } from "@/features/business/model/store";
 import { CAR_OPTIONS, CAR_TYPE_COLORS } from "@/screens/Business";
+import { CarType } from "@/screens/Business/types/business";
 
 type Props = NativeStackScreenProps<RootStackParamList, "BuyCars">;
 
@@ -36,8 +37,15 @@ export default function BuyCarsScreen({ route, navigation }: Props) {
 
   const handleBuy = (car: (typeof CAR_OPTIONS)[number]) => {
     if (balance < car.price) return;
+
     purchase(car.price);
-    addBusinessCar(currentBusiness.id, car.type);
+
+    addBusinessCar(currentBusiness.id, {
+      ...car,
+      mileage: 0,
+      broken: false,
+    });
+
     navigation.goBack();
   };
 
@@ -131,20 +139,9 @@ function formatCarType(type: CarType) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-    backgroundColor: "#f2f2f2",
-  },
-  balance: {
-    fontSize: 18,
-    fontWeight: "700",
-    marginBottom: 16,
-  },
-  filterRow: {
-    flexDirection: "row",
-    marginBottom: 16,
-  },
+  container: { flex: 1, padding: 16, backgroundColor: "#f2f2f2" },
+  balance: { fontSize: 18, fontWeight: "700", marginBottom: 16 },
+  filterRow: { flexDirection: "row", marginBottom: 16 },
   typeButton: {
     paddingVertical: 5,
     paddingHorizontal: 8,
@@ -153,12 +150,8 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     backgroundColor: "#ddd",
   },
-  typeButtonActive: {
-    backgroundColor: "yellow",
-  },
-  typeButtonText: {
-    fontSize: 14,
-  },
+  typeButtonActive: { backgroundColor: "yellow" },
+  typeButtonText: { fontSize: 14 },
   carCard: {
     flexDirection: "row",
     backgroundColor: "#fff",
@@ -167,20 +160,9 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     elevation: 3,
   },
-  carImage: {
-    width: 120,
-    height: 80,
-    resizeMode: "contain",
-    margin: 8,
-  },
-  carInfo: {
-    flex: 1,
-    padding: 8,
-  },
-  carName: {
-    fontSize: 16,
-    fontWeight: "700",
-  },
+  carImage: { width: 120, height: 80, resizeMode: "contain", margin: 8 },
+  carInfo: { flex: 1, padding: 8 },
+  carName: { fontSize: 16, fontWeight: "700" },
   carType: {
     fontSize: 14,
     color: "#fff",
@@ -189,31 +171,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 6,
     borderRadius: 8,
   },
-  carResource: {
-    fontSize: 12,
-    color: "#555",
-  },
-  carIncome: {
-    fontSize: 12,
-    color: "#555",
-    marginVertical: 4,
-  },
-  carPrice: {
-    fontSize: 16,
-    fontWeight: "700",
-    marginBottom: 8,
-  },
+  carResource: { fontSize: 12, color: "#555" },
+  carIncome: { fontSize: 12, color: "#555", marginVertical: 4 },
+  carPrice: { fontSize: 16, fontWeight: "700", marginBottom: 8 },
   buyButton: {
     backgroundColor: "#4CAF50",
     paddingVertical: 8,
     borderRadius: 8,
     alignItems: "center",
   },
-  buyButtonDisabled: {
-    backgroundColor: "#888",
-  },
-  buyText: {
-    color: "#fff",
-    fontWeight: "700",
-  },
+  buyButtonDisabled: { backgroundColor: "#888" },
+  buyText: { color: "#fff", fontWeight: "700" },
 });

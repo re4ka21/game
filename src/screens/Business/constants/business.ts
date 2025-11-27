@@ -21,7 +21,7 @@ export const AVAILABLE_BUSINESSES: BusinessType[] = [
     id: 2,
     name: "Таксопарк",
     type: "taxi",
-    incomePerHour: 120,
+    incomePerHour: 0,
     price: 9999,
     icon: "car-outline",
     color: "#f1c40f",
@@ -103,19 +103,6 @@ export const AVAILABLE_BUSINESSES: BusinessType[] = [
   },
 ];
 
-export const CAR_TYPES: {
-  key: CarType;
-  label: string;
-  price: number;
-  multiplier: number;
-}[] = [
-  { key: "economy", label: "Економ", price: 800, multiplier: 1 },
-  { key: "comfort", label: "Комфорт", price: 1200, multiplier: 1.3 },
-  { key: "comfort_plus", label: "Комфорт +", price: 1800, multiplier: 1.6 },
-  { key: "business", label: "Бізнес", price: 2500, multiplier: 2.2 },
-  { key: "premier", label: "Премʼєр", price: 3500, multiplier: 3 },
-];
-
 export const CAR_OPTIONS: CarOption[] = [
   {
     name: "Vada Grand",
@@ -124,6 +111,8 @@ export const CAR_OPTIONS: CarOption[] = [
     income: 560,
     price: 7853,
     type: "economy",
+    mileage: 0,
+    broken: false,
   },
   {
     name: "Renolt Logon",
@@ -132,6 +121,8 @@ export const CAR_OPTIONS: CarOption[] = [
     income: 560,
     price: 10800,
     type: "economy",
+    mileage: 0,
+    broken: false,
   },
   {
     name: "Hendaji Solaer",
@@ -140,6 +131,8 @@ export const CAR_OPTIONS: CarOption[] = [
     income: 560,
     price: 12262,
     type: "economy",
+    mileage: 0,
+    broken: false,
   },
 
   {
@@ -149,22 +142,28 @@ export const CAR_OPTIONS: CarOption[] = [
     income: 920,
     price: 21000,
     type: "comfort",
+    mileage: 0,
+    broken: false,
   },
   {
     name: "Skotta Octavian",
     image: require("../../../../assets/images/mastercard.png"),
     resource: "420 000 км",
-    income: 954,
+    income: 920,
     price: 22246,
     type: "comfort",
+    mileage: 0,
+    broken: false,
   },
   {
     name: "Tovari Comfort",
     image: require("../../../../assets/images/mastercard.png"),
     resource: "400 000 км",
-    income: 980,
+    income: 920,
     price: 23000,
     type: "comfort",
+    mileage: 0,
+    broken: false,
   },
 
   {
@@ -174,14 +173,18 @@ export const CAR_OPTIONS: CarOption[] = [
     income: 1500,
     price: 35000,
     type: "comfort_plus",
+    mileage: 0,
+    broken: false,
   },
   {
     name: "Vesta Lux",
     image: require("../../../../assets/images/mastercard.png"),
     resource: "340 000 км",
-    income: 1550,
+    income: 1500,
     price: 36000,
     type: "comfort_plus",
+    mileage: 0,
+    broken: false,
   },
 
   {
@@ -191,6 +194,8 @@ export const CAR_OPTIONS: CarOption[] = [
     income: 2500,
     price: 50000,
     type: "business",
+    mileage: 0,
+    broken: false,
   },
   {
     name: "Executive Car",
@@ -199,6 +204,8 @@ export const CAR_OPTIONS: CarOption[] = [
     income: 2600,
     price: 52000,
     type: "business",
+    mileage: 0,
+    broken: false,
   },
 
   {
@@ -208,6 +215,8 @@ export const CAR_OPTIONS: CarOption[] = [
     income: 4000,
     price: 80000,
     type: "premier",
+    mileage: 0,
+    broken: false,
   },
   {
     name: "Royal Premier",
@@ -216,9 +225,10 @@ export const CAR_OPTIONS: CarOption[] = [
     income: 4200,
     price: 85000,
     type: "premier",
+    mileage: 0,
+    broken: false,
   },
 ];
-
 export const CAR_TYPE_COLORS: Record<CarType, string> = {
   economy: "#f39c12",
   comfort: "#2ecc71",

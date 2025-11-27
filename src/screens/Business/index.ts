@@ -10,7 +10,6 @@ export { default as ChangeNameScreen } from "./ui/ChangeNameScreen";
 export {
   AVAILABLE_BUSINESSES,
   SHOP_SIZES,
-  CAR_TYPES,
   CAR_OPTIONS,
   CAR_TYPE_COLORS,
 } from "./constants/business";

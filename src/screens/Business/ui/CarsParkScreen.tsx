@@ -12,7 +12,7 @@ import { RootStackParamList } from "@/app/navigation/AppNavigator";
 import { useBusinessStore } from "@/features/business";
 import { CAR_OPTIONS } from "@/screens/Business";
 import AntDesign from "@expo/vector-icons/AntDesign";
-
+import { CarType } from "@/screens/Business/types/business";
 type Props = NativeStackScreenProps<RootStackParamList, "CarsPark">;
 
 export default function CarsParkScreen({ route, navigation }: Props) {
@@ -24,16 +24,47 @@ export default function CarsParkScreen({ route, navigation }: Props) {
   );
 
   if (!currentBusiness) return null;
+  const isCarType = (type: string): type is CarType => {
+    return [
+      "economy",
+      "comfort",
+      "comfort_plus",
+      "business",
+      "premier",
+    ].includes(type);
+  };
 
   const carsArray = (currentBusiness.carsList || [])
-    .map((type, i) => {
-      const carData = CAR_OPTIONS.find((c) => c.type === type);
-      return carData ? { ...carData, number: i + 1 } : null;
-    })
-    .filter(Boolean);
+    .map((car, i) => {
+      const carData = CAR_OPTIONS.find((c) => c.type === car.type);
+      if (!carData) return null;
+      if (!isCarType(car.type)) return null;
 
+      return {
+        number: i + 1,
+        name: carData.name,
+        image: carData.image,
+        type: car.type,
+        income: car.income ?? 0,
+        mileage: car.mileage ?? 0,
+        resource: car.resource ?? carData.resource,
+      };
+    })
+    .filter(
+      (
+        c
+      ): c is {
+        number: number;
+        name: string;
+        image: any;
+        type: CarType;
+        income: number;
+        mileage: number;
+        resource: string;
+      } => c !== null
+    );
   const filteredCars = filter
-    ? carsArray.filter((c) => c?.type === filter)
+    ? carsArray.filter((c) => c.type === filter)
     : carsArray;
 
   return (
@@ -83,10 +114,13 @@ export default function CarsParkScreen({ route, navigation }: Props) {
               <Image source={item.image} style={styles.carImage} />
               <View style={styles.carInfo}>
                 <Text style={styles.carName}>{item.name}</Text>
-                <Text style={styles.carIncome}>
-                  ${item.income?.toFixed(2) ?? 0} в год
-                </Text>
                 <Text style={styles.carType}>{formatCarType(item.type)}</Text>
+                <Text style={styles.carIncome}>
+                  ${item.income.toFixed(2)} в год
+                </Text>
+                <Text style={styles.carMileage}>
+                  Пробіг: {item.mileage} км / {item.resource}
+                </Text>
               </View>
             </View>
           )}
@@ -177,10 +211,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "700",
   },
-  carIncome: {
-    fontSize: 14,
-    color: "#555",
-  },
   carType: {
     fontSize: 12,
     color: "#777",
@@ -189,5 +219,14 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     alignSelf: "flex-start",
     marginVertical: 4,
+  },
+  carIncome: {
+    fontSize: 14,
+    color: "#555",
+  },
+  carMileage: {
+    fontSize: 12,
+    color: "#555",
+    marginTop: 2,
   },
 });

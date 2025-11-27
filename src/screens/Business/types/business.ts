@@ -32,9 +32,11 @@ export type CarType =
 
 export type CarOption = {
   name: string;
+  type: CarType;
   image: any;
-  resource: string;
   income: number;
   price: number;
-  type: CarType;
+  resource: string;
+  mileage: number;
+  broken: boolean;
 };
