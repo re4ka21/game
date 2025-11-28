@@ -39,4 +39,7 @@ export type CarOption = {
   resource: string;
   mileage: number;
   broken: boolean;
+  boughtAt?: number;
+  sold?: boolean;
+  lastUpdated?: number;
 };

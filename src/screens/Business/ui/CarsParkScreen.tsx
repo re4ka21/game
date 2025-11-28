@@ -11,61 +11,44 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
 import { useBusinessStore } from "@/features/business";
 import { CAR_OPTIONS } from "@/screens/Business";
+import { AIRLINE_OPTIONS } from "@/screens/Business";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import { CarType } from "@/screens/Business/types/business";
+
 type Props = NativeStackScreenProps<RootStackParamList, "CarsPark">;
 
 export default function CarsParkScreen({ route, navigation }: Props) {
   const { business } = route.params;
-  const [filter, setFilter] = useState<string | null>(null);
+  const isCardealer = business.type === "cardealer";
+  const isAirline = business.type === "airline";
 
   const currentBusiness = useBusinessStore((state) =>
     state.myBusinesses.find((b) => b.id === business.id)
   );
 
   if (!currentBusiness) return null;
-  const isCarType = (type: string): type is CarType => {
-    return [
-      "economy",
-      "comfort",
-      "comfort_plus",
-      "business",
-      "premier",
-    ].includes(type);
-  };
 
-  const carsArray = (currentBusiness.carsList || [])
-    .map((car, i) => {
-      const carData = CAR_OPTIONS.find((c) => c.type === car.type);
-      if (!carData) return null;
-      if (!isCarType(car.type)) return null;
+  const OPTIONS = isAirline ? AIRLINE_OPTIONS : CAR_OPTIONS;
+
+  const itemsArray = (currentBusiness.carsList || [])
+    .map((item, i) => {
+      const itemData = OPTIONS.find((c) => c.type === item.type);
+      if (!itemData) return null;
 
       return {
         number: i + 1,
-        name: carData.name,
-        image: carData.image,
-        type: car.type,
-        income: car.income ?? 0,
-        mileage: car.mileage ?? 0,
-        resource: car.resource ?? carData.resource,
+        name: itemData.name,
+        image: itemData.image,
+        type: item.type,
+        income: item.income ?? 0,
+        mileage: item.mileage ?? 0,
+        resource: item.resource ?? itemData.resource,
+        price: item.price ?? itemData.price,
+        boughtAt: item.boughtAt ?? Date.now(),
       };
     })
-    .filter(
-      (
-        c
-      ): c is {
-        number: number;
-        name: string;
-        image: any;
-        type: CarType;
-        income: number;
-        mileage: number;
-        resource: string;
-      } => c !== null
-    );
-  const filteredCars = filter
-    ? carsArray.filter((c) => c.type === filter)
-    : carsArray;
+    .filter((c) => c !== null);
+
+  const displayedItems = isCardealer ? itemsArray : itemsArray;
 
   return (
     <View style={styles.container}>
@@ -76,54 +59,61 @@ export default function CarsParkScreen({ route, navigation }: Props) {
         <AntDesign name="arrow-left" size={24} color="black" />
       </TouchableOpacity>
 
-      <Text style={styles.title}>Автопарк</Text>
+      <Text style={styles.title}>
+        {isAirline ? "Авіапарк" : isCardealer ? "Автосалон" : "Автопарк"}
+      </Text>
 
-      <View style={styles.filters}>
-        {["economy", "comfort", "comfort_plus", "business", "premier"].map(
-          (t) => (
-            <TouchableOpacity
-              key={t}
-              style={[
-                styles.filterBtn,
-                filter === t ? styles.filterBtnActive : null,
-              ]}
-              onPress={() => setFilter(filter === t ? null : t)}
-            >
-              <Text
-                style={
-                  filter === t
-                    ? styles.filterBtnTextActive
-                    : styles.filterBtnText
-                }
-              >
-                {formatCarType(t)}
-              </Text>
-            </TouchableOpacity>
-          )
-        )}
-      </View>
-
-      {filteredCars.length === 0 ? (
-        <Text style={styles.noCars}>Немає куплених авто</Text>
+      {displayedItems.length === 0 ? (
+        <Text style={styles.noCars}>
+          {isAirline
+            ? "Немає куплених літаків"
+            : isCardealer
+              ? "Немає куплених авто"
+              : "Немає куплених авто"}
+        </Text>
       ) : (
         <FlatList
-          data={filteredCars}
+          data={displayedItems}
           keyExtractor={(item) => item.number.toString()}
-          renderItem={({ item }) => (
-            <View style={styles.carCard}>
-              <Image source={item.image} style={styles.carImage} />
-              <View style={styles.carInfo}>
-                <Text style={styles.carName}>{item.name}</Text>
-                <Text style={styles.carType}>{formatCarType(item.type)}</Text>
-                <Text style={styles.carIncome}>
-                  ${item.income.toFixed(2)} в год
-                </Text>
-                <Text style={styles.carMileage}>
-                  Пробіг: {item.mileage} км / {item.resource}
-                </Text>
+          renderItem={({ item }) => {
+            const elapsedMin = (Date.now() - item.boughtAt) / 1000 / 60;
+            const shouldAutoSell = isCardealer && elapsedMin >= 10;
+
+            if (shouldAutoSell) return null;
+
+            return (
+              <View style={styles.carCard}>
+                <Image source={item.image} style={styles.carImage} />
+                <View style={styles.carInfo}>
+                  <Text style={styles.carName}>{item.name}</Text>
+
+                  {!isAirline && !isCardealer && (
+                    <Text style={styles.carType}>
+                      {formatCarType(item.type)}
+                    </Text>
+                  )}
+
+                  {isCardealer ? (
+                    <Text style={styles.carIncome}>
+                      {`Вартість продажу: $${((item.price ?? 0) * 1.1).toFixed(
+                        2
+                      )}`}
+                    </Text>
+                  ) : (
+                    <Text style={styles.carIncome}>
+                      ${item.income.toFixed(2)} в год
+                    </Text>
+                  )}
+
+                  {!isCardealer && (
+                    <Text style={styles.carMileage}>
+                      Пробіг: {item.mileage} км / {item.resource}
+                    </Text>
+                  )}
+                </View>
               </View>
-            </View>
-          )}
+            );
+          }}
         />
       )}
     </View>
@@ -154,14 +144,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#f2f2f2",
     marginTop: 40,
   },
-  backBtn: {
-    marginBottom: 15,
-  },
-  title: {
-    fontSize: 26,
-    fontWeight: "700",
-    marginBottom: 16,
-  },
+  backBtn: { marginBottom: 15 },
+  title: { fontSize: 26, fontWeight: "700", marginBottom: 16 },
   filters: {
     flexDirection: "row",
     flexWrap: "wrap",
@@ -178,18 +162,9 @@ const styles = StyleSheet.create({
   filterBtnActive: {
     backgroundColor: "#FFD700",
   },
-  filterBtnText: {
-    color: "#333",
-  },
-  filterBtnTextActive: {
-    color: "#000",
-    fontWeight: "700",
-  },
-  noCars: {
-    fontSize: 18,
-    textAlign: "center",
-    marginTop: 30,
-  },
+  filterBtnText: { color: "#333" },
+  filterBtnTextActive: { color: "#000", fontWeight: "700" },
+  noCars: { fontSize: 18, textAlign: "center", marginTop: 30 },
   carCard: {
     flexDirection: "row",
     backgroundColor: "#fff",
@@ -198,19 +173,9 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     elevation: 3,
   },
-  carImage: {
-    width: 100,
-    height: 60,
-    resizeMode: "contain",
-    marginRight: 12,
-  },
-  carInfo: {
-    flex: 1,
-  },
-  carName: {
-    fontSize: 16,
-    fontWeight: "700",
-  },
+  carImage: { width: 100, height: 60, resizeMode: "contain", marginRight: 12 },
+  carInfo: { flex: 1 },
+  carName: { fontSize: 16, fontWeight: "700" },
   carType: {
     fontSize: 12,
     color: "#777",
@@ -220,13 +185,6 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
     marginVertical: 4,
   },
-  carIncome: {
-    fontSize: 14,
-    color: "#555",
-  },
-  carMileage: {
-    fontSize: 12,
-    color: "#555",
-    marginTop: 2,
-  },
+  carIncome: { fontSize: 14, color: "#000000ff" },
+  carMileage: { fontSize: 12, color: "#555", marginTop: 2 },
 });

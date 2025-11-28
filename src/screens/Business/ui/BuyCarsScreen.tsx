@@ -11,13 +11,18 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
 import { useCounterStore } from "@/features/counter";
 import { useBusinessStore } from "@/features/business/model/store";
-import { CAR_OPTIONS, CAR_TYPE_COLORS } from "@/screens/Business";
+import {
+  CAR_OPTIONS,
+  CAR_TYPE_COLORS,
+  AIRLINE_OPTIONS,
+} from "@/screens/Business";
 import { CarType } from "@/screens/Business/types/business";
 
 type Props = NativeStackScreenProps<RootStackParamList, "BuyCars">;
 
 export default function BuyCarsScreen({ route, navigation }: Props) {
   const { business } = route.params;
+
   const currentBusiness = useBusinessStore((state) =>
     state.myBusinesses.find((b) => b.id === business.id)
   );
@@ -28,12 +33,17 @@ export default function BuyCarsScreen({ route, navigation }: Props) {
 
   const [selectedType, setSelectedType] = useState<CarType | null>(null);
 
+  const isAirlineBusiness = business.type === "airline";
+  const isCarDealer = business.type === "cardealer";
+
   if (!currentBusiness) return null;
+
+  const OPTIONS = isAirlineBusiness ? AIRLINE_OPTIONS : CAR_OPTIONS;
 
   const filteredCars =
     selectedType === null
-      ? CAR_OPTIONS
-      : CAR_OPTIONS.filter((c) => c.type === selectedType);
+      ? OPTIONS
+      : OPTIONS.filter((c) => c.type === selectedType);
 
   const handleBuy = (car: (typeof CAR_OPTIONS)[number]) => {
     if (balance < car.price) return;
@@ -59,28 +69,31 @@ export default function BuyCarsScreen({ route, navigation }: Props) {
         Баланс: $ {balance?.toFixed(2) ?? "0.00"}
       </Text>
 
-      <View style={styles.filterRow}>
-        {(
-          [
-            "economy",
-            "comfort",
-            "comfort_plus",
-            "business",
-            "premier",
-          ] as CarType[]
-        ).map((type) => (
-          <TouchableOpacity
-            key={type}
-            style={[
-              styles.typeButton,
-              selectedType === type && styles.typeButtonActive,
-            ]}
-            onPress={() => toggleFilter(type)}
-          >
-            <Text style={styles.typeButtonText}>{formatCarType(type)}</Text>
-          </TouchableOpacity>
-        ))}
-      </View>
+      {/* ❌ НЕ ПОКАЗУЄМО ФІЛЬТРИ ДЛЯ cardealer */}
+      {!isCarDealer && (
+        <View style={styles.filterRow}>
+          {(
+            [
+              "economy",
+              "comfort",
+              "comfort_plus",
+              "business",
+              "premier",
+            ] as CarType[]
+          ).map((type) => (
+            <TouchableOpacity
+              key={type}
+              style={[
+                styles.typeButton,
+                selectedType === type && styles.typeButtonActive,
+              ]}
+              onPress={() => toggleFilter(type)}
+            >
+              <Text style={styles.typeButtonText}>{formatCarType(type)}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+      )}
 
       <FlatList
         data={filteredCars}
@@ -88,23 +101,39 @@ export default function BuyCarsScreen({ route, navigation }: Props) {
         renderItem={({ item }) => (
           <View style={styles.carCard}>
             <Image source={item.image} style={styles.carImage} />
+
             <View style={styles.carInfo}>
               <Text style={styles.carName}>{item.name}</Text>
-              <Text
-                style={[
-                  styles.carType,
-                  { backgroundColor: CAR_TYPE_COLORS[item.type] },
-                ]}
-              >
-                {formatCarType(item.type)}
-              </Text>
-              <Text style={styles.carResource}>Ресурс: {item.resource}</Text>
-              <Text style={styles.carIncome}>
-                Доход в год: $ {item.income ?? 0}
-              </Text>
+
+              {!isCarDealer && (
+                <Text
+                  style={[
+                    styles.carType,
+                    { backgroundColor: CAR_TYPE_COLORS[item.type] },
+                  ]}
+                >
+                  {formatCarType(item.type)}
+                </Text>
+              )}
+
+              {/* ❌ Не показуємо ресурс для cardealer */}
+              {!isCarDealer && (
+                <Text style={styles.carResource}>Ресурс: {item.resource}</Text>
+              )}
+
+              {/* 🔥 Заміна доходу */}
+              {isCarDealer ? (
+                <Text style={styles.carIncome}>Вигода: +10%</Text>
+              ) : (
+                <Text style={styles.carIncome}>
+                  Доход в год: $ {item.income ?? 0}
+                </Text>
+              )}
+
               <Text style={styles.carPrice}>
                 $ {item.price?.toLocaleString() ?? 0}
               </Text>
+
               <TouchableOpacity
                 style={[
                   styles.buyButton,

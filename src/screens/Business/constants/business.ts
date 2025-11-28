@@ -236,3 +236,25 @@ export const CAR_TYPE_COLORS: Record<CarType, string> = {
   business: "#3498db",
   premier: "#e74c3c",
 };
+export const AIRLINE_OPTIONS: CarOption[] = [
+  {
+    name: "Cessna 172",
+    type: "economy",
+    image: require("../../../../assets/images/react-logo.png"),
+    income: 12000,
+    price: 150000,
+    resource: "500 000 км",
+    mileage: 0,
+    broken: false,
+  },
+  {
+    name: "Boeing 737",
+    type: "business",
+    image: require("../../../../assets/images/react-logo.png"),
+    income: 85000,
+    price: 900000,
+    resource: "2 000 000 км",
+    mileage: 0,
+    broken: false,
+  },
+];

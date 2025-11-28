@@ -92,60 +92,51 @@ export const useBusinessStore = create<BusinessState>()(
 
       addBusinessCar: (id, car: CarOption) =>
         set({
-          myBusinesses: get().myBusinesses.map((b) =>
-            b.id === id
-              ? {
-                  ...b,
-                  cars: (b.cars ?? 0) + 1,
-                  carsList: [...(b.carsList || []), car],
-                  incomePerHour: b.incomePerHour + CAR_INCOME_BONUS[car.type],
-                }
-              : b
-          ),
+          myBusinesses: get().myBusinesses.map((b) => {
+            if (b.id !== id) return b;
+
+            return {
+              ...b,
+              carsList: [
+                ...(b.carsList || []),
+                { ...car, boughtAt: Date.now() },
+              ],
+              cars: (b.cars ?? 0) + 1,
+              incomePerHour: b.incomePerHour + CAR_INCOME_BONUS[car.type],
+            };
+          }),
         }),
 
       updateOfflineEarnings: async () => {
-        try {
-          const lastTimeStr = await AsyncStorage.getItem("lastTime2");
-          const lastTime = lastTimeStr ? parseInt(lastTimeStr, 10) : Date.now();
-          const now = Date.now();
-          const elapsedSec = (now - lastTime) / 1000;
+        const now = Date.now();
 
-          set({
-            myBusinesses: get().myBusinesses.map((b) => {
-              const earned = (b.incomePerHour / 3600) * elapsedSec;
-              const hoursPassed = Math.floor(elapsedSec / 3600);
-              const tax = b.incomePerHour * (b.taxPercent / 100) * hoursPassed;
+        set({
+          myBusinesses: get().myBusinesses.map((b) => {
+            let updatedCars = (b.carsList || []).map((car) => {
+              if (b.type === "cardealer") {
+                const elapsedMin = (now - car.boughtAt) / 1000 / 60;
+                if (elapsedMin >= 10) {
+                  return { ...car, sold: true, income: (car.price ?? 0) * 1.1 };
+                }
+                return car;
+              } else {
+                const newMileage =
+                  (car.mileage ?? 0) +
+                  (0.4 * (now - (car.lastUpdated ?? now))) / 1000;
+                const isBroken =
+                  newMileage >= parseFloat(car.resource.replace(/\D/g, ""));
+                return { ...car, mileage: newMileage, broken: isBroken };
+              }
+            });
 
-              const newEarnings = b.earnings + earned - tax;
+            // Видаляємо продані авто
+            updatedCars = updatedCars.filter((c) => !c.sold && !c.broken);
 
-              return {
-                ...b,
-                earnings: newEarnings >= 0 ? newEarnings : 0,
-                totalEarnings: b.totalEarnings + earned,
-                carsList: b.carsList?.map((car) => {
-                  const carBonus = CAR_INCOME_BONUS[car.type] ?? 0;
-                  const carEarned = car.broken
-                    ? 0
-                    : (carBonus / 3600) * elapsedSec;
-                  const newMileage = (car.mileage ?? 0) + elapsedSec * 0.1;
-                  return {
-                    ...car,
-                    income: (car.income ?? 0) + carEarned,
-                    mileage: newMileage,
-                    broken:
-                      newMileage >=
-                      parseFloat(car.resource.replace(/\s|км/g, "")),
-                  };
-                }),
-              };
-            }),
-          });
+            return { ...b, carsList: updatedCars };
+          }),
+        });
 
-          await AsyncStorage.setItem("lastTime2", now.toString());
-        } catch (e) {
-          console.log("Error calculating offline earnings", e);
-        }
+        await AsyncStorage.setItem("lastTime2", now.toString());
       },
 
       removeBusiness: (id) =>

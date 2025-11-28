@@ -49,7 +49,9 @@ export default function BusinessCard({ business }) {
           ) : (
             <View style={styles.limitRow}>
               <Ionicons name="person" size={14} color={colors.secondary} />
-              <Text style={styles.limitText}>{business.cars || 0}/5</Text>
+              <Text style={styles.limitText}>
+                {business.cars || 0}/{business.capacity || 5}
+              </Text>
             </View>
           )}
 

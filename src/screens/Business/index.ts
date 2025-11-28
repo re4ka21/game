@@ -12,6 +12,7 @@ export {
   SHOP_SIZES,
   CAR_OPTIONS,
   CAR_TYPE_COLORS,
+  AIRLINE_OPTIONS,
 } from "./constants/business";
 export { default as BuyCarsScreen } from "./ui/BuyCarsScreen";
 export { default as CarsParkScreen } from "./ui/CarsParkScreen";

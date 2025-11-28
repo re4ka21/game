@@ -44,6 +44,20 @@ export default function DetailsDependent() {
   const busColor = business.color;
   const formattedCount = count.toFixed(2).replace(".", ",");
 
+  const isAirline = business.type === "airline";
+
+  const parkTitle = isAirline ? "Авіапарк" : "Автопарк";
+  const itemTitle = isAirline ? "Літаків:" : "Автомобілів:";
+  const buyButtonLabel = isAirline
+    ? "Придбати новий літак"
+    : "Придбати новий автомобіль";
+
+  const parkingImageSource = isAirline
+    ? require("../../../../assets/images/airport.png")
+    : require("../../../../assets/images/parking.png");
+
+  const parkScreenName = "CarsPark";
+
   const handleAddCapacity = (value: number) => {
     const cost = CAPACITY_COST_MAP[value];
     if (capacity + value > 40) {
@@ -95,12 +109,14 @@ export default function DetailsDependent() {
         />
 
         <View style={styles.info}>
+          {/* 🔥 Автопарк / Авіапарк */}
           <TouchableOpacity
             style={styles.parkBox}
-            onPress={() => navigation.navigate("CarsPark", { business })}
+            onPress={() => navigation.navigate(parkScreenName, { business })}
           >
-            <Text style={styles.parkTitle}>Автопарк</Text>
+            <Text style={styles.parkTitle}>{parkTitle}</Text>
             <ProgressBar progress={(cars / capacity) * 100} color={busColor} />
+
             <LinearGradient
               colors={[busColor, "#f2f2f2"]}
               start={{ x: 0, y: 0 }}
@@ -108,27 +124,26 @@ export default function DetailsDependent() {
               style={styles.carsBox}
             >
               <Text style={styles.value}>
-                Автомобілів: {"\n"}
+                {itemTitle} {"\n"}
                 {cars}
               </Text>
             </LinearGradient>
           </TouchableOpacity>
 
+          {/* Місткість */}
           <View style={styles.capacityBox}>
-            <Image
-              source={require("../../../../assets/images/parking.png")}
-              style={styles.parkingImage}
-            />
+            <Image source={parkingImageSource} style={styles.parkingImage} />
             <Text style={styles.value}>Місткість:</Text>
             <Text style={styles.valueNumber}>{capacity}</Text>
           </View>
         </View>
 
+        {/* Купити авто/літак */}
         <TouchableOpacity
           style={[styles.buyBtn, { backgroundColor: busColor }]}
           onPress={handleBuyCar}
         >
-          <Text style={styles.buyBtnText}>Придбати новий автомобіль</Text>
+          <Text style={styles.buyBtnText}>{buyButtonLabel}</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -184,6 +199,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-end",
     marginLeft: 5,
+    overflow: "hidden",
   },
   parkTitle: { fontSize: 16, fontWeight: "700" },
   carsBox: {
