@@ -109,7 +109,6 @@ export default function DetailsDependent() {
         />
 
         <View style={styles.info}>
-          {/* 🔥 Автопарк / Авіапарк */}
           <TouchableOpacity
             style={styles.parkBox}
             onPress={() => navigation.navigate(parkScreenName, { business })}

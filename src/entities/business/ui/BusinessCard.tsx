@@ -43,7 +43,11 @@ export default function BusinessCard({ business }) {
         <View style={styles.infoWrap}>
           {!business.dependent ? (
             <View style={styles.limitRow}>
-              <Ionicons name="person" size={14} color={colors.secondary} />
+              <Ionicons
+                name={business.icon}
+                size={14}
+                color={colors.secondary}
+              />
               <Text style={styles.limitText}>{business.stage || 0}/5</Text>
             </View>
           ) : (

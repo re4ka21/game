@@ -157,9 +157,7 @@ export default function DetailsInDependent() {
                     style={[styles.buyBtn, { backgroundColor: busColor }]}
                     onPress={handleUpgradeStage}
                   >
-                    <Text style={styles.buyBtnText}>
-                      Відкрити нові точки продажу
-                    </Text>
+                    <Text style={styles.buyBtnText}>Відкрити нові точки</Text>
                   </TouchableOpacity>
                 </>
               ) : (
