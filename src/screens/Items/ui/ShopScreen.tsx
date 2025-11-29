@@ -64,7 +64,7 @@ export default function ShopScreen() {
   const boughtItems = useGarageStore((s) => s.items);
 
   const allItems = type === "cars" ? CARS : type === "planes" ? PLANES : SHIPS;
-  // фільтруємо вже куплені
+
   const items = allItems.filter(
     (item) => !boughtItems.some((b) => b.id === item.id)
   );
@@ -92,8 +92,8 @@ export default function ShopScreen() {
                 onPress={() => {
                   const counter = useCounterStore.getState();
                   if (counter.count >= item.price) {
-                    useGarageStore.getState().addItem(item); // додаємо в гараж
-                    useCounterStore.getState().purchase(item.price); // знімаємо гроші
+                    useGarageStore.getState().addItem(item);
+                    useCounterStore.getState().purchase(item.price);
                   }
                 }}
               >
