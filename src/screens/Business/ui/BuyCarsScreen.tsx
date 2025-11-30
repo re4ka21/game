@@ -69,7 +69,6 @@ export default function BuyCarsScreen({ route, navigation }: Props) {
         Баланс: $ {balance?.toFixed(2) ?? "0.00"}
       </Text>
 
-      {/* ❌ НЕ ПОКАЗУЄМО ФІЛЬТРИ ДЛЯ cardealer */}
       {!isCarDealer && (
         <View style={styles.filterRow}>
           {(

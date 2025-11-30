@@ -10,7 +10,13 @@ import {
 import { useRoute, RouteProp } from "@react-navigation/native";
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
 import { useGarageStore, GarageItem } from "@/features/items";
-import { useCounterStore } from "@/features/counter";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+type ShopScreenNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  "Shop"
+>;
+
 const CARS: GarageItem[] = [
   {
     id: 1,
@@ -60,7 +66,7 @@ type ShopScreenRouteProp = RouteProp<RootStackParamList, "Shop">;
 export default function ShopScreen() {
   const route = useRoute<ShopScreenRouteProp>();
   const type = route.params.type;
-
+  const navigation = useNavigation<ShopScreenNavigationProp>();
   const boughtItems = useGarageStore((s) => s.items);
 
   const allItems = type === "cars" ? CARS : type === "planes" ? PLANES : SHIPS;
@@ -68,7 +74,9 @@ export default function ShopScreen() {
   const items = allItems.filter(
     (item) => !boughtItems.some((b) => b.id === item.id)
   );
-
+  const confirmBuy = (item: GarageItem) => {
+    navigation.navigate("ConfirmBuyCar", { item });
+  };
   return (
     <View style={styles.container}>
       <Text style={styles.title}>
@@ -83,25 +91,16 @@ export default function ShopScreen() {
         data={items}
         keyExtractor={(item) => `${item.type}-${item.id}`}
         renderItem={({ item }) => (
-          <View style={styles.card}>
+          <TouchableOpacity
+            style={styles.card}
+            onPress={() => confirmBuy(item)}
+          >
             <View>
               <Text style={styles.name}>{item.name}</Text>
               <Text style={styles.price}>Цена: ${item.price}</Text>
-              <TouchableOpacity
-                style={styles.buyBtn}
-                onPress={() => {
-                  const counter = useCounterStore.getState();
-                  if (counter.count >= item.price) {
-                    useGarageStore.getState().addItem(item);
-                    useCounterStore.getState().purchase(item.price);
-                  }
-                }}
-              >
-                <Text style={styles.buyText}>Купить</Text>
-              </TouchableOpacity>
             </View>
             <Image source={item.image} style={styles.image} />
-          </View>
+          </TouchableOpacity>
         )}
       />
     </View>

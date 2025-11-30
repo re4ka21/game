@@ -1,4 +1,3 @@
-// store/items.ts
 import { create } from "zustand";
 import { ImageSourcePropType } from "react-native";
 
@@ -8,6 +7,8 @@ export type GarageItem = {
   price: number;
   image: ImageSourcePropType;
   type: "cars" | "planes" | "ships";
+  engine?: "DF" | "BST" | "S+";
+  packageType?: "standard" | "premium";
 };
 
 type GarageStore = {

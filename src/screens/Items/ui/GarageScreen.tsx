@@ -32,6 +32,12 @@ export default function GarageScreen() {
             <Image source={item.image} style={styles.image} />
             <View style={styles.info}>
               <Text style={styles.name}>{item.name}</Text>
+              <Text>Двигатель: {item.engine || "DF"}</Text>
+              <Text>
+                Комплектация:{" "}
+                {item.packageType === "premium" ? "Премиум" : "Стандарт"}
+              </Text>
+              <Text>Цена: ${item.price.toLocaleString()}</Text>
             </View>
           </View>
         )}
