@@ -14,6 +14,7 @@ export default function GarageScreen() {
   const filteredItems = useMemo(() => {
     return items.filter((i) => i.type === type);
   }, [items, type]);
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>
@@ -30,13 +31,30 @@ export default function GarageScreen() {
         renderItem={({ item }) => (
           <View style={styles.card}>
             <Image source={item.image} style={styles.image} />
+
             <View style={styles.info}>
               <Text style={styles.name}>{item.name}</Text>
-              <Text>Двигатель: {item.engine || "DF"}</Text>
-              <Text>
-                Комплектация:{" "}
-                {item.packageType === "premium" ? "Премиум" : "Стандарт"}
-              </Text>
+
+              {item.type === "cars" && (
+                <>
+                  <Text>Двигатель: {item.engine || "DF"}</Text>
+                  <Text>
+                    Комплектация:{" "}
+                    {item.packageType === "premium" ? "Премиум" : "Стандарт"}
+                  </Text>
+                </>
+              )}
+
+              {(item.type === "planes" || item.type === "ships") && (
+                <>
+                  <Text>
+                    Класс:{" "}
+                    {item.packageType === "premium" ? "Премиум" : "Стандарт"}
+                  </Text>
+                  {item.team && <Text>Команда: {item.team}</Text>}
+                </>
+              )}
+
               <Text>Цена: ${item.price.toLocaleString()}</Text>
             </View>
           </View>

@@ -10,7 +10,7 @@ type ConfirmRoute = RouteProp<RootStackParamList, "ConfirmBuyCar">;
 export default function ConfirmBuyCarScreen() {
   const route = useRoute<ConfirmRoute>();
   const navigation = useNavigation();
-
+  const { count } = useCounterStore();
   const item = route.params.item;
 
   const basePrice = item.price;
@@ -40,9 +40,6 @@ export default function ConfirmBuyCarScreen() {
   }, [engine, packageType]);
 
   const handleBuy = () => {
-    const money = useCounterStore.getState().count;
-    if (money < finalPrice) return;
-
     useGarageStore.getState().addItem({
       ...item,
       price: finalPrice,
@@ -97,7 +94,14 @@ export default function ConfirmBuyCarScreen() {
         {finalPrice.toLocaleString("en-US", { minimumFractionDigits: 2 })}
       </Text>
 
-      <TouchableOpacity style={styles.buyBtn} onPress={handleBuy}>
+      <TouchableOpacity
+        style={[
+          styles.buyBtn,
+          count < finalPrice && { backgroundColor: "#999" },
+        ]}
+        onPress={handleBuy}
+        disabled={count < finalPrice}
+      >
         <Text style={styles.buyText}>Купить</Text>
       </TouchableOpacity>
     </View>

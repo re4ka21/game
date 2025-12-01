@@ -3,15 +3,16 @@ import {
   View,
   Text,
   FlatList,
-  Image,
-  TouchableOpacity,
   StyleSheet,
+  TouchableOpacity,
 } from "react-native";
 import { useRoute, RouteProp } from "@react-navigation/native";
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
 import { useGarageStore, GarageItem } from "@/features/items";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { CardCar, CardPlane, CardShip } from "@/entities";
+import AntDesign from "@expo/vector-icons/AntDesign";
 type ShopScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
   "Shop"
@@ -24,26 +25,170 @@ const CARS: GarageItem[] = [
     price: 2250,
     image: require("../../../../assets/images/react-logo.png"),
     type: "cars",
+    color: "#b0b0b0",
   },
   {
     id: 2,
+    name: "Ford Mustang",
+    price: 8000,
+    image: require("../../../../assets/images/react-logo.png"),
+    type: "cars",
+    color: "#b0b0b0",
+  },
+  {
+    id: 3,
+    name: "Aston Martin DB11",
+    price: 25000,
+    image: require("../../../../assets/images/react-logo.png"),
+    type: "cars",
+    color: "#b0b0b0",
+  },
+  {
+    id: 4,
+    name: "Koenigsegg Jesko",
+    price: 180000,
+    image: require("../../../../assets/images/react-logo.png"),
+    type: "cars",
+    color: "#b0b0b0",
+  },
+
+  {
+    id: 5,
     name: "Chevrolet Sonni",
     price: 3000,
     image: require("../../../../assets/images/react-logo.png"),
     type: "cars",
+    color: "#87cefa",
   },
   {
-    id: 3,
+    id: 6,
+    name: "Chevrolet Camaro",
+    price: 8500,
+    image: require("../../../../assets/images/react-logo.png"),
+    type: "cars",
+    color: "#87cefa",
+  },
+  {
+    id: 7,
+    name: "Bentley Continental",
+    price: 30000,
+    image: require("../../../../assets/images/react-logo.png"),
+    type: "cars",
+    color: "#87cefa",
+  },
+  {
+    id: 8,
+    name: "Lotus Evija",
+    price: 200000,
+    image: require("../../../../assets/images/react-logo.png"),
+    type: "cars",
+    color: "#87cefa",
+  },
+
+  {
+    id: 9,
     name: "Fort Focas Old",
     price: 3500,
     image: require("../../../../assets/images/react-logo.png"),
     type: "cars",
+    color: "#1e90ff",
+  },
+  {
+    id: 10,
+    name: "Lamborghini Aventador",
+    price: 12000,
+    image: require("../../../../assets/images/react-logo.png"),
+    type: "cars",
+    color: "#1e90ff",
+  },
+  {
+    id: 11,
+    name: "Rolls-Royce Phantom",
+    price: 50000,
+    image: require("../../../../assets/images/react-logo.png"),
+    type: "cars",
+    color: "#1e90ff",
+  },
+
+  {
+    id: 12,
+    name: "Toyota Corolla",
+    price: 4000,
+    image: require("../../../../assets/images/react-logo.png"),
+    type: "cars",
+    color: "#ff69b4",
+  },
+  {
+    id: 13,
+    name: "Ferrari F8",
+    price: 15000,
+    image: require("../../../../assets/images/react-logo.png"),
+    type: "cars",
+    color: "#ff69b4",
+  },
+  {
+    id: 14,
+    name: "Bugatti Chiron",
+    price: 100000,
+    image: require("../../../../assets/images/react-logo.png"),
+    type: "cars",
+    color: "#ff69b4",
+  },
+
+  {
+    id: 15,
+    name: "Honda Accord",
+    price: 5000,
+    image: require("../../../../assets/images/react-logo.png"),
+    type: "cars",
+    color: "#ff0000",
+  },
+  {
+    id: 16,
+    name: "Porsche 911",
+    price: 20000,
+    image: require("../../../../assets/images/react-logo.png"),
+    type: "cars",
+    color: "#ff0000",
+  },
+  {
+    id: 17,
+    name: "McLaren 720S",
+    price: 120000,
+    image: require("../../../../assets/images/react-logo.png"),
+    type: "cars",
+    color: "#ff0000",
+  },
+
+  {
+    id: 18,
+    name: "Nissan Altima",
+    price: 5500,
+    image: require("../../../../assets/images/react-logo.png"),
+    type: "cars",
+    color: "#ffd700",
+  },
+  {
+    id: 19,
+    name: "Maserati GranTurismo",
+    price: 22000,
+    image: require("../../../../assets/images/react-logo.png"),
+    type: "cars",
+    color: "#ffd700",
+  },
+  {
+    id: 20,
+    name: "Pagani Huayra",
+    price: 150000,
+    image: require("../../../../assets/images/react-logo.png"),
+    type: "cars",
+    color: "#ffd700",
   },
 ];
 
 const PLANES: GarageItem[] = [
   {
-    id: 4,
+    id: 21,
     name: "Cessna 172",
     price: 5000,
     image: require("../../../../assets/images/react-logo.png"),
@@ -53,7 +198,7 @@ const PLANES: GarageItem[] = [
 
 const SHIPS: GarageItem[] = [
   {
-    id: 5,
+    id: 22,
     name: "Yacht",
     price: 10000,
     image: require("../../../../assets/images/react-logo.png"),
@@ -75,58 +220,57 @@ export default function ShopScreen() {
     (item) => !boughtItems.some((b) => b.id === item.id)
   );
   const confirmBuy = (item: GarageItem) => {
-    navigation.navigate("ConfirmBuyCar", { item });
+    if (item.type === "planes" || item.type === "ships") {
+      navigation.navigate("ConfirmBuyShipPlane", { item });
+    } else {
+      navigation.navigate("ConfirmBuyCar", { item });
+    }
   };
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>
-        {type === "cars"
-          ? "Автосалон"
-          : type === "planes"
-            ? "Авиамагазин"
-            : "Яхт-шоп"}
-      </Text>
-
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <AntDesign name="arrow-left" size={24} color="black" />
+        </TouchableOpacity>
+        <Text style={styles.title}>
+          {type === "cars"
+            ? "Автосалон"
+            : type === "planes"
+              ? "Авиамагазин"
+              : "Яхт-шоп"}
+        </Text>
+      </View>
       <FlatList
         data={items}
         keyExtractor={(item) => `${item.type}-${item.id}`}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            style={styles.card}
-            onPress={() => confirmBuy(item)}
-          >
-            <View>
-              <Text style={styles.name}>{item.name}</Text>
-              <Text style={styles.price}>Цена: ${item.price}</Text>
-            </View>
-            <Image source={item.image} style={styles.image} />
-          </TouchableOpacity>
-        )}
+        renderItem={({ item }) => {
+          if (type === "cars")
+            return <CardCar item={item} onPress={() => confirmBuy(item)} />;
+          if (type === "planes")
+            return <CardPlane item={item} onPress={() => confirmBuy(item)} />;
+          return <CardShip item={item} onPress={() => confirmBuy(item)} />;
+        }}
       />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16, paddingTop: 50 },
-  title: { fontSize: 26, fontWeight: "700", marginBottom: 20 },
-  card: {
+  container: {
+    flex: 1,
+    padding: 16,
+    paddingTop: 50,
+  },
+  header: {
     flexDirection: "row",
-    justifyContent: "space-between",
-    borderRadius: 16,
-    padding: 20,
-    marginBottom: 16,
-    backgroundColor: "#eee",
     alignItems: "center",
+    marginBottom: 20,
   },
-  name: { fontSize: 20, fontWeight: "700" },
-  price: { fontSize: 16, marginTop: 4 },
-  image: { width: 100, height: 60, resizeMode: "contain" },
-  buyBtn: {
-    marginTop: 10,
-    backgroundColor: "#4c6ef5",
-    padding: 8,
-    borderRadius: 10,
+  title: {
+    fontSize: 26,
+    marginLeft: 10,
+    marginBottom: 3,
+    fontWeight: "700",
   },
-  buyText: { color: "#fff", fontWeight: "700", textAlign: "center" },
 });

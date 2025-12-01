@@ -1,3 +1,7 @@
 export { default as BusinessCard } from "./business/ui/BusinessCard";
 export { default as CapacityButtons } from "./business/ui/CapacityButtons";
 export { BUSINESS_NAMES_BY_CATEGORY } from "./business/model/businessNames";
+export { default as CardCar } from "./items/ui/CardCar";
+export { default as CardPlane } from "./items/ui/CardPlane";
+export { default as CardShip } from "./items/ui/CardShip";
+export { default as TopItemComponent } from "./items/ui/TopItemComponent";
