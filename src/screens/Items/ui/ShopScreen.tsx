@@ -201,7 +201,7 @@ const SHIPS: GarageItem[] = [
     id: 22,
     name: "Yacht",
     price: 10000,
-    image: require("../../../../assets/images/react-logo.png"),
+    image: require("../../../../assets/images/airport.png"),
     type: "ships",
   },
 ];

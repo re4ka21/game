@@ -4,7 +4,9 @@ import { RouteProp, useRoute, useNavigation } from "@react-navigation/native";
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
 import { useGarageStore } from "@/features/items";
 import { useCounterStore } from "@/features/counter";
-
+import AntDesign from "@expo/vector-icons/AntDesign";
+import { HeaderPlane } from "@/entities";
+import { HeaderShip } from "@/entities";
 type ScreenRouteProp = RouteProp<RootStackParamList, "ConfirmBuyShipPlane">;
 
 export default function ConfirmBuyShipPlane() {
@@ -35,9 +37,11 @@ export default function ConfirmBuyShipPlane() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{item.name}</Text>
-      <Text style={styles.price}>Цена от ${item.price}</Text>
-      <Image source={item.image} style={styles.image} />
+      {item.type === "planes" ? (
+        <HeaderPlane item={item} />
+      ) : (
+        <HeaderShip item={item} />
+      )}
       <Text style={styles.section}>
         {item.type === "planes"
           ? "Пилот, бортпроводники, персонал"

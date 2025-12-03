@@ -5,3 +5,5 @@ export { default as CardCar } from "./items/ui/CardCar";
 export { default as CardPlane } from "./items/ui/CardPlane";
 export { default as CardShip } from "./items/ui/CardShip";
 export { default as TopItemComponent } from "./items/ui/TopItemComponent";
+export { default as HeaderPlane } from "@/entities/items/ui/HeaderPlane";
+export { default as HeaderShip } from "@/entities/items/ui/HeaderShip";

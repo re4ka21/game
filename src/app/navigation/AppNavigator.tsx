@@ -21,7 +21,7 @@ import {
   ShopScreen,
   GarageScreen,
   ConfirmBuyCarScreen,
-  ConfirmBuyShipPlaneScreen,
+  VehiclesScreen,
 } from "@/screens/Items";
 import { GarageItem } from "@/features/items";
 import { ImageSourcePropType } from "react-native";
@@ -175,7 +175,7 @@ export default function AppNavigator() {
       />
       <Stack.Screen
         name="ConfirmBuyShipPlane"
-        component={ConfirmBuyShipPlaneScreen}
+        component={VehiclesScreen}
         options={{
           headerShown: false,
         }}
