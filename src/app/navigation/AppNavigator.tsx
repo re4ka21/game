@@ -22,8 +22,10 @@ import {
   GarageScreen,
   ConfirmBuyCarScreen,
   VehiclesScreen,
+  BuyItemsScreen,
 } from "@/screens/Items";
 import { GarageItem } from "@/features/items";
+import { Item } from "@/features/items";
 import { ImageSourcePropType } from "react-native";
 export type RootStackParamList = {
   Tabs: { screen?: string } | undefined;
@@ -44,6 +46,7 @@ export type RootStackParamList = {
   Garage: { type: "cars" | "ships" | "planes" };
   ConfirmBuyCar: { item: GarageItem };
   ConfirmBuyShipPlane: { item: GarageItem };
+  BuyItems: { type: "coins" | "paintings" };
 };
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -176,6 +179,13 @@ export default function AppNavigator() {
       <Stack.Screen
         name="ConfirmBuyShipPlane"
         component={VehiclesScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="BuyItems"
+        component={BuyItemsScreen}
         options={{
           headerShown: false,
         }}

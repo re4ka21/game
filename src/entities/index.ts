@@ -7,3 +7,4 @@ export { default as CardShip } from "./items/ui/CardShip";
 export { default as TopItemComponent } from "./items/ui/TopItemComponent";
 export { default as HeaderPlane } from "@/entities/items/ui/HeaderPlane";
 export { default as HeaderShip } from "@/entities/items/ui/HeaderShip";
+export { default as MiddleItemComponent } from "@/entities/items/ui/MiddleItemComponent";
