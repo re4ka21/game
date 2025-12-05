@@ -1,29 +1,51 @@
 import React, { useMemo } from "react";
-import { View, Text, FlatList, Image, StyleSheet } from "react-native";
-import { useRoute, RouteProp } from "@react-navigation/native";
+import {
+  View,
+  Text,
+  FlatList,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
+import { useRoute, RouteProp, useNavigation } from "@react-navigation/native";
+import AntDesign from "@expo/vector-icons/AntDesign";
+
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
 import { useGarageStore } from "@/features/items";
+import { useCounterStore } from "@/features/counter";
 
 type GarageRoute = RouteProp<RootStackParamList, "Garage">;
 
 export default function GarageScreen() {
   const route = useRoute<GarageRoute>();
   const type = route.params.type;
+  const navigation = useNavigation();
 
   const items = useGarageStore((s) => s.items);
+  const balance = useCounterStore((s) => s.count);
+
   const filteredItems = useMemo(() => {
     return items.filter((i) => i.type === type);
   }, [items, type]);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>
-        {type === "cars"
-          ? "Мои машины"
-          : type === "planes"
-            ? "Мои самолеты"
-            : "Мои корабли"}
-      </Text>
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <AntDesign name="arrow-left" size={24} color="black" />
+        </TouchableOpacity>
+
+        <View style={styles.titleContainer}>
+          <Text style={styles.title}>
+            {type === "cars"
+              ? "Мои машины"
+              : type === "planes"
+                ? "Мои самолеты"
+                : "Мои корабли"}
+          </Text>
+          <Text style={styles.balance}>Баланс: {balance.toFixed(2)}</Text>
+        </View>
+      </View>
 
       <FlatList
         data={filteredItems}
@@ -66,7 +88,15 @@ export default function GarageScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 16, backgroundColor: "#fff", marginTop: 40 },
-  title: { fontSize: 22, fontWeight: "bold", marginBottom: 16 },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 16,
+  },
+
+  titleContainer: { marginLeft: 20 },
+  title: { fontSize: 22, fontWeight: "bold", marginBottom: 4 },
+  balance: { fontSize: 18, fontWeight: "500", color: "#333" },
   card: {
     flexDirection: "row",
     marginBottom: 16,

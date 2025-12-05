@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
+import { LinearGradient } from "expo-linear-gradient";
 
 type ItemsScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -42,12 +43,9 @@ const TopItemComponent: React.FC = () => {
         ))}
       </View>
 
-      <View style={styles.tabs}>
-        {bottomTabs.map((tab, index) => {
-          const isFirst = index === 0;
-          const isLast = index === bottomTabs.length - 1;
-
-          return (
+      <View style={styles.tabsContainer}>
+        <View style={styles.tabsBackground}>
+          {bottomTabs.map((tab, index) => (
             <TouchableOpacity
               key={index}
               style={styles.tabCard}
@@ -58,20 +56,28 @@ const TopItemComponent: React.FC = () => {
                 style={styles.tabIcon}
                 resizeMode="contain"
               />
+            </TouchableOpacity>
+          ))}
 
-              <View
-                style={[
-                  styles.tabLabelBox,
-                  isFirst && { borderBottomLeftRadius: 20 },
-                  isLast && { borderBottomRightRadius: 20 },
-                ]}
-              >
+          <LinearGradient
+            colors={["#373b44", "#4484ee"]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+            style={[
+              styles.gradientTextBackground,
+              { borderBottomLeftRadius: 12, borderBottomRightRadius: 12 },
+            ]}
+          >
+            {bottomTabs.map((tab, index) => (
+              <View key={index} style={styles.gradientTextBox}>
                 <Text style={styles.tabLabel}>{tab.label}</Text>
               </View>
-            </TouchableOpacity>
-          );
-        })}
+            ))}
+          </LinearGradient>
+        </View>
       </View>
+
+      <View style={styles.line} />
     </>
   );
 };
@@ -107,32 +113,46 @@ const styles = StyleSheet.create({
     textShadowRadius: 6,
   },
 
-  tabs: {
-    flexDirection: "row",
-    justifyContent: "space-around",
+  tabsContainer: {
     marginHorizontal: 15,
-    paddingVertical: 8,
+    paddingTop: 8,
+  },
+
+  tabsBackground: {
+    flexDirection: "row",
     backgroundColor: "#e4ecf9",
-    borderRadius: 20,
+    borderRadius: 12,
+    overflow: "hidden",
+    justifyContent: "space-around",
+    position: "relative",
+    height: 125,
   },
 
   tabCard: {
     width: 110,
-    height: 125,
     alignItems: "center",
+    justifyContent: "center",
   },
 
   tabIcon: {
     width: 90,
     height: 90,
-    marginBottom: 6,
+    marginBottom: 23,
   },
 
-  tabLabelBox: {
-    width: "116%",
-    height: "30%",
-    backgroundColor: "#1E88E5",
-    paddingVertical: 6,
+  gradientTextBackground: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: 30,
+    flexDirection: "row",
+    overflow: "hidden",
+  },
+  gradientTextBox: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   tabLabel: {
@@ -141,5 +161,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "700",
   },
-  tabText: { fontSize: 16, color: "#000" },
+
+  line: {
+    marginTop: 20,
+    borderBottomWidth: 1.5,
+    width: "40%",
+    alignSelf: "center",
+    borderColor: "#e4ecf9",
+  },
 });

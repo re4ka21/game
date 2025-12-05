@@ -25,7 +25,7 @@ import {
   BuyItemsScreen,
 } from "@/screens/Items";
 import { GarageItem } from "@/features/items";
-import { Item } from "@/features/items";
+
 import { ImageSourcePropType } from "react-native";
 export type RootStackParamList = {
   Tabs: { screen?: string } | undefined;
@@ -46,7 +46,15 @@ export type RootStackParamList = {
   Shop: { type: "cars" | "planes" | "ships" };
   ConfirmBuyCar: { item: GarageItem };
   ConfirmBuyShipPlane: { item: GarageItem };
-  BuyItems: { type: "coins" | "paintings" };
+  BuyItems: {
+    type:
+      | "coins"
+      | "paintings"
+      | "uniqueItems"
+      | "retroCars"
+      | "jewels"
+      | "stamps";
+  };
 };
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
