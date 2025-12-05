@@ -42,8 +42,8 @@ export type RootStackParamList = {
   ChangeName: { business: BusinessType };
   CarsPark: { business: BusinessType };
   BuyCars: { business: BusinessType };
+  Garage: { type: "cars" | "planes" | "ships" };
   Shop: { type: "cars" | "planes" | "ships" };
-  Garage: { type: "cars" | "ships" | "planes" };
   ConfirmBuyCar: { item: GarageItem };
   ConfirmBuyShipPlane: { item: GarageItem };
   BuyItems: { type: "coins" | "paintings" };

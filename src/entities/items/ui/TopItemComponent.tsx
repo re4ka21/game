@@ -34,7 +34,7 @@ const TopItemComponent: React.FC = () => {
             onPress={() => navigation.navigate("Garage", { type: item.type })}
           >
             <Image
-              source={require("../../../../assets/images/react-logo.png")}
+              source={require("../../../../assets/images/airport.png")}
               style={styles.bgImage}
             />
             <Text style={styles.itemText}>{item.label}</Text>
@@ -43,14 +43,34 @@ const TopItemComponent: React.FC = () => {
       </View>
 
       <View style={styles.tabs}>
-        {bottomTabs.map((tab, index) => (
-          <TouchableOpacity
-            key={index}
-            onPress={() => navigation.navigate("Shop", { type: tab.type })}
-          >
-            <Text style={styles.tabText}>{tab.label}</Text>
-          </TouchableOpacity>
-        ))}
+        {bottomTabs.map((tab, index) => {
+          const isFirst = index === 0;
+          const isLast = index === bottomTabs.length - 1;
+
+          return (
+            <TouchableOpacity
+              key={index}
+              style={styles.tabCard}
+              onPress={() => navigation.navigate("Shop", { type: tab.type })}
+            >
+              <Image
+                source={require("../../../../assets/images/react-logo.png")}
+                style={styles.tabIcon}
+                resizeMode="contain"
+              />
+
+              <View
+                style={[
+                  styles.tabLabelBox,
+                  isFirst && { borderBottomLeftRadius: 20 },
+                  isLast && { borderBottomRightRadius: 20 },
+                ]}
+              >
+                <Text style={styles.tabLabel}>{tab.label}</Text>
+              </View>
+            </TouchableOpacity>
+          );
+        })}
       </View>
     </>
   );
@@ -62,10 +82,11 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: "row",
     justifyContent: "space-around",
-    marginBottom: 20,
+    marginBottom: 10,
+    marginHorizontal: 15,
   },
   itemCard: {
-    width: 110,
+    width: 120,
     height: 110,
     borderRadius: 18,
     overflow: "hidden",
@@ -85,13 +106,40 @@ const styles = StyleSheet.create({
     textShadowColor: "black",
     textShadowRadius: 6,
   },
+
   tabs: {
     flexDirection: "row",
     justifyContent: "space-around",
-    paddingVertical: 16,
-    backgroundColor: "#f1f1f1",
+    marginHorizontal: 15,
+    paddingVertical: 8,
+    backgroundColor: "#e4ecf9",
     borderRadius: 20,
-    marginHorizontal: 10,
+  },
+
+  tabCard: {
+    width: 110,
+    height: 125,
+    alignItems: "center",
+  },
+
+  tabIcon: {
+    width: 90,
+    height: 90,
+    marginBottom: 6,
+  },
+
+  tabLabelBox: {
+    width: "116%",
+    height: "30%",
+    backgroundColor: "#1E88E5",
+    paddingVertical: 6,
+  },
+
+  tabLabel: {
+    textAlign: "center",
+    color: "#fff",
+    fontSize: 14,
+    fontWeight: "700",
   },
   tabText: { fontSize: 16, color: "#000" },
 });

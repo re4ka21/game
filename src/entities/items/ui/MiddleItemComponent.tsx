@@ -1,10 +1,11 @@
 import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, "BuyItems">;
+
 export default function MiddleItemComponent() {
   const navigation = useNavigation<NavigationProp>();
 
@@ -13,53 +14,54 @@ export default function MiddleItemComponent() {
   };
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity style={styles.tabWrapper} onPress={() => goTo("coins")}>
-        <Text style={[styles.tabText, styles.activeText]}>Монеты</Text>
-        <View style={styles.activeLine} />
+    <View style={styles.row}>
+      <TouchableOpacity style={styles.itemCard} onPress={() => goTo("coins")}>
+        <Image
+          source={require("../../../../assets/images/react-logo.png")}
+          style={styles.bgImage}
+        />
+        <Text style={styles.itemText}>Монеты</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
-        style={styles.tabWrapper}
+        style={styles.itemCard}
         onPress={() => goTo("paintings")}
       >
-        <Text style={[styles.tabText]}>Картины</Text>
+        <Image
+          source={require("../../../../assets/images/react-logo.png")}
+          style={styles.bgImage}
+        />
+        <Text style={styles.itemText}>Картины</Text>
       </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  row: {
     flexDirection: "row",
-    width: "100%",
     justifyContent: "space-around",
-    marginTop: 4,
-    borderBottomWidth: 1,
-    borderBottomColor: "#DDE2E8",
-    paddingBottom: 6,
+    marginVertical: 20,
   },
-
-  tabWrapper: {
-    alignItems: "center",
-    paddingHorizontal: 30,
+  itemCard: {
+    width: 110,
+    height: 110,
+    borderRadius: 18,
+    overflow: "hidden",
   },
-
-  tabText: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: "#9CA3AF", // сірий текст як на твоєму UI
-  },
-
-  activeText: {
-    color: "#1D4ED8", // синій текст
-  },
-
-  activeLine: {
+  bgImage: {
     width: "100%",
-    height: 2,
-    backgroundColor: "#1D4ED8", // синя лінія
-    marginTop: 6,
-    borderRadius: 20,
+    height: "100%",
+    opacity: 0.85,
+  },
+  itemText: {
+    position: "absolute",
+    bottom: 10,
+    left: 8,
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "700",
+    textShadowColor: "black",
+    textShadowRadius: 6,
   },
 });

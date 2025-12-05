@@ -7,11 +7,12 @@ import {
   FlatList,
   Image,
 } from "react-native";
-import { useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { useItemsStore, ItemCategory, Item } from "@/features/items";
 import { useCounterStore } from "@/features/counter";
-
+import AntDesign from "@expo/vector-icons/AntDesign";
 export default function BuyItemsScreen() {
+  const navigation = useNavigation();
   const route = useRoute();
   const { type } = route.params as { type: ItemCategory };
 
@@ -37,7 +38,15 @@ export default function BuyItemsScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{title}</Text>
+      <View style={styles.header}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={styles.arrow}
+        >
+          <AntDesign name="arrow-left" size={24} color="black" />
+        </TouchableOpacity>
+        <Text style={styles.title}>{title}</Text>
+      </View>
       <Text style={styles.balance}>Баланс: $ {count.toLocaleString()}</Text>
 
       <View style={styles.tabs}>
@@ -123,6 +132,15 @@ export default function BuyItemsScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#fff" },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 20,
+  },
+  arrow: {
+    marginLeft: 20,
+    marginTop: 30,
+  },
   title: {
     fontSize: 26,
     fontWeight: "700",
@@ -130,7 +148,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   balance: {
-    marginLeft: 16,
+    marginLeft: 60,
     fontSize: 16,
     color: "#777",
     marginBottom: 10,

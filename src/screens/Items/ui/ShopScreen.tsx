@@ -13,6 +13,7 @@ import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { CardCar, CardPlane, CardShip } from "@/entities";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import { useCounterStore } from "@/features/counter";
 type ShopScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
   "Shop"
@@ -213,7 +214,7 @@ export default function ShopScreen() {
   const type = route.params.type;
   const navigation = useNavigation<ShopScreenNavigationProp>();
   const boughtItems = useGarageStore((s) => s.items);
-
+  const balance = useCounterStore((s) => s.count);
   const allItems = type === "cars" ? CARS : type === "planes" ? PLANES : SHIPS;
 
   const items = allItems.filter(
@@ -233,13 +234,16 @@ export default function ShopScreen() {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <AntDesign name="arrow-left" size={24} color="black" />
         </TouchableOpacity>
-        <Text style={styles.title}>
-          {type === "cars"
-            ? "Автосалон"
-            : type === "planes"
-              ? "Авиамагазин"
-              : "Яхт-шоп"}
-        </Text>
+        <View style={styles.titleContainer}>
+          <Text style={styles.title}>
+            {type === "cars"
+              ? "Автосалон"
+              : type === "planes"
+                ? "Авиамагазин"
+                : "Яхт-шоп"}
+          </Text>
+          <Text style={styles.balance}>Баланс: {balance.toFixed(2)}</Text>
+        </View>
       </View>
       <FlatList
         data={items}
@@ -267,10 +271,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 20,
   },
+  titleContainer: { marginLeft: 10 },
   title: {
     fontSize: 26,
     marginLeft: 10,
     marginBottom: 3,
     fontWeight: "700",
   },
+  balance: { fontSize: 18, fontWeight: "500", color: "#333", marginLeft: 11 },
 });
