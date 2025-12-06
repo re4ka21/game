@@ -40,38 +40,41 @@ export default function MiddleItemComponent({ categories }: Props) {
   };
 
   return (
-    <View style={{ marginTop: 20 }}>
-      <View style={styles.header}>
-        <Text style={styles.headerText}>Колекции</Text>
+    <>
+      <View style={{ marginTop: 20 }}>
+        <View style={styles.header}>
+          <Text style={styles.headerText}>Колекции</Text>
+        </View>
+
+        <View style={styles.container}>
+          {categories.map((cat) => {
+            const total = itemsStore.getByCategory(cat.type).length;
+            const owned = itemsStore.getCollectionByCategory(cat.type).length;
+
+            return (
+              <TouchableOpacity
+                key={cat.type}
+                style={styles.itemCard}
+                onPress={() => goTo(cat.type)}
+              >
+                <Image
+                  source={cat.image}
+                  style={styles.bgImage}
+                  resizeMode="contain"
+                />
+
+                <Text style={styles.itemText}>{cat.label}</Text>
+
+                <Text style={styles.counterText}>
+                  {owned}/{total}
+                </Text>
+              </TouchableOpacity>
+            );
+          })}
+        </View>
       </View>
-
-      <View style={styles.container}>
-        {categories.map((cat) => {
-          const total = itemsStore.getByCategory(cat.type).length;
-          const owned = itemsStore.getCollectionByCategory(cat.type).length;
-
-          return (
-            <TouchableOpacity
-              key={cat.type}
-              style={styles.itemCard}
-              onPress={() => goTo(cat.type)}
-            >
-              <Image
-                source={cat.image}
-                style={styles.bgImage}
-                resizeMode="contain"
-              />
-
-              <Text style={styles.itemText}>{cat.label}</Text>
-
-              <Text style={styles.counterText}>
-                {owned}/{total}
-              </Text>
-            </TouchableOpacity>
-          );
-        })}
-      </View>
-    </View>
+      <View style={styles.line} />
+    </>
   );
 }
 
@@ -120,5 +123,12 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "gray",
     textAlign: "center",
+  },
+  line: {
+    marginTop: 20,
+    borderBottomWidth: 1.5,
+    width: "40%",
+    alignSelf: "center",
+    borderColor: "#e4ecf9",
   },
 });

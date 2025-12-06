@@ -9,6 +9,7 @@ import {
 import { useGarageStore, useItemsStore } from "@/features/items";
 import { TopItemComponent } from "@/entities";
 import { ShopCategory, MiddleItemComponent } from "@/entities";
+import { HonorsCard } from "@/entities";
 
 export default function Items() {
   const { reset } = useGarageStore();
@@ -57,7 +58,7 @@ export default function Items() {
       <TopItemComponent />
 
       <MiddleItemComponent categories={categories} />
-
+      <HonorsCard />
       <View style={styles.resetButtons}>
         <TouchableOpacity onPress={reset} style={styles.resetBtn}>
           <Text style={styles.tabText}>RESET Garage</Text>

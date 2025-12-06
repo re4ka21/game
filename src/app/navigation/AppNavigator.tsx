@@ -23,6 +23,9 @@ import {
   ConfirmBuyCarScreen,
   VehiclesScreen,
   BuyItemsScreen,
+  HonorsScreen,
+  HonorsDetailsScreen,
+  HonorItem,
 } from "@/screens/Items";
 import { GarageItem } from "@/features/items";
 
@@ -55,6 +58,8 @@ export type RootStackParamList = {
       | "jewels"
       | "stamps";
   };
+  Honors: undefined;
+  HonorsDetails: { item: HonorItem };
 };
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -194,6 +199,20 @@ export default function AppNavigator() {
       <Stack.Screen
         name="BuyItems"
         component={BuyItemsScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Honors"
+        component={HonorsScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="HonorsDetails"
+        component={HonorsDetailsScreen}
         options={{
           headerShown: false,
         }}

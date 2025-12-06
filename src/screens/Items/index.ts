@@ -4,3 +4,6 @@ export { default as GarageScreen } from "./ui/GarageScreen";
 export { default as ConfirmBuyCarScreen } from "./ui/ConfirmBuyCarScreen";
 export { default as VehiclesScreen } from "./ui/VehiclesScreen";
 export { default as BuyItemsScreen } from "./ui/BuyItemsScreen";
+export { default as HonorsScreen } from "./ui/HonorsScreen";
+export { default as HonorsDetailsScreen } from "./ui/HonorsDetailsScreen";
+export { HonorItem } from "./ui/HonorsScreen";
