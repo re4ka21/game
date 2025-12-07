@@ -26,9 +26,11 @@ import {
   HonorsScreen,
   HonorsDetailsScreen,
   HonorItem,
+  NftScreen,
+  NftDetailsScreen,
 } from "@/screens/Items";
 import { GarageItem } from "@/features/items";
-
+import { NftItem } from "@/features/nft";
 import { ImageSourcePropType } from "react-native";
 export type RootStackParamList = {
   Tabs: { screen?: string } | undefined;
@@ -60,6 +62,8 @@ export type RootStackParamList = {
   };
   Honors: undefined;
   HonorsDetails: { item: HonorItem };
+  Nft: undefined;
+  NftDetails: { title: string; key: string };
 };
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -213,6 +217,20 @@ export default function AppNavigator() {
       <Stack.Screen
         name="HonorsDetails"
         component={HonorsDetailsScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Nft"
+        component={NftScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="NftDetails"
+        component={NftDetailsScreen}
         options={{
           headerShown: false,
         }}

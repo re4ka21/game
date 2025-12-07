@@ -9,38 +9,38 @@ import {
 } from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
-import { useHonorsStore } from "@/features/honors";
-type NavigationProp = NativeStackNavigationProp<RootStackParamList, "Honors">;
 
-export default function HonorsScreen() {
+type NavigationProp = NativeStackNavigationProp<RootStackParamList, "Nft">;
+
+export default function NftCard() {
   const navigation = useNavigation<NavigationProp>();
 
-  const owned = useHonorsStore((s) => s.received.length);
+  const owned = 0;
+  const total = 20;
 
   const goTo = () => {
-    navigation.navigate("Honors");
+    navigation.navigate("Nft");
   };
 
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.itemCard} onPress={goTo}>
         <Image
-          source={require("../../../../assets/images/airport.png")}
+          source={require("../../../../assets/images/react-logo.png")}
           style={styles.icon}
           resizeMode="contain"
         />
 
         <View style={styles.textBlock}>
-          <Text style={styles.itemText}>Відзнаки</Text>
-          <Text style={styles.counterText}>{owned} із 5</Text>
+          <Text style={styles.itemText}>NFT</Text>
+          <Text style={styles.counterText}>
+            {owned} із {total}
+          </Text>
         </View>
       </TouchableOpacity>
-      <View style={styles.line} />
     </View>
   );
 }
-
-const windowWidth = Dimensions.get("window").width;
 
 const styles = StyleSheet.create({
   container: {
@@ -59,8 +59,8 @@ const styles = StyleSheet.create({
   },
 
   icon: {
-    width: 70,
-    height: 70,
+    width: 100,
+    height: 100,
     marginRight: 22,
   },
 
@@ -78,12 +78,5 @@ const styles = StyleSheet.create({
     marginTop: 6,
     fontSize: 15,
     color: "#8a8a8a",
-  },
-  line: {
-    marginTop: 20,
-    borderBottomWidth: 1.5,
-    width: "40%",
-    alignSelf: "center",
-    borderColor: "#e4ecf9",
   },
 });

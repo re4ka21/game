@@ -10,3 +10,4 @@ export { default as HeaderShip } from "@/entities/items/ui/HeaderShip";
 export { default as MiddleItemComponent } from "@/entities/items/ui/MiddleItemComponent";
 export { ShopCategory } from "@/entities/items/ui/MiddleItemComponent";
 export { default as HonorsCard } from "@/entities/honors/ui/HonorsCard";
+export { default as NftCard } from "./nft/ui/NftCard";

@@ -7,7 +7,7 @@ import {
   ScrollView,
 } from "react-native";
 import { useGarageStore, useItemsStore } from "@/features/items";
-import { TopItemComponent } from "@/entities";
+import { NftCard, TopItemComponent } from "@/entities";
 import { ShopCategory, MiddleItemComponent } from "@/entities";
 import { HonorsCard } from "@/entities";
 
@@ -59,6 +59,7 @@ export default function Items() {
 
       <MiddleItemComponent categories={categories} />
       <HonorsCard />
+      <NftCard />
       <View style={styles.resetButtons}>
         <TouchableOpacity onPress={reset} style={styles.resetBtn}>
           <Text style={styles.tabText}>RESET Garage</Text>
