@@ -111,7 +111,17 @@ const styles = StyleSheet.create({
   textBlock: { flex: 1, flexDirection: "column" },
   collection: { fontSize: 14, color: "gray" },
   title: { fontSize: 20, fontWeight: "700", color: "#1a1a1a" },
-  counter: { marginTop: 8, fontSize: 16, color: "#555" },
+  counter: {
+    marginTop: 8,
+    fontSize: 16,
+    color: "#fff",
+    backgroundColor: "blue",
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 8,
+    alignSelf: "flex-start",
+  },
+
   resetButton: {
     backgroundColor: "red",
     position: "absolute",

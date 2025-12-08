@@ -13,10 +13,15 @@ import { RootStackParamList } from "@/app/navigation/AppNavigator";
 import { useNftStore } from "@/features/nft";
 import { useCounterStore } from "@/features/counter";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+type NavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  "NftConfirmBuy"
+>;
 type NftDetailsRouteProp = RouteProp<RootStackParamList, "NftDetails">;
 
 export default function NftDetailsScreen() {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp>();
   const route = useRoute<NftDetailsRouteProp>();
   const { title, key } = route.params as { title: string; key: string };
 
@@ -26,16 +31,6 @@ export default function NftDetailsScreen() {
   const spend = useCounterStore((s) => s.purchase);
 
   const [tab, setTab] = useState<"purchase" | "collection">("purchase");
-
-  const handleBuy = (id: number, price: number) => {
-    if (balance >= price) {
-      spend(price);
-      buyNft(key, id);
-    }
-    if (balance < price) {
-      alert("you need more money");
-    }
-  };
 
   const displayedNfts =
     tab === "purchase"
@@ -75,20 +70,18 @@ export default function NftDetailsScreen() {
         columnWrapperStyle={{ justifyContent: "space-between" }}
         contentContainerStyle={{ paddingBottom: 40 }}
         renderItem={({ item }) => (
-          <View style={[styles.nftCard, { width: cardSize, height: cardSize }]}>
+          <TouchableOpacity
+            style={[styles.nftCard, { width: cardSize, height: cardSize }]}
+            onPress={() =>
+              navigation.navigate("NftConfirmBuy", {
+                nft: item,
+                collection: key,
+              })
+            }
+          >
             <Text style={styles.price}>{item.price} 💰</Text>
             <Image source={item.image} style={styles.nftImage} />
-            {tab === "purchase" ? (
-              <TouchableOpacity
-                style={styles.buyButton}
-                onPress={() => handleBuy(item.id, item.price)}
-              >
-                <Text style={{ color: "#fff" }}>Buy</Text>
-              </TouchableOpacity>
-            ) : (
-              <Text style={styles.ownedText}>Owned</Text>
-            )}
-          </View>
+          </TouchableOpacity>
         )}
       />
     </View>

@@ -28,6 +28,7 @@ import {
   HonorItem,
   NftScreen,
   NftDetailsScreen,
+  NftConfirmBuyScreen,
 } from "@/screens/Items";
 import { GarageItem } from "@/features/items";
 import { NftItem } from "@/features/nft";
@@ -64,6 +65,7 @@ export type RootStackParamList = {
   HonorsDetails: { item: HonorItem };
   Nft: undefined;
   NftDetails: { title: string; key: string };
+  NftConfirmBuy: { nft: NftItem; collection: string };
 };
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -231,6 +233,13 @@ export default function AppNavigator() {
       <Stack.Screen
         name="NftDetails"
         component={NftDetailsScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="NftConfirmBuy"
+        component={NftConfirmBuyScreen}
         options={{
           headerShown: false,
         }}
