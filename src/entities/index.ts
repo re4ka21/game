@@ -11,3 +11,4 @@ export { default as MiddleItemComponent } from "@/entities/items/ui/MiddleItemCo
 export { ShopCategory } from "@/entities/items/ui/MiddleItemComponent";
 export { default as HonorsCard } from "@/entities/honors/ui/HonorsCard";
 export { default as NftCard } from "./nft/ui/NftCard";
+export { default as IslandCard } from "./island/ui/IslandCard";

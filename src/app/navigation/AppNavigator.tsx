@@ -29,6 +29,8 @@ import {
   NftScreen,
   NftDetailsScreen,
   NftConfirmBuyScreen,
+  IslandScreen,
+  IslandDetailsScreen,
 } from "@/screens/Items";
 import { GarageItem } from "@/features/items";
 import { NftItem } from "@/features/nft";
@@ -66,6 +68,8 @@ export type RootStackParamList = {
   Nft: undefined;
   NftDetails: { title: string; key: string };
   NftConfirmBuy: { nft: NftItem; collection: string };
+  Island: undefined;
+  IslandDetails: { islandId: number };
 };
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -240,6 +244,20 @@ export default function AppNavigator() {
       <Stack.Screen
         name="NftConfirmBuy"
         component={NftConfirmBuyScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Island"
+        component={IslandScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="IslandDetails"
+        component={IslandDetailsScreen}
         options={{
           headerShown: false,
         }}

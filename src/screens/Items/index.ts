@@ -10,3 +10,5 @@ export { HonorItem } from "./ui/HonorsScreen";
 export { default as NftScreen } from "./ui/NftScreen";
 export { default as NftDetailsScreen } from "./ui/NftDetailsScreen";
 export { default as NftConfirmBuyScreen } from "./ui/NftConfirmBuyScreen";
+export { default as IslandDetailsScreen } from "./ui/IslandDetailsScreen";
+export { default as IslandScreen } from "./ui/IslandScreen";

@@ -1,22 +1,20 @@
 import { useNavigation } from "@react-navigation/native";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-  Dimensions,
-} from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
+import { useNftStore } from "@/features/nft";
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, "Nft">;
 
 export default function NftCard() {
   const navigation = useNavigation<NavigationProp>();
 
-  const owned = 0;
-  const total = 20;
+  const collections = useNftStore((s) => s.collections);
+
+  const allNfts = Object.values(collections).flat();
+
+  const total = allNfts.length;
+  const owned = allNfts.filter((n) => n.owned).length;
 
   const goTo = () => {
     navigation.navigate("Nft");

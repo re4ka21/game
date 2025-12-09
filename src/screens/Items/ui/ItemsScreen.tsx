@@ -10,10 +10,12 @@ import { useGarageStore, useItemsStore } from "@/features/items";
 import { NftCard, TopItemComponent } from "@/entities";
 import { ShopCategory, MiddleItemComponent } from "@/entities";
 import { HonorsCard } from "@/entities";
-
+import { IslandCard } from "@/entities";
+import { useIslandStore } from "@/features/island";
 export default function Items() {
   const { reset } = useGarageStore();
   const { resetsecond } = useItemsStore();
+  const { resetIslands } = useIslandStore();
 
   const categories: ShopCategory[] = [
     {
@@ -60,6 +62,7 @@ export default function Items() {
       <MiddleItemComponent categories={categories} />
       <HonorsCard />
       <NftCard />
+      <IslandCard />
       <View style={styles.resetButtons}>
         <TouchableOpacity onPress={reset} style={styles.resetBtn}>
           <Text style={styles.tabText}>RESET Garage</Text>
@@ -67,6 +70,9 @@ export default function Items() {
 
         <TouchableOpacity onPress={resetsecond} style={styles.resetBtn}>
           <Text style={styles.tabText}>RESET Items</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={resetIslands} style={styles.resetBtn}>
+          <Text style={styles.tabText}>RESET Island</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
