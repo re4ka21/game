@@ -1,18 +1,9 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { ISLANDS } from "../constants/islands";
+import { ISLANDS } from "./constants";
 import { useCounterStore } from "@/features/counter";
-
-export type Island = {
-  id: number;
-  name: string;
-  price: number;
-  image: any;
-  owned?: boolean;
-  description: string;
-};
-
+import { Island } from "./types";
 type IslandStore = {
   islands: Island[];
   buyIsland: (id: number) => void;

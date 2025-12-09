@@ -17,22 +17,21 @@ import {
   CarsParkScreen,
   BuyCarsScreen,
 } from "@/screens/Business";
+import { BuyItemsScreen } from "@/screens/Items";
 import {
-  ShopScreen,
+  VechiclesShopScreen,
   GarageScreen,
   ConfirmBuyCarScreen,
   VehiclesScreen,
-  BuyItemsScreen,
-  HonorsScreen,
-  HonorsDetailsScreen,
-  HonorItem,
+} from "@/screens/Vehicles";
+import { IslandDetailsScreen, IslandScreen } from "@/screens/Island";
+import { HonorsScreen, HonorsDetailsScreen, HonorItem } from "@/screens/Honors";
+import {
   NftScreen,
   NftDetailsScreen,
   NftConfirmBuyScreen,
-  IslandScreen,
-  IslandDetailsScreen,
-} from "@/screens/Items";
-import { GarageItem } from "@/features/items";
+} from "@/screens/NFT";
+import { GarageItem } from "@/features/garage";
 import { NftItem } from "@/features/nft";
 import { ImageSourcePropType } from "react-native";
 export type RootStackParamList = {
@@ -51,7 +50,7 @@ export type RootStackParamList = {
   CarsPark: { business: BusinessType };
   BuyCars: { business: BusinessType };
   Garage: { type: "cars" | "planes" | "ships" };
-  Shop: { type: "cars" | "planes" | "ships" };
+  VechiclesShop: { type: "cars" | "planes" | "ships" };
   ConfirmBuyCar: { item: GarageItem };
   ConfirmBuyShipPlane: { item: GarageItem };
   BuyItems: {
@@ -179,8 +178,8 @@ export default function AppNavigator() {
         }}
       />
       <Stack.Screen
-        name="Shop"
-        component={ShopScreen}
+        name="VechiclesShop"
+        component={VechiclesShopScreen}
         options={{
           headerShown: false,
         }}

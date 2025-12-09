@@ -1,1 +1,1 @@
-export { useIslandStore } from "./model/store";
+export { useIslandStore } from "./model/islandStore";

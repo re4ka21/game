@@ -2,9 +2,13 @@ import React, { useState, useMemo } from "react";
 import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import { useRoute, RouteProp, useNavigation } from "@react-navigation/native";
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
-import { useGarageStore } from "@/features/items";
+import { useGarageStore } from "@/features/garage";
 import { useCounterStore } from "@/features/counter";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import {
+  enginePercents,
+  packagePercents,
+} from "../model/constants/tuningPercents";
 type ConfirmRoute = RouteProp<RootStackParamList, "ConfirmBuyCar">;
 
 export default function ConfirmBuyCarScreen() {
@@ -19,17 +23,6 @@ export default function ConfirmBuyCarScreen() {
   const [packageType, setPackageType] = useState<"standard" | "premium">(
     "standard"
   );
-
-  const enginePercents = {
-    DF: 0,
-    BST: 0.15,
-    "S+": 0.35,
-  };
-
-  const packagePercents = {
-    standard: 0,
-    premium: 0.4,
-  };
 
   const finalPrice = useMemo(() => {
     return (

@@ -4,46 +4,9 @@ import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import { useNftStore, NftItem } from "@/features/nft";
-
+import { useNftStore } from "@/features/nft";
+import { COLLECTIONS } from "../model/constants/collections";
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, "Nft">;
-
-const COLLECTIONS = [
-  {
-    id: 1,
-    title: "Nothing like that just neo",
-    key: "neo",
-    nfts: [
-      {
-        id: 1,
-        image: require("../../../../assets/images/react-logo.png"),
-        price: 100,
-      },
-      {
-        id: 2,
-        image: require("../../../../assets/images/react-logo.png"),
-        price: 120,
-      },
-    ],
-  },
-  {
-    id: 2,
-    title: "Community pack #1",
-    key: "community",
-    nfts: [
-      {
-        id: 3,
-        image: require("../../../../assets/images/react-logo.png"),
-        price: 50,
-      },
-      {
-        id: 4,
-        image: require("../../../../assets/images/react-logo.png"),
-        price: 80,
-      },
-    ],
-  },
-];
 
 export default function NftScreen() {
   const { reset } = useNftStore();

@@ -11,7 +11,7 @@ import Feather from "@expo/vector-icons/Feather";
 import { LinearGradient } from "expo-linear-gradient";
 import ProgressBar from "@/shared/ui/ProgressBar";
 import { CapacityButtons } from "@/entities";
-import { CAPACITY_COST_MAP } from "@/constants/capacity";
+import { CAPACITY_COST_MAP } from "@/entities/business/model/capacity";
 import { colors } from "@/shared";
 
 type NavigationProp = NativeStackNavigationProp<

@@ -1,2 +1,3 @@
-export { useGarageStore, GarageItem } from "./model/garageStore";
-export { useItemsStore, Item, ItemCategory } from "./model/store";
+export { useItemsStore } from "./model/Itemsstore";
+export { Item, ItemCategory } from "./model/types";
+export { ITEMS } from "./model/constants";

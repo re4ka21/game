@@ -1,0 +1,33 @@
+import { ShopCategory } from "@/entities";
+export const categories: ShopCategory[] = [
+  {
+    label: "Монеты",
+    type: "coins",
+    image: require("../../../../assets/images/react-logo.png"),
+  },
+  {
+    label: "Картины",
+    type: "paintings",
+    image: require("../../../../assets/images/react-logo.png"),
+  },
+  {
+    label: "Уникальные предметы",
+    type: "uniqueItems",
+    image: require("../../../../assets/images/react-logo.png"),
+  },
+  {
+    label: "Ретро автомобили",
+    type: "retroCars",
+    image: require("../../../../assets/images/react-logo.png"),
+  },
+  {
+    label: "Драгоценности",
+    type: "jewels",
+    image: require("../../../../assets/images/react-logo.png"),
+  },
+  {
+    label: "Марки",
+    type: "stamps",
+    image: require("../../../../assets/images/react-logo.png"),
+  },
+];

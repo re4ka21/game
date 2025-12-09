@@ -6,49 +6,18 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import { useGarageStore, useItemsStore } from "@/features/items";
+import { useItemsStore } from "@/features/items";
+import { useGarageStore } from "@/features/garage";
 import { NftCard, TopItemComponent } from "@/entities";
-import { ShopCategory, MiddleItemComponent } from "@/entities";
+import { MiddleItemComponent } from "@/entities";
 import { HonorsCard } from "@/entities";
 import { IslandCard } from "@/entities";
 import { useIslandStore } from "@/features/island";
+import { categories } from "../model/constants/categories";
 export default function Items() {
   const { reset } = useGarageStore();
   const { resetsecond } = useItemsStore();
   const { resetIslands } = useIslandStore();
-
-  const categories: ShopCategory[] = [
-    {
-      label: "Монеты",
-      type: "coins",
-      image: require("../../../../assets/images/react-logo.png"),
-    },
-    {
-      label: "Картины",
-      type: "paintings",
-      image: require("../../../../assets/images/react-logo.png"),
-    },
-    {
-      label: "Уникальные предметы",
-      type: "uniqueItems",
-      image: require("../../../../assets/images/react-logo.png"),
-    },
-    {
-      label: "Ретро автомобили",
-      type: "retroCars",
-      image: require("../../../../assets/images/react-logo.png"),
-    },
-    {
-      label: "Драгоценности",
-      type: "jewels",
-      image: require("../../../../assets/images/react-logo.png"),
-    },
-    {
-      label: "Марки",
-      type: "stamps",
-      image: require("../../../../assets/images/react-logo.png"),
-    },
-  ];
 
   return (
     <ScrollView

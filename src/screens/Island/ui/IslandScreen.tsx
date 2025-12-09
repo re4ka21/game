@@ -20,7 +20,6 @@ export default function IslandScreen() {
 
   const balance = useCounterStore((s) => s.count);
   const islands = useIslandStore((s) => s.islands);
-  const buyIsland = useIslandStore((s) => s.buyIsland);
 
   const [tab, setTab] = useState<"offers" | "my">("offers");
 

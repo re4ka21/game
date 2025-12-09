@@ -34,7 +34,6 @@ export default function NftConfirmBuyScreen() {
 
   return (
     <View style={styles.container}>
-      {/* HEADER */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <AntDesign name="arrow-left" size={24} color="black" />
@@ -43,12 +42,9 @@ export default function NftConfirmBuyScreen() {
         <Text style={styles.balance}>Баланс: {balance.toFixed(2)} ETH</Text>
       </View>
 
-      {/* IMAGE */}
       <Image source={nft.image} style={styles.nftImage} />
 
-      {/* TITLE + PRICE */}
       <View style={styles.topRow}>
-        {/* Назву беремо з пропсів */}
         <Text style={styles.name}>{collection}</Text>
 
         <View style={styles.priceBadge}>

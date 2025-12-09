@@ -11,7 +11,7 @@ import { useRoute, RouteProp, useNavigation } from "@react-navigation/native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
-import { useGarageStore } from "@/features/items";
+import { useGarageStore } from "@/features/garage";
 import { useCounterStore } from "@/features/counter";
 
 type GarageRoute = RouteProp<RootStackParamList, "Garage">;

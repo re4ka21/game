@@ -11,7 +11,7 @@ import {
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
 import { useNftStore } from "@/features/nft";
-import { useCounterStore } from "@/features/counter";
+
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 type NavigationProp = NativeStackNavigationProp<
@@ -26,9 +26,6 @@ export default function NftDetailsScreen() {
   const { title, key } = route.params as { title: string; key: string };
 
   const nfts = useNftStore((s) => s.collections[key] || []);
-  const buyNft = useNftStore((s) => s.buyNft);
-  const balance = useCounterStore((s) => s.count);
-  const spend = useCounterStore((s) => s.purchase);
 
   const [tab, setTab] = useState<"purchase" | "collection">("purchase");
 
