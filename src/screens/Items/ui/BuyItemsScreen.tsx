@@ -11,16 +11,22 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { useItemsStore, ItemCategory, Item } from "@/features/items";
 import { useCounterStore } from "@/features/counter";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import type { RootStackParamList } from "@/app/navigation/AppNavigator";
+
+type BuyItemsNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  "BuyItems"
+>;
+
 export default function BuyItemsScreen() {
-  const navigation = useNavigation();
+  const navigation = useNavigation<BuyItemsNavigationProp>();
   const route = useRoute();
   const { type } = route.params as { type: ItemCategory };
 
   const count = useCounterStore((state) => state.count);
-  const purchase = useCounterStore((state) => state.purchase);
 
   const items = useItemsStore((state) => state.items);
-  const addItem = useItemsStore((state) => state.addItem);
 
   const [tab, setTab] = useState<"market" | "collection">("market");
 
@@ -28,13 +34,6 @@ export default function BuyItemsScreen() {
   const collectionItems = items.filter((i) => i.category === type && i.owned);
 
   const title = type === "coins" ? "Монеты" : "Картины";
-
-  const handleBuy = (item: Item) => {
-    if (count >= item.price) {
-      purchase(item.price);
-      addItem({ ...item, owned: true });
-    }
-  };
 
   return (
     <View style={styles.container}>
@@ -85,7 +84,11 @@ export default function BuyItemsScreen() {
         renderItem={({ item }) => {
           const canBuy = count >= item.price || item.owned;
           return (
-            <View style={styles.card}>
+            <TouchableOpacity
+              disabled={!canBuy}
+              style={styles.card}
+              onPress={() => navigation.navigate("BuyItemsDetails", { item })}
+            >
               <View style={styles.imagePlaceholder}>
                 {canBuy ? (
                   <Image
@@ -101,28 +104,23 @@ export default function BuyItemsScreen() {
                 <Text style={styles.lockedText}>
                   {tab === "market"
                     ? canBuy
-                      ? ""
+                      ? item.title
                       : "Заблокировано"
-                    : "Куплено"}
+                    : item.title}
                 </Text>
 
                 <View style={styles.priceRow}>
                   <Text style={styles.priceIcon}>🏷</Text>
+
                   <Text style={styles.priceText}>
                     $ {item.price.toLocaleString()}
                   </Text>
+                  <Text style={styles.statusText}>
+                    {tab === "collection" ? "куплено" : ""}
+                  </Text>
                 </View>
-
-                {tab === "market" && !item.owned && canBuy && (
-                  <TouchableOpacity
-                    onPress={() => handleBuy(item)}
-                    style={styles.buyBtn}
-                  >
-                    <Text style={{ color: "#fff", fontSize: 14 }}>Купить</Text>
-                  </TouchableOpacity>
-                )}
               </View>
-            </View>
+            </TouchableOpacity>
           );
         }}
       />
@@ -205,10 +203,17 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
+
   priceIcon: { fontSize: 18, marginRight: 4 },
   priceText: {
     fontSize: 16,
     fontWeight: "600",
+  },
+  statusText: {
+    color: "green",
+    fontSize: 16,
+    fontWeight: "600",
+    marginLeft: 10,
   },
   buyBtn: {
     backgroundColor: "#1D4ED8",

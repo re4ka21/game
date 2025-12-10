@@ -15,7 +15,7 @@ import { RootStackParamList } from "@/app/navigation/AppNavigator";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useBackgroundStore } from "@/features/background";
 import { colors } from "@/shared";
-
+import { useEffect } from "react";
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, "Tabs">;
 
 export default function Earnings() {
@@ -41,6 +41,15 @@ export default function Earnings() {
     upgradeStore();
   };
 
+  useEffect(() => {
+    useCounterStore.getState().updateOfflineEarnings();
+
+    const interval = setInterval(() => {
+      useCounterStore.getState().updateOfflineEarnings();
+    }, 60000);
+
+    return () => clearInterval(interval);
+  }, []);
   return (
     <View style={styles.container}>
       <View style={styles.gradientWrapper}>

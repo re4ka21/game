@@ -17,7 +17,7 @@ import {
   CarsParkScreen,
   BuyCarsScreen,
 } from "@/screens/Business";
-import { BuyItemsScreen } from "@/screens/Items";
+import { BuyItemsScreen, BuyItemsDetailsScreen } from "@/screens/Items";
 import {
   VechiclesShopScreen,
   GarageScreen,
@@ -34,6 +34,8 @@ import {
 import { GarageItem } from "@/features/garage";
 import { NftItem } from "@/features/nft";
 import { ImageSourcePropType } from "react-native";
+import { Item } from "@/features/items";
+
 export type RootStackParamList = {
   Tabs: { screen?: string } | undefined;
   Upgrade: undefined;
@@ -69,6 +71,7 @@ export type RootStackParamList = {
   NftConfirmBuy: { nft: NftItem; collection: string };
   Island: undefined;
   IslandDetails: { islandId: number };
+  BuyItemsDetails: { item: Item };
 };
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -257,6 +260,13 @@ export default function AppNavigator() {
       <Stack.Screen
         name="IslandDetails"
         component={IslandDetailsScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="BuyItemsDetails"
+        component={BuyItemsDetailsScreen}
         options={{
           headerShown: false,
         }}

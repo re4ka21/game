@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   View,
   Text,
@@ -18,17 +18,9 @@ export default function Business() {
     (sum, b) => sum + (b.incomePerHour ?? 0),
     0
   );
-
   useEffect(() => {
     updateOfflineEarnings();
-
-    const interval = setInterval(() => {
-      updateOfflineEarnings();
-    }, 60000);
-
-    return () => clearInterval(interval);
   }, []);
-
   const renderBusiness = ({ item }: { item: (typeof myBusinesses)[0] }) => (
     <BusinessCard key={item.id} business={item} />
   );

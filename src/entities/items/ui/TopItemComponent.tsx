@@ -4,7 +4,8 @@ import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
 import { LinearGradient } from "expo-linear-gradient";
-
+import { ImageSourcePropType } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 type ItemsScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
   "Garage"
@@ -12,17 +13,47 @@ type ItemsScreenNavigationProp = NativeStackNavigationProp<
 
 const TopItemComponent: React.FC = () => {
   const navigation = useNavigation<ItemsScreenNavigationProp>();
-
-  const topItems: { label: string; type: "cars" | "planes" | "ships" }[] = [
-    { label: "Гараж", type: "cars" },
-    { label: "Ангар", type: "planes" },
-    { label: "Причал", type: "ships" },
+  const topItems: {
+    label: string;
+    type: "cars" | "planes" | "ships";
+    image: ImageSourcePropType;
+  }[] = [
+    {
+      label: "Гараж",
+      type: "cars",
+      image: require("../../../../assets/images/garage.png"),
+    },
+    {
+      label: "Ангар",
+      type: "planes",
+      image: require("../../../../assets/images/hangar.png"),
+    },
+    {
+      label: "Причал",
+      type: "ships",
+      image: require("../../../../assets/images/berth.png"),
+    },
   ];
-
-  const bottomTabs: { label: string; type: "cars" | "planes" | "ships" }[] = [
-    { label: "Автосалон", type: "cars" },
-    { label: "Авиамагазин", type: "planes" },
-    { label: "Яхт-шоп", type: "ships" },
+  const bottomTabs: {
+    label: string;
+    type: "cars" | "planes" | "ships";
+    icon: keyof typeof Ionicons.glyphMap;
+  }[] = [
+    {
+      label: "Автосалон",
+      type: "cars",
+      icon: "car-sport-outline",
+    },
+    {
+      label: "Авиамагазин",
+      type: "planes",
+      icon: "airplane-outline",
+    },
+    {
+      label: "Яхт-шоп",
+      type: "ships",
+      icon: "boat-outline",
+    },
   ];
 
   return (
@@ -34,10 +65,7 @@ const TopItemComponent: React.FC = () => {
             style={styles.itemCard}
             onPress={() => navigation.navigate("Garage", { type: item.type })}
           >
-            <Image
-              source={require("../../../../assets/images/airport.png")}
-              style={styles.bgImage}
-            />
+            <Image source={item.image} style={styles.bgImage} />
             <Text style={styles.itemText}>{item.label}</Text>
           </TouchableOpacity>
         ))}
@@ -49,12 +77,15 @@ const TopItemComponent: React.FC = () => {
             <TouchableOpacity
               key={index}
               style={styles.tabCard}
-              onPress={() => navigation.navigate("Shop", { type: tab.type })}
+              onPress={() =>
+                navigation.navigate("VechiclesShop", { type: tab.type })
+              }
             >
-              <Image
-                source={require("../../../../assets/images/react-logo.png")}
-                style={styles.tabIcon}
-                resizeMode="contain"
+              <Ionicons
+                name={tab.icon}
+                size={50}
+                color="#373b44"
+                style={styles.icon}
               />
             </TouchableOpacity>
           ))}
@@ -96,16 +127,16 @@ const styles = StyleSheet.create({
     height: 110,
     borderRadius: 18,
     overflow: "hidden",
+    alignItems: "center",
+    justifyContent: "center",
   },
   bgImage: {
     width: "100%",
     height: "100%",
     opacity: 0.85,
+    position: "absolute",
   },
   itemText: {
-    position: "absolute",
-    bottom: 10,
-    left: 8,
     color: "#fff",
     fontSize: 18,
     fontWeight: "700",
@@ -133,7 +164,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-
+  icon: {
+    marginBottom: 20,
+  },
   tabIcon: {
     width: 90,
     height: 90,

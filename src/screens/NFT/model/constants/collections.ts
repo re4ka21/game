@@ -6,12 +6,12 @@ export const COLLECTIONS = [
     nfts: [
       {
         id: 1,
-        image: require("../../../../assets/images/react-logo.png"),
+        image: require("../../../../../assets/images/react-logo.png"),
         price: 100,
       },
       {
         id: 2,
-        image: require("../../../../assets/images/react-logo.png"),
+        image: require("../../../../../assets/images/react-logo.png"),
         price: 120,
       },
     ],
@@ -23,12 +23,12 @@ export const COLLECTIONS = [
     nfts: [
       {
         id: 3,
-        image: require("../../../../assets/images/react-logo.png"),
+        image: require("../../../../../assets/images/react-logo.png"),
         price: 50,
       },
       {
         id: 4,
-        image: require("../../../../assets/images/react-logo.png"),
+        image: require("../../../../../assets/images/react-logo.png"),
         price: 80,
       },
     ],

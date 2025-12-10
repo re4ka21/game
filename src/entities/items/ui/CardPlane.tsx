@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
-import { GarageItem } from "@/features/items";
+import { GarageItem } from "@/features/garage";
 import { LinearGradient } from "expo-linear-gradient";
 
 type Props = {

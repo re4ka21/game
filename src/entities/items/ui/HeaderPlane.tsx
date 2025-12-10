@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
-import { GarageItem } from "@/features/items";
+import { GarageItem } from "@/features/garage";
 
 type Props = { item: GarageItem };
 
