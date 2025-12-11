@@ -4,8 +4,10 @@ import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
 import { LinearGradient } from "expo-linear-gradient";
-import { ImageSourcePropType } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+
+import { TOP_ITEMS, BOTTOM_TABS } from "../model/constants";
+
 type ItemsScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
   "Garage"
@@ -13,53 +15,11 @@ type ItemsScreenNavigationProp = NativeStackNavigationProp<
 
 const TopItemComponent: React.FC = () => {
   const navigation = useNavigation<ItemsScreenNavigationProp>();
-  const topItems: {
-    label: string;
-    type: "cars" | "planes" | "ships";
-    image: ImageSourcePropType;
-  }[] = [
-    {
-      label: "Гараж",
-      type: "cars",
-      image: require("../../../../assets/images/garage.png"),
-    },
-    {
-      label: "Ангар",
-      type: "planes",
-      image: require("../../../../assets/images/hangar.png"),
-    },
-    {
-      label: "Причал",
-      type: "ships",
-      image: require("../../../../assets/images/berth.png"),
-    },
-  ];
-  const bottomTabs: {
-    label: string;
-    type: "cars" | "planes" | "ships";
-    icon: keyof typeof Ionicons.glyphMap;
-  }[] = [
-    {
-      label: "Автосалон",
-      type: "cars",
-      icon: "car-sport-outline",
-    },
-    {
-      label: "Авиамагазин",
-      type: "planes",
-      icon: "airplane-outline",
-    },
-    {
-      label: "Яхт-шоп",
-      type: "ships",
-      icon: "boat-outline",
-    },
-  ];
 
   return (
     <>
       <View style={styles.row}>
-        {topItems.map((item, index) => (
+        {TOP_ITEMS.map((item, index) => (
           <TouchableOpacity
             key={index}
             style={styles.itemCard}
@@ -73,7 +33,7 @@ const TopItemComponent: React.FC = () => {
 
       <View style={styles.tabsContainer}>
         <View style={styles.tabsBackground}>
-          {bottomTabs.map((tab, index) => (
+          {BOTTOM_TABS.map((tab, index) => (
             <TouchableOpacity
               key={index}
               style={styles.tabCard}
@@ -82,7 +42,7 @@ const TopItemComponent: React.FC = () => {
               }
             >
               <Ionicons
-                name={tab.icon}
+                name={tab.icon as any}
                 size={50}
                 color="#373b44"
                 style={styles.icon}
@@ -99,7 +59,7 @@ const TopItemComponent: React.FC = () => {
               { borderBottomLeftRadius: 12, borderBottomRightRadius: 12 },
             ]}
           >
-            {bottomTabs.map((tab, index) => (
+            {BOTTOM_TABS.map((tab, index) => (
               <View key={index} style={styles.gradientTextBox}>
                 <Text style={styles.tabLabel}>{tab.label}</Text>
               </View>
@@ -114,7 +74,6 @@ const TopItemComponent: React.FC = () => {
 };
 
 export default TopItemComponent;
-
 const styles = StyleSheet.create({
   row: {
     flexDirection: "row",
