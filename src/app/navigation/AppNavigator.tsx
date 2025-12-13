@@ -35,7 +35,9 @@ import { GarageItem } from "@/features/garage";
 import { NftItem } from "@/features/nft";
 import { ImageSourcePropType } from "react-native";
 import { Item } from "@/features/items";
-
+import { BuyStock, StocksMarket, StockDetails } from "@/screens/Stocks";
+import { Stock } from "@/screens/Stocks/ui/BuyStockScreen";
+import { Portfolio } from "@/screens/Stocks/ui/Portfolio";
 export type RootStackParamList = {
   Tabs: { screen?: string } | undefined;
   Upgrade: undefined;
@@ -72,6 +74,10 @@ export type RootStackParamList = {
   Island: undefined;
   IslandDetails: { islandId: number };
   BuyItemsDetails: { item: Item };
+  StocksMarket: undefined;
+  StockDetails: { stock: Stock };
+  BuyStock: { stock: Stock };
+  Portfolio: undefined;
 };
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -267,6 +273,34 @@ export default function AppNavigator() {
       <Stack.Screen
         name="BuyItemsDetails"
         component={BuyItemsDetailsScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="BuyStock"
+        component={BuyStock}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="StockDetails"
+        component={StockDetails}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="StocksMarket"
+        component={StocksMarket}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Portfolio"
+        component={Portfolio}
         options={{
           headerShown: false,
         }}

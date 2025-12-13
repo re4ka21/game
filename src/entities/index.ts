@@ -1,3 +1,5 @@
+import { Stocks } from "./investments/ui/screens/Stocks";
+
 export { default as BusinessCard } from "./business/ui/BusinessCard";
 export { default as CapacityButtons } from "./business/ui/CapacityButtons";
 export { BUSINESS_NAMES_BY_CATEGORY } from "./business/model/businessNames";
@@ -14,3 +16,6 @@ export { default as NftCard } from "./nft/ui/NftCard";
 export { default as IslandCard } from "./island/ui/IslandCard";
 export { InvestmentsTabs } from "./investments/ui/InvestmentsTabs";
 export { Tab } from "./investments/model/type";
+export { Crypto } from "./investments/ui/screens/Crypto";
+export { Estate } from "./investments/ui/screens/Estate";
+export { Stocks } from "./investments/ui/screens/Stocks";
