@@ -2,12 +2,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
 import { useState } from "react";
 import { useRoute, RouteProp, useNavigation } from "@react-navigation/native";
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
-export type Stock = {
-  id: string;
-  name: string;
-  price: number;
-  change: number;
-};
+
 import { useStocksStore } from "@/features/stocks/model/useStocksStore";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 type BuyStockRouteProp = RouteProp<RootStackParamList, "BuyStock">;

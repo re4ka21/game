@@ -4,51 +4,58 @@ import {
   FlatList,
   StyleSheet,
   TouchableOpacity,
-  Image,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { useStocksStore } from "@/features/stocks";
+import { useRef } from "react";
+
 type StockDetailsNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
   "StocksMarket"
 >;
 
-const STOCKS = [
-  { id: "1", name: "Renolt", price: 37.12, change: -0.09 },
-  { id: "2", name: "Hendaji", price: 206.37, change: 2.34 },
-  { id: "3", name: "Toyoda", price: 19.09, change: 0.18 },
-];
-
 export const StocksMarket = () => {
   const navigation = useNavigation<StockDetailsNavigationProp>();
+  const market = useStocksStore((s) => s.market);
+
+  // Зберігаємо початкові ціни для кожної акції
+  const initialPrices = useRef<Record<string, number>>(
+    Object.fromEntries(market.map((s) => [s.id, s.price]))
+  );
 
   return (
     <FlatList
-      data={STOCKS}
+      data={market}
       keyExtractor={(item) => item.id}
       contentContainerStyle={{ padding: 20 }}
-      renderItem={({ item }) => (
-        <TouchableOpacity
-          style={styles.row}
-          onPress={() => navigation.navigate("StockDetails", { stock: item })}
-        >
-          <Text style={styles.name}>{item.name}</Text>
+      renderItem={({ item }) => {
+        const initialPrice = initialPrices.current[item.id] || item.price;
+        const change = item.price - initialPrice;
 
-          <View style={{ alignItems: "flex-end" }}>
-            <Text style={styles.price}>${item.price}</Text>
-            <Text
-              style={{
-                color: item.change >= 0 ? "green" : "red",
-                fontSize: 12,
-              }}
-            >
-              {item.change >= 0 ? "+" : ""}
-              {item.change} $
-            </Text>
-          </View>
-        </TouchableOpacity>
-      )}
+        return (
+          <TouchableOpacity
+            style={styles.row}
+            onPress={() => navigation.navigate("StockDetails", { stock: item })}
+          >
+            <Text style={styles.name}>{item.name}</Text>
+
+            <View style={{ alignItems: "flex-end" }}>
+              <Text style={styles.price}>${item.price.toFixed(2)}</Text>
+              <Text
+                style={{
+                  color: change >= 0 ? "green" : "red",
+                  fontSize: 12,
+                }}
+              >
+                {change >= 0 ? "+" : ""}
+                {change.toFixed(2)} $
+              </Text>
+            </View>
+          </TouchableOpacity>
+        );
+      }}
     />
   );
 };

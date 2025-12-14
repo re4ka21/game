@@ -8,11 +8,13 @@ export type Stock = {
   id: string;
   name: string;
   price: number;
+  change?: number;
 };
 
 export type OwnedStock = {
   id: string;
   quantity: number;
+  buyPrice: number;
 };
 
 type StocksState = {
@@ -32,6 +34,7 @@ export const useStocksStore = create<StocksState>()(
       portfolio: [],
       lastPriceUpdate: Date.now(),
       priceHistory: {},
+
       updatePrices: () => {
         const now = Date.now();
         const prevHistory = get().priceHistory;
@@ -58,9 +61,12 @@ export const useStocksStore = create<StocksState>()(
           lastPriceUpdate: now,
         });
       },
+
+      // Купівля акцій
       buyStock: (stockId, quantity) => {
         const stock = get().market.find((s) => s.id === stockId);
         if (!stock) return false;
+
         const total = stock.price * quantity;
         const balance = useCounterStore.getState().count;
         if (balance < total) return false;
@@ -69,20 +75,37 @@ export const useStocksStore = create<StocksState>()(
         set((state) => {
           const existing = state.portfolio.find((s) => s.id === stockId);
           if (existing) {
+            // Оновлюємо середню ціну купівлі
             return {
               portfolio: state.portfolio.map((s) =>
-                s.id === stockId ? { ...s, quantity: s.quantity + quantity } : s
+                s.id === stockId
+                  ? {
+                      ...s,
+                      quantity: s.quantity + quantity,
+                      buyPrice:
+                        (s.buyPrice * s.quantity + stock.price * quantity) /
+                        (s.quantity + quantity),
+                    }
+                  : s
               ),
             };
           }
-          return { portfolio: [...state.portfolio, { id: stockId, quantity }] };
+          return {
+            portfolio: [
+              ...state.portfolio,
+              { id: stockId, quantity, buyPrice: stock.price },
+            ],
+          };
         });
+
         return true;
       },
+
       sellStock: (stockId, quantity) => {
         const stock = get().market.find((s) => s.id === stockId);
         const owned = get().portfolio.find((s) => s.id === stockId);
         if (!stock || !owned || owned.quantity < quantity) return false;
+
         const total = stock.price * quantity;
         useCounterStore.getState().addCount(total);
 

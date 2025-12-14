@@ -13,7 +13,7 @@ import { useCounterStore } from "@/features/counter";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import type { RootStackParamList } from "@/app/navigation/AppNavigator";
-
+import { titles } from "../model/constants/categories";
 type BuyItemsNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
   "BuyItems"
@@ -33,7 +33,7 @@ export default function BuyItemsScreen() {
   const marketItems = items.filter((i) => i.category === type && !i.owned);
   const collectionItems = items.filter((i) => i.category === type && i.owned);
 
-  const title = type === "coins" ? "Монеты" : "Картины";
+  const title = titles[type];
 
   return (
     <View style={styles.container}>

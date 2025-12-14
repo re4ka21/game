@@ -21,7 +21,7 @@ export const StockDetails = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       updatePrices();
-    }, 10000);
+    }, 50000);
 
     return () => clearInterval(interval);
   }, [updatePrices]);

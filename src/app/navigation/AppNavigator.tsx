@@ -36,7 +36,7 @@ import { NftItem } from "@/features/nft";
 import { ImageSourcePropType } from "react-native";
 import { Item } from "@/features/items";
 import { BuyStock, StocksMarket, StockDetails } from "@/screens/Stocks";
-import { Stock } from "@/screens/Stocks/ui/BuyStockScreen";
+import { Stock } from "@/features/stocks/model/useStocksStore";
 import { Portfolio } from "@/screens/Stocks/ui/Portfolio";
 export type RootStackParamList = {
   Tabs: { screen?: string } | undefined;

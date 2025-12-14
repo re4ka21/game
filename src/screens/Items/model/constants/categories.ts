@@ -1,4 +1,5 @@
 import { ShopCategory } from "@/entities";
+import { ItemCategory } from "@/features/items";
 export const categories: ShopCategory[] = [
   {
     label: "Монеты",
@@ -31,3 +32,11 @@ export const categories: ShopCategory[] = [
     image: require("../../../../../assets/images/react-logo.png"),
   },
 ];
+export const titles: Record<ItemCategory, string> = {
+  coins: "Монеты",
+  paintings: "Картины",
+  uniqueItems: "Уникальные предметы",
+  retroCars: "Ретро автомобили",
+  jewels: "Драгоценности",
+  stamps: "Марки",
+};
