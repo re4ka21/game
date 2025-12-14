@@ -2,9 +2,11 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { useNavigation, useRoute, RouteProp } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
+import { StockChart } from "@/features/stocks";
+import { useStocksStore } from "@/features/stocks/model/useStocksStore";
+import { useEffect } from "react";
 
 type StockDetailsRouteProp = RouteProp<RootStackParamList, "StockDetails">;
-
 type StockDetailsNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
   "StockDetails"
@@ -14,12 +16,22 @@ export const StockDetails = () => {
   const navigation = useNavigation<StockDetailsNavigationProp>();
   const { stock } = useRoute<StockDetailsRouteProp>().params;
 
+  const updatePrices = useStocksStore((s) => s.updatePrices);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      updatePrices();
+    }, 10000);
+
+    return () => clearInterval(interval);
+  }, [updatePrices]);
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{stock.name}</Text>
 
       <View style={styles.chart}>
-        <Text style={{ color: "#999" }}>График цены</Text>
+        <StockChart stockId={stock.id} />
       </View>
 
       <TouchableOpacity
@@ -35,9 +47,7 @@ export const StockDetails = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 20,
-  },
+  container: { padding: 20 },
   title: {
     fontSize: 24,
     fontWeight: "bold",
@@ -58,13 +68,6 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     alignItems: "center",
   },
-  buttonText: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "600",
-  },
-  info: {
-    marginTop: 20,
-    fontSize: 16,
-  },
+  buttonText: { color: "#fff", fontSize: 16, fontWeight: "600" },
+  info: { marginTop: 20, fontSize: 16 },
 });

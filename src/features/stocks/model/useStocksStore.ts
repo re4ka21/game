@@ -19,7 +19,7 @@ type StocksState = {
   market: Stock[];
   portfolio: OwnedStock[];
   lastPriceUpdate: number;
-
+  priceHistory: Record<string, { time: number; price: number }[]>;
   updatePrices: () => void;
   buyStock: (stockId: string, quantity: number) => boolean;
   sellStock: (stockId: string, quantity: number) => boolean;
@@ -31,41 +31,43 @@ export const useStocksStore = create<StocksState>()(
       market: INITIAL_STOCKS,
       portfolio: [],
       lastPriceUpdate: Date.now(),
-
+      priceHistory: {},
       updatePrices: () => {
         const now = Date.now();
-        const ONE_HOUR = 1000 * 60 * 60;
+        const prevHistory = get().priceHistory;
 
-        if (now - get().lastPriceUpdate < ONE_HOUR) return;
+        const newMarket = get().market.map((stock) => {
+          const changePercent = (Math.random() * 2 - 1) / 100; // ±1%
+          const newPrice = Number(
+            (stock.price * (1 + changePercent)).toFixed(2)
+          );
+          return { ...stock, price: newPrice };
+        });
+
+        const newHistory: StocksState["priceHistory"] = { ...prevHistory };
+        newMarket.forEach((stock) => {
+          newHistory[stock.id] = [
+            ...(newHistory[stock.id] || []),
+            { time: now, price: stock.price },
+          ].slice(-60);
+        });
 
         set({
-          market: get().market.map((stock) => {
-            const changePercent = (Math.random() * 10 - 5) / 100;
-            const newPrice = stock.price * (1 + changePercent);
-
-            return {
-              ...stock,
-              price: Number(newPrice.toFixed(2)),
-            };
-          }),
+          market: newMarket,
+          priceHistory: newHistory,
           lastPriceUpdate: now,
         });
       },
-
       buyStock: (stockId, quantity) => {
         const stock = get().market.find((s) => s.id === stockId);
         if (!stock) return false;
-
         const total = stock.price * quantity;
         const balance = useCounterStore.getState().count;
-
         if (balance < total) return false;
-
         useCounterStore.getState().purchase(total);
 
         set((state) => {
           const existing = state.portfolio.find((s) => s.id === stockId);
-
           if (existing) {
             return {
               portfolio: state.portfolio.map((s) =>
@@ -73,23 +75,15 @@ export const useStocksStore = create<StocksState>()(
               ),
             };
           }
-
-          return {
-            portfolio: [...state.portfolio, { id: stockId, quantity }],
-          };
+          return { portfolio: [...state.portfolio, { id: stockId, quantity }] };
         });
-
         return true;
       },
-
       sellStock: (stockId, quantity) => {
         const stock = get().market.find((s) => s.id === stockId);
         const owned = get().portfolio.find((s) => s.id === stockId);
-
         if (!stock || !owned || owned.quantity < quantity) return false;
-
         const total = stock.price * quantity;
-
         useCounterStore.getState().addCount(total);
 
         set({
@@ -102,7 +96,6 @@ export const useStocksStore = create<StocksState>()(
                     : s
                 ),
         });
-
         return true;
       },
     }),
