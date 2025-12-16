@@ -1,17 +1,21 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
+
+import type { BottomTabParamList } from "./types";
+
 import { Business } from "@/screens/Business";
 import { Earnings } from "@/screens/Earnings";
 import { Investments } from "@/screens/Investments";
 import { Profile } from "@/screens/Profile";
 import { Items } from "@/screens/Items";
 
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator<BottomTabParamList, "MainTabs">();
 
 export default function BottomTabs() {
   return (
     <Tab.Navigator
+      id="MainTabs"
       initialRouteName="Earnings"
       screenOptions={{
         headerShown: false,
