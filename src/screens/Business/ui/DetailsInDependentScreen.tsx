@@ -13,7 +13,7 @@ import Feather from "@expo/vector-icons/Feather";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
 import InfoCard from "@/shared/ui/InfoCard";
-import { useUpgradeTimer } from "@/shared";
+import { useUpgradeTimer } from "@/screens/Business";
 import { colors } from "@/shared";
 
 type NavigationProp = NativeStackNavigationProp<

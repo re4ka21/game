@@ -7,8 +7,8 @@ import {
   StyleSheet,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { useBusinessSelection } from "@/shared";
-import { useMergeBusinesses } from "@/shared";
+import { useBusinessSelection } from "@/screens/Business";
+import { useMergeBusinesses } from "@/screens/Business";
 import { colors } from "@/shared";
 
 export default function BusinessMergerScreen() {

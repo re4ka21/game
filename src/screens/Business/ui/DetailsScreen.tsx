@@ -9,8 +9,8 @@ import {
 } from "react-native";
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
 import { useRoute, useNavigation, RouteProp } from "@react-navigation/native";
-import { useRandomBusinessName } from "@/shared";
-import { useBusinessPurchase } from "@/shared";
+import { useRandomBusinessName } from "@/screens/Business";
+import { useBusinessPurchase } from "@/screens/Business";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 type NavigationProp = NativeStackNavigationProp<

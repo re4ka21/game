@@ -13,7 +13,7 @@ export {
   CAR_OPTIONS,
   CAR_TYPE_COLORS,
   AIRLINE_OPTIONS,
-} from "./constants/business";
+} from "./model/constants/business";
 export { default as BuyCarsScreen } from "./ui/BuyCarsScreen";
 export { default as CarsParkScreen } from "./ui/CarsParkScreen";
 export type {
@@ -23,4 +23,10 @@ export type {
   CapacityCostMap,
   CarType,
   CarOption,
-} from "@/screens/Business/types/business";
+} from "@/screens/Business/model/types/business";
+export { useUpgradeTimer } from "./model/hooks/useUpgradeTimer";
+export { useBusinessPurchase } from "./model/hooks/useBusinessPurchase";
+export { useRandomBusinessName } from "./model/hooks/useRandomBusinessName";
+
+export { useMergeBusinesses } from "./model/hooks/useMergeBusinesses";
+export { useBusinessSelection } from "./model/hooks/useBusinessSelection";

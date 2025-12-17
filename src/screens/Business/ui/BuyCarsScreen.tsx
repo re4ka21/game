@@ -16,7 +16,7 @@ import {
   CAR_TYPE_COLORS,
   AIRLINE_OPTIONS,
 } from "@/screens/Business";
-import { CarType } from "@/screens/Business/types/business";
+import { CarType } from "@/screens/Business/model/types/business";
 
 type Props = NativeStackScreenProps<RootStackParamList, "BuyCars">;
 

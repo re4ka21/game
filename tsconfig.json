@@ -11,6 +11,6 @@
     "**/*.tsx",
     "src/screens/Business/ui/BusinessScreen.jsx",
     "app/navigation/BottomTabs.jsx",
-    "src/app/navigation/BottomTabs.jsx"
+    "src/app/navigation/BottomTabs.tsx"
   ]
 }

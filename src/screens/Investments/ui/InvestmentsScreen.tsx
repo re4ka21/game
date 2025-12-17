@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { InvestmentsTabs } from "@/entities";
 import { Tab } from "@/entities";
-import { Stocks, Estate, Crypto } from "@/entities";
+import { Stocks, Estate, Crypto } from "@/screens/Investments";
 export default function Investments() {
   const [active, setActive] = useState<Tab>("stocks");
 
