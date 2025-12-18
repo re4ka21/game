@@ -1,5 +1,5 @@
 import { useCounterStore } from "@/features/counter";
-import { useBusinessStore } from "@/features/business";
+import { useBusinessStore } from "@/entities";
 import { Alert } from "react-native";
 
 export function useBusinessPurchase() {

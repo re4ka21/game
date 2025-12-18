@@ -12,7 +12,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
-import { useHonorsStore } from "@/features/honors";
+import { useHonorsStore } from "@/entities";
 import { DATA_HONORS } from "../model/constants/honors";
 import { HonorItem } from "../model/type/honors";
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, "Honors">;

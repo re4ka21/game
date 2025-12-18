@@ -4,9 +4,9 @@ import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
 import { useCounterStore } from "@/features/counter";
-import { useBusinessStore } from "@/features/business";
+import { useBusinessStore } from "@/entities";
 import { useItemsStore } from "@/features/items";
-import { useHonorsStore } from "@/features/honors";
+import { useHonorsStore } from "@/entities";
 import AntDesign from "@expo/vector-icons/AntDesign";
 type InvestmentsRouteProp = RouteProp<RootStackParamList, "HonorsDetails">;
 

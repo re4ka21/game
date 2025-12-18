@@ -8,7 +8,7 @@ import {
   StatusBar,
   TouchableOpacity,
 } from "react-native";
-import { GarageItem } from "@/features/garage";
+import { GarageItem } from "@/entities/garage";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { useNavigation } from "@react-navigation/native";
 type Props = { item: GarageItem };

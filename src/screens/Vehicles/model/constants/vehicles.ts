@@ -1,4 +1,4 @@
-import { GarageItem } from "@/features/garage";
+import { GarageItem } from "@/entities/garage";
 
 export const CARS: GarageItem[] = [
   {

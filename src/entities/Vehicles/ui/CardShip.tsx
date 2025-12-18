@@ -7,7 +7,7 @@ import {
   Image,
   StyleSheet,
 } from "react-native";
-import { GarageItem } from "@/features/garage";
+import { GarageItem } from "@/entities/garage";
 
 type Props = {
   item: GarageItem;

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useBusinessStore } from "@/features/business";
+import { useBusinessStore } from "@/entities";
 
 export function useBusinessSelection() {
   const { myBusinesses } = useBusinessStore();

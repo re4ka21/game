@@ -31,7 +31,7 @@ import {
   NftDetailsScreen,
   NftConfirmBuyScreen,
 } from "@/screens/NFT";
-import { GarageItem } from "@/features/garage";
+import { GarageItem } from "@/entities/garage";
 import { NftItem } from "@/features/nft";
 import { ImageSourcePropType } from "react-native";
 import { Item } from "@/features/items";

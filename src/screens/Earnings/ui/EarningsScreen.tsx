@@ -13,7 +13,7 @@ import { useCounterStore } from "@/features/counter/model/store";
 import { useNavigation } from "@react-navigation/native";
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { useBackgroundStore } from "@/features/background";
+import { useBackgroundStore } from "@/entities";
 import { colors } from "@/shared";
 import { useEffect } from "react";
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, "Tabs">;

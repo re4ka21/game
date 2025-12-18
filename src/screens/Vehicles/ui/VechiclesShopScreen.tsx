@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { useRoute, RouteProp } from "@react-navigation/native";
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
-import { useGarageStore, GarageItem } from "@/features/garage";
+import { useGarageStore, GarageItem } from "@/entities";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { CardCar, CardPlane, CardShip } from "@/entities";

@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
-import { useBusinessStore } from "@/features/business";
+import { useBusinessStore } from "@/entities";
 import { useCounterStore } from "@/features/counter";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";

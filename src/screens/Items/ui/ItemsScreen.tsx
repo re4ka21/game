@@ -7,12 +7,12 @@ import {
   ScrollView,
 } from "react-native";
 import { useItemsStore } from "@/features/items";
-import { useGarageStore } from "@/features/garage";
+import { useGarageStore } from "@/entities";
 import { NftCard, TopItemComponent } from "@/entities";
 import { MiddleItemComponent } from "@/entities";
 import { HonorsCard } from "@/entities";
 import { IslandCard } from "@/entities";
-import { useIslandStore } from "@/features/island";
+import { useIslandStore } from "@/entities";
 import { categories } from "../model/constants/categories";
 export default function Items() {
   const { reset } = useGarageStore();

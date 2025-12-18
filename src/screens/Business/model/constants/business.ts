@@ -106,7 +106,7 @@ export const AVAILABLE_BUSINESSES: BusinessType[] = [
 export const CAR_OPTIONS: CarOption[] = [
   {
     name: "Vada Grand",
-    image: require("../../../../assets/images/mastercard.png"),
+    image: require("../../../../../assets/images/mastercard.png"),
     resource: "300 000 км",
     income: 560,
     price: 7853,
@@ -116,7 +116,7 @@ export const CAR_OPTIONS: CarOption[] = [
   },
   {
     name: "Renolt Logon",
-    image: require("../../../../assets/images/mastercard.png"),
+    image: require("../../../../../assets/images/mastercard.png"),
     resource: "520 000 км",
     income: 560,
     price: 10800,
@@ -126,7 +126,7 @@ export const CAR_OPTIONS: CarOption[] = [
   },
   {
     name: "Hendaji Solaer",
-    image: require("../../../../assets/images/mastercard.png"),
+    image: require("../../../../../assets/images/mastercard.png"),
     resource: "480 000 км",
     income: 560,
     price: 12262,
@@ -137,7 +137,7 @@ export const CAR_OPTIONS: CarOption[] = [
 
   {
     name: "Luma Cruiser",
-    image: require("../../../../assets/images/mastercard.png"),
+    image: require("../../../../../assets/images/mastercard.png"),
     resource: "380 000 км",
     income: 920,
     price: 21000,
@@ -147,7 +147,7 @@ export const CAR_OPTIONS: CarOption[] = [
   },
   {
     name: "Skotta Octavian",
-    image: require("../../../../assets/images/mastercard.png"),
+    image: require("../../../../../assets/images/mastercard.png"),
     resource: "420 000 км",
     income: 920,
     price: 22246,
@@ -157,7 +157,7 @@ export const CAR_OPTIONS: CarOption[] = [
   },
   {
     name: "Tovari Comfort",
-    image: require("../../../../assets/images/mastercard.png"),
+    image: require("../../../../../assets/images/mastercard.png"),
     resource: "400 000 км",
     income: 920,
     price: 23000,
@@ -168,7 +168,7 @@ export const CAR_OPTIONS: CarOption[] = [
 
   {
     name: "Grand Comfort Plus",
-    image: require("../../../../assets/images/mastercard.png"),
+    image: require("../../../../../assets/images/mastercard.png"),
     resource: "350 000 км",
     income: 1500,
     price: 35000,
@@ -178,7 +178,7 @@ export const CAR_OPTIONS: CarOption[] = [
   },
   {
     name: "Vesta Lux",
-    image: require("../../../../assets/images/mastercard.png"),
+    image: require("../../../../../assets/images/mastercard.png"),
     resource: "340 000 км",
     income: 1500,
     price: 36000,
@@ -189,7 +189,7 @@ export const CAR_OPTIONS: CarOption[] = [
 
   {
     name: "Biz Elite",
-    image: require("../../../../assets/images/mastercard.png"),
+    image: require("../../../../../assets/images/mastercard.png"),
     resource: "300 000 км",
     income: 2500,
     price: 50000,
@@ -199,7 +199,7 @@ export const CAR_OPTIONS: CarOption[] = [
   },
   {
     name: "Executive Car",
-    image: require("../../../../assets/images/mastercard.png"),
+    image: require("../../../../../assets/images/mastercard.png"),
     resource: "280 000 км",
     income: 2600,
     price: 52000,
@@ -210,7 +210,7 @@ export const CAR_OPTIONS: CarOption[] = [
 
   {
     name: "Premier Lux",
-    image: require("../../../../assets/images/mastercard.png"),
+    image: require("../../../../../assets/images/mastercard.png"),
     resource: "250 000 км",
     income: 4000,
     price: 80000,
@@ -220,7 +220,7 @@ export const CAR_OPTIONS: CarOption[] = [
   },
   {
     name: "Royal Premier",
-    image: require("../../../../assets/images/mastercard.png"),
+    image: require("../../../../../assets/images/mastercard.png"),
     resource: "240 000 км",
     income: 4200,
     price: 85000,
@@ -240,7 +240,7 @@ export const AIRLINE_OPTIONS: CarOption[] = [
   {
     name: "Cessna 172",
     type: "economy",
-    image: require("../../../../assets/images/react-logo.png"),
+    image: require("../../../../../assets/images/react-logo.png"),
     income: 12000,
     price: 150000,
     resource: "500 000 км",
@@ -250,7 +250,7 @@ export const AIRLINE_OPTIONS: CarOption[] = [
   {
     name: "Boeing 737",
     type: "business",
-    image: require("../../../../assets/images/react-logo.png"),
+    image: require("../../../../../assets/images/react-logo.png"),
     income: 85000,
     price: 900000,
     resource: "2 000 000 км",

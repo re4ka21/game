@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useCounterStore } from "@/features/counter/model/store";
-import { useBackgroundStore } from "@/features/background";
+import { useBackgroundStore } from "@/entities";
 import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 

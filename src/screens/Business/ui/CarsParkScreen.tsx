@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
-import { useBusinessStore } from "@/features/business";
+import { useBusinessStore } from "@/entities";
 import { CAR_OPTIONS } from "@/screens/Business";
 import { AIRLINE_OPTIONS } from "@/screens/Business";
 import AntDesign from "@expo/vector-icons/AntDesign";

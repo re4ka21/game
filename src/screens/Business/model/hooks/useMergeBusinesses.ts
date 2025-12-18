@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import { useBusinessStore } from "@/features/business";
+import { useBusinessStore } from "@/entities";
 import { useCounterStore } from "@/features/counter";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/app/navigation/AppNavigator";

@@ -2,7 +2,7 @@ import React, { useState, useMemo } from "react";
 import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import { useRoute, RouteProp, useNavigation } from "@react-navigation/native";
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
-import { useGarageStore } from "@/features/garage";
+import { useGarageStore } from "@/entities";
 import { useCounterStore } from "@/features/counter";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import {

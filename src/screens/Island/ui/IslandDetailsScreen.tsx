@@ -10,7 +10,7 @@ import {
 import { RouteProp, useRoute, useNavigation } from "@react-navigation/native";
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import { useIslandStore } from "@/features/island";
+import { useIslandStore } from "@/entities";
 
 type RouteProps = RouteProp<RootStackParamList, "IslandDetails">;
 

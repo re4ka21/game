@@ -10,7 +10,7 @@ import {
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
 import { useCounterStore } from "@/features/counter";
-import { useBusinessStore } from "@/features/business/model/store";
+import { useBusinessStore } from "@/entities/business/model/store";
 import {
   CAR_OPTIONS,
   CAR_TYPE_COLORS,

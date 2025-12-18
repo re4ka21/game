@@ -11,7 +11,7 @@ import { useRoute, RouteProp, useNavigation } from "@react-navigation/native";
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import { useBusinessStore } from "@/features/business";
+import { useBusinessStore } from "@/entities";
 import { useCounterStore } from "@/features/counter";
 
 type SettingsRouteProp = RouteProp<RootStackParamList, "Settings">;
