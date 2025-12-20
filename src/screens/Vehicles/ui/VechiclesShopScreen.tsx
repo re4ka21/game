@@ -13,7 +13,7 @@ import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { CardCar, CardPlane, CardShip } from "@/entities";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import { useCounterStore } from "@/features/counter";
+import { useCounterStore } from "@/entities";
 import { CARS, PLANES, SHIPS } from "../model/constants/vehicles";
 type ShopScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,

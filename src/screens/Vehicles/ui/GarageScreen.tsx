@@ -12,7 +12,7 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
 import { useGarageStore } from "@/entities";
-import { useCounterStore } from "@/features/counter";
+import { useCounterStore } from "@/entities";
 
 type GarageRoute = RouteProp<RootStackParamList, "Garage">;
 

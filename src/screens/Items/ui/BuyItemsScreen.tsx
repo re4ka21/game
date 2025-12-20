@@ -8,8 +8,8 @@ import {
   Image,
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { useItemsStore, ItemCategory, Item } from "@/features/items";
-import { useCounterStore } from "@/features/counter";
+import { useItemsStore, ItemCategory, Item } from "@/entities";
+import { useCounterStore } from "@/entities";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import type { RootStackParamList } from "@/app/navigation/AppNavigator";

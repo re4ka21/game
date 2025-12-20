@@ -7,7 +7,7 @@ import {
   StyleSheet,
 } from "react-native";
 import { useBusinessStore } from "@/entities";
-import { useCounterStore } from "@/features/counter";
+import { useCounterStore } from "@/entities";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import type { RouteProp } from "@react-navigation/native";

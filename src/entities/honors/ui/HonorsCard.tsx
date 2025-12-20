@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
-import { useHonorsStore } from "@/features/honors";
+import { useHonorsStore } from "@/entities";
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, "Honors">;
 
 export default function HonorsScreen() {

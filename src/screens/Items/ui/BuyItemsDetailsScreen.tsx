@@ -10,8 +10,8 @@ import {
 import { RouteProp, useRoute, useNavigation } from "@react-navigation/native";
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import { useItemsStore, Item } from "@/features/items";
-import { useCounterStore } from "@/features/counter";
+import { useItemsStore, Item } from "@/entities";
+import { useCounterStore } from "@/entities";
 
 type RouteProps = RouteProp<RootStackParamList, "BuyItemsDetails">;
 

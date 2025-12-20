@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import { useItemsStore } from "@/features/items";
+import { useItemsStore } from "@/entities";
 import { useGarageStore } from "@/entities";
 import { NftCard, TopItemComponent } from "@/entities";
 import { MiddleItemComponent } from "@/entities";

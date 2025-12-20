@@ -3,7 +3,7 @@ import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import { RouteProp, useRoute, useNavigation } from "@react-navigation/native";
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
 import { useGarageStore } from "@/entities";
-import { useCounterStore } from "@/features/counter";
+import { useCounterStore } from "@/entities";
 import { HeaderPlane } from "@/entities";
 import { HeaderShip } from "@/entities";
 type ScreenRouteProp = RouteProp<RootStackParamList, "ConfirmBuyShipPlane">;

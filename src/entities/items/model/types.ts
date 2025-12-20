@@ -1,4 +1,6 @@
 import { ImageSourcePropType } from "react-native";
+export type VehicleType = "cars" | "planes" | "ships";
+
 export type ItemCategory =
   | "coins"
   | "paintings"

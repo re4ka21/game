@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
-import { useNftStore } from "@/features/nft";
+import { useNftStore } from "@/entities";
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, "Nft">;
 

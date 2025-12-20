@@ -10,7 +10,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { useIslandStore } from "@/entities";
-import { useCounterStore } from "@/features/counter";
+import { useCounterStore } from "@/entities";
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 type Nav = NativeStackNavigationProp<RootStackParamList, "Island">;

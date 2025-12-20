@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { CounterZone } from "@/features/counter";
-import { useCounterStore } from "@/features/counter/model/store";
+import { useCounterStore } from "@/entities/counter/model/store";
 import { useNavigation } from "@react-navigation/native";
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";

@@ -2,8 +2,8 @@ import React from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { useNavigation, useRoute, RouteProp } from "@react-navigation/native";
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
-import { useCounterStore } from "@/features/counter";
-import { useNftStore } from "@/features/nft";
+import { useCounterStore } from "@/entities";
+import { useNftStore } from "@/entities";
 import AntDesign from "@expo/vector-icons/AntDesign";
 
 type RouteProps = RouteProp<RootStackParamList, "NftConfirmBuy">;

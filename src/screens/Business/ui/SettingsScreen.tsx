@@ -12,7 +12,7 @@ import { RootStackParamList } from "@/app/navigation/AppNavigator";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { useBusinessStore } from "@/entities";
-import { useCounterStore } from "@/features/counter";
+import { useCounterStore } from "@/entities";
 
 type SettingsRouteProp = RouteProp<RootStackParamList, "Settings">;
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, "Settings">;

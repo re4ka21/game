@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
-import { useNftStore } from "@/features/nft";
+import { useNftStore } from "@/entities";
 
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";

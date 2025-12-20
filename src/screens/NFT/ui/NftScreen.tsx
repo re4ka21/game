@@ -4,7 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import { useNftStore } from "@/features/nft";
+import { useNftStore } from "@/entities";
 import { COLLECTIONS } from "../model/constants/collections";
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, "Nft">;
 

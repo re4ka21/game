@@ -10,7 +10,7 @@ import {
   GestureResponderEvent,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { useCounterStore } from "../model/store";
+import { useCounterStore } from "../../../entities/counter/model/store";
 
 export default function CounterZone() {
   const { increment, clear, reset, cheat } = useCounterStore();

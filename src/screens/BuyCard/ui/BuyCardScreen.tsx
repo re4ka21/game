@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { useCounterStore } from "@/features/counter/model/store";
+import { useCounterStore } from "@/entities/counter/model/store";
 import { useBackgroundStore } from "@/entities";
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
 import { colors } from "@/shared";
