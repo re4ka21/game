@@ -12,7 +12,6 @@ export { ShopCategory } from "@/entities/items/ui/MiddleItem";
 export { default as HonorsCard } from "@/entities/honors/ui/HonorsCard";
 export { default as NftCard } from "./nft/ui/NftCard";
 export { default as IslandCard } from "./island/ui/IslandCard";
-export { InvestmentsTabs } from "./investments/ui/InvestmentsTabs";
 export { Tab } from "./investments/model/type";
 export { BusinessType } from "../entities/business/model/store";
 export { useBusinessStore } from "../entities/business/model/store";

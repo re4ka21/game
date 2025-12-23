@@ -1,4 +1,4 @@
-import { GarageItem } from "@/entities/garage";
+import { GarageItem } from "@/entities";
 
 export const CARS: GarageItem[] = [
   {

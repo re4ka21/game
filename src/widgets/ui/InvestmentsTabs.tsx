@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { Tab } from "../model/type";
+import { Tab } from "../../entities/investments/model/type";
 
 interface Props {
   active: Tab;

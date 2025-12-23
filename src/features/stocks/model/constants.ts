@@ -1,5 +1,20 @@
 export const INITIAL_STOCKS = [
-  { id: "1", name: "Renolt", price: 37.12 },
-  { id: "2", name: "Hendaji", price: 206.37 },
-  { id: "3", name: "Toyoda", price: 19.09 },
+  {
+    id: "aapl",
+    name: "Apple",
+    price: 185,
+    dividendPercent: 0.015,
+  },
+  {
+    id: "msft",
+    name: "Microsoft",
+    price: 410,
+    dividendPercent: 0.02,
+  },
+  {
+    id: "jnj",
+    name: "Johnson & Johnson",
+    price: 165,
+    dividendPercent: 0.035,
+  },
 ];

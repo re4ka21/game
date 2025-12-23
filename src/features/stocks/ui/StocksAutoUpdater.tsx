@@ -1,4 +1,3 @@
-// StocksAutoUpdater.tsx
 import { useEffect } from "react";
 import { useStocksStore } from "@/features/stocks/model/useStocksStore";
 

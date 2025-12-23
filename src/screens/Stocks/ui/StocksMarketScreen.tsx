@@ -9,8 +9,7 @@ import { useNavigation } from "@react-navigation/native";
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useStocksStore } from "@/features/stocks";
-import { useRef } from "react";
-
+import { INITIAL_STOCKS } from "@/features/stocks/model/constants";
 type StockDetailsNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
   "StocksMarket"
@@ -19,10 +18,8 @@ type StockDetailsNavigationProp = NativeStackNavigationProp<
 export const StocksMarket = () => {
   const navigation = useNavigation<StockDetailsNavigationProp>();
   const market = useStocksStore((s) => s.market);
-
-  // Зберігаємо початкові ціни для кожної акції
-  const initialPrices = useRef<Record<string, number>>(
-    Object.fromEntries(market.map((s) => [s.id, s.price]))
+  const initialPrices: Record<string, number> = Object.fromEntries(
+    INITIAL_STOCKS.map((s) => [s.id, s.price])
   );
 
   return (
@@ -31,9 +28,8 @@ export const StocksMarket = () => {
       keyExtractor={(item) => item.id}
       contentContainerStyle={{ padding: 20 }}
       renderItem={({ item }) => {
-        const initialPrice = initialPrices.current[item.id] || item.price;
+        const initialPrice = initialPrices[item.id] || item.price;
         const change = item.price - initialPrice;
-
         return (
           <TouchableOpacity
             style={styles.row}
