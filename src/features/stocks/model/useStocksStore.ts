@@ -3,12 +3,13 @@ import { persist, createJSONStorage } from "zustand/middleware";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useCounterStore } from "@/entities";
 import { INITIAL_STOCKS } from "./constants";
-
+import { ImageSourcePropType } from "react-native";
 export type Stock = {
   id: string;
   name: string;
   price: number;
   dividendPercent: number;
+  logo: ImageSourcePropType;
 };
 
 export type OwnedStock = {
@@ -141,7 +142,7 @@ export const useStocksStore = create<StocksState>()(
       },
     }),
     {
-      name: "stocks-storage-v2",
+      name: "stocks-storage-v6",
       storage: createJSONStorage(() => AsyncStorage),
     }
   )

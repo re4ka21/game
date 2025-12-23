@@ -24,9 +24,10 @@ export const Stocks = () => {
 
   const topDividendStock = market.reduce(
     (best, stock) => {
-      const dividend = stock.price * stock.dividendPercent;
-      if (!best) return { stock, dividend };
-      return dividend > best.dividend ? { stock, dividend } : best;
+      if (!best || stock.dividendPercent > best.stock.dividendPercent) {
+        return { stock, dividend: stock.dividendPercent };
+      }
+      return best;
     },
     null as null | { stock: Stock; dividend: number }
   );
@@ -129,29 +130,48 @@ export const Stocks = () => {
       </View>
 
       <View style={styles.line} />
-
       {topDividendStock && (
-        <TouchableOpacity
-          style={styles.dividendCard}
-          onPress={() =>
-            navigation.navigate("StockDetails", {
-              stock: topDividendStock.stock,
-            })
-          }
-          activeOpacity={0.9}
-        >
-          <View>
-            <Text style={styles.dividendLabel}>Лидер по дивидендам</Text>
-            <Text style={styles.dividendName}>
-              {topDividendStock.stock.name}
-            </Text>
-            <Text style={styles.dividendValue}>
-              ${topDividendStock.dividend.toFixed(2)} / час
-            </Text>
-          </View>
+        <View style={styles.incomeCard}>
+          <Text style={styles.incomeTitle}>Стабильный доход</Text>
+          <Text style={styles.incomeSubtitle}>
+            Акции с наибольшими дивидендами
+          </Text>
 
-          <Ionicons name="trending-up" size={22} color="#16A34A" />
-        </TouchableOpacity>
+          <View style={styles.incomeRow}>
+            <View style={styles.incomeLeft}>
+              <View style={styles.incomeLogo}>
+                <Text>{topDividendStock.stock.name[0]}</Text>
+              </View>
+              <View>
+                <Text style={styles.stockName}>
+                  {topDividendStock.stock.name}
+                </Text>
+                <Text style={styles.stockDividend}>
+                  {(topDividendStock.stock.dividendPercent * 100).toFixed(2)}%
+                </Text>
+              </View>
+            </View>
+
+            <View style={styles.incomeButtons}>
+              <TouchableOpacity
+                style={styles.buyButton}
+                onPress={() =>
+                  navigation.navigate("StockDetails", {
+                    stock: topDividendStock.stock,
+                  })
+                }
+              >
+                <Text style={styles.buyText}>Купить</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={() => navigation.navigate("IncomeStocks")}
+              >
+                <Text style={styles.viewAllText}>Посмотреть все →</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
       )}
     </>
   );
@@ -238,6 +258,7 @@ const styles = StyleSheet.create({
   },
   dividendCard: {
     backgroundColor: "#ECFDF5",
+    marginTop: 20,
     borderRadius: 14,
     padding: 16,
     flexDirection: "row",
@@ -261,5 +282,81 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#16A34A",
     marginTop: 2,
+  },
+  incomeCard: {
+    backgroundColor: "#F9FAFB",
+    borderRadius: 16,
+    padding: 16,
+    marginTop: 20,
+    gap: 10,
+  },
+
+  incomeTitle: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#111827",
+  },
+
+  incomeSubtitle: {
+    fontSize: 13,
+    color: "#6B7280",
+  },
+
+  incomeRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginTop: 10,
+  },
+
+  incomeLeft: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+  },
+
+  incomeLogo: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: "#D0EFFF",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  stockName: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#111827",
+  },
+
+  stockDividend: {
+    fontSize: 14,
+    color: "#2563EB",
+  },
+
+  incomeButtons: {
+    alignItems: "flex-end",
+    justifyContent: "center",
+    marginRight: 10,
+  },
+
+  buyButton: {
+    backgroundColor: "#2563EB",
+    borderRadius: 8,
+    paddingVertical: 6,
+    paddingHorizontal: 35,
+    marginBottom: 4,
+  },
+
+  buyText: {
+    color: "#fff",
+    fontSize: 14,
+    fontWeight: "600",
+  },
+
+  viewAllText: {
+    color: "#2563EB",
+    fontSize: 13,
   },
 });

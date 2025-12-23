@@ -10,49 +10,36 @@ import { useNavigation } from "@react-navigation/native";
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useStocksStore } from "@/features/stocks";
-import { INITIAL_STOCKS } from "@/features/stocks/model/constants";
+
 type StockDetailsNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
-  "StocksMarket"
+  "IncomeStocks"
 >;
 
-export const StocksMarket = () => {
+export const IncomeStocks = () => {
   const navigation = useNavigation<StockDetailsNavigationProp>();
   const market = useStocksStore((s) => s.market);
-  const initialPrices: Record<string, number> = Object.fromEntries(
-    INITIAL_STOCKS.map((s) => [s.id, s.price])
+  const sortedMarket = [...market].sort(
+    (a, b) => b.dividendPercent - a.dividendPercent
   );
-
   return (
     <FlatList
-      data={market}
+      data={sortedMarket}
       keyExtractor={(item) => item.id}
       contentContainerStyle={{ padding: 20 }}
       renderItem={({ item }) => {
-        const initialPrice = initialPrices[item.id] || item.price;
-        const change = item.price - initialPrice;
         return (
           <TouchableOpacity
             style={styles.row}
             onPress={() => navigation.navigate("StockDetails", { stock: item })}
           >
-            <View style={styles.left}>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Image source={item.logo} style={styles.logo} />
               <Text style={styles.name}>{item.name}</Text>
             </View>
-
-            <View style={{ alignItems: "flex-end" }}>
-              <Text style={styles.price}>${item.price.toFixed(2)}</Text>
-              <Text
-                style={{
-                  color: change >= 0 ? "green" : "red",
-                  fontSize: 12,
-                }}
-              >
-                {change >= 0 ? "+" : ""}
-                {change.toFixed(2)} $
-              </Text>
-            </View>
+            <Text style={styles.dividend}>
+              {(item.dividendPercent * 100).toFixed(2)} %
+            </Text>
           </TouchableOpacity>
         );
       }}
@@ -64,26 +51,22 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
     paddingVertical: 16,
     borderBottomWidth: 1,
     borderColor: "#eee",
-  },
-  left: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 10,
-  },
-  logo: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
   },
   name: {
     fontSize: 16,
     fontWeight: "500",
   },
-  price: {
+  dividend: {
     fontSize: 16,
+    color: "blue",
+    fontWeight: "600",
+  },
+  logo: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
   },
 });
