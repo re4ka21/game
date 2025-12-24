@@ -11,6 +11,7 @@ import { RootStackParamList } from "@/app/navigation/AppNavigator";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useStocksStore } from "@/features/stocks";
 import { INITIAL_STOCKS } from "@/features/stocks/model/constants";
+
 type StockDetailsNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
   "StocksMarket"
@@ -19,6 +20,7 @@ type StockDetailsNavigationProp = NativeStackNavigationProp<
 export const StocksMarket = () => {
   const navigation = useNavigation<StockDetailsNavigationProp>();
   const market = useStocksStore((s) => s.market);
+
   const initialPrices: Record<string, number> = Object.fromEntries(
     INITIAL_STOCKS.map((s) => [s.id, s.price])
   );
@@ -31,6 +33,8 @@ export const StocksMarket = () => {
       renderItem={({ item }) => {
         const initialPrice = initialPrices[item.id] || item.price;
         const change = item.price - initialPrice;
+        const changePercent = ((change / initialPrice) * 100).toFixed(2);
+
         return (
           <TouchableOpacity
             style={styles.row}
@@ -50,7 +54,7 @@ export const StocksMarket = () => {
                 }}
               >
                 {change >= 0 ? "+" : ""}
-                {change.toFixed(2)} $
+                {change.toFixed(2)} $ ({changePercent}%)
               </Text>
             </View>
           </TouchableOpacity>
