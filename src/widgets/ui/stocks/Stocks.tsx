@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useStocksStore } from "@/features/stocks";
-import { useCounterStore } from "@/entities";
+
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
 import { Ionicons } from "@expo/vector-icons";
@@ -46,20 +46,6 @@ export const Stocks = () => {
   const changePercent = portfolioBuyValue
     ? (change / portfolioBuyValue) * 100
     : 0;
-
-  useEffect(() => {
-    const store = useStocksStore.getState();
-
-    store.updatePrices();
-    store.collectDividends();
-
-    const interval = setInterval(() => {
-      store.updatePrices();
-      store.collectDividends();
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, []);
 
   return (
     <>

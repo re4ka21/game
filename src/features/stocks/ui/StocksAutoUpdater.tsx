@@ -3,16 +3,23 @@ import { useStocksStore } from "@/features/stocks/model/useStocksStore";
 
 export const StocksAutoUpdater = () => {
   const updatePrices = useStocksStore((s) => s.updatePrices);
+  const collectDividends = useStocksStore((s) => s.collectDividends);
+  const collectOfflineDividends = useStocksStore(
+    (s) => s.collectOfflineDividends
+  );
 
   useEffect(() => {
+    collectOfflineDividends();
+
     updatePrices();
 
     const interval = setInterval(() => {
       updatePrices();
-    }, 10000);
+      collectDividends();
+    }, 5000);
 
     return () => clearInterval(interval);
-  }, [updatePrices]);
+  }, [updatePrices, collectDividends, collectOfflineDividends]);
 
   return null;
 };
