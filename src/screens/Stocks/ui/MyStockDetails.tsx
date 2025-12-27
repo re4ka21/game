@@ -4,7 +4,7 @@ import { RouteProp, useRoute, useNavigation } from "@react-navigation/native";
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
 import { useStocksStore } from "@/features/stocks/model/useStocksStore";
 import { StockChart } from "@/features/stocks/ui/StockChart";
-import AntDesign from "@expo/vector-icons/AntDesign";
+import { BackButton } from "@/shared";
 import { INITIAL_STOCKS } from "@/features/stocks/model/constants";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 type RouteProps = RouteProp<RootStackParamList, "MyStockDetails">;
@@ -34,12 +34,7 @@ export const MyStockDetails = () => {
   const profitPercent = ((profit / initialPrice) * 100).toFixed(2);
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        style={styles.arrow}
-        onPress={() => navigation.goBack()}
-      >
-        <AntDesign name="arrow-left" size={24} color="black" />
-      </TouchableOpacity>
+      <BackButton />
 
       <View style={styles.header}>
         <Image source={stock.logo} style={styles.logo} />

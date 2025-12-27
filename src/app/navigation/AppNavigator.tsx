@@ -41,6 +41,7 @@ import {
   StockDetails,
   MyStockDetails,
   IncomeStocks,
+  GrowthStocks,
 } from "@/screens/Stocks";
 import { Stock } from "@/features/stocks/model/useStocksStore";
 import { Portfolio } from "@/screens/Stocks/ui/Portfolio";
@@ -90,6 +91,7 @@ export type RootStackParamList = {
   Portfolio: undefined;
   IncomeStocks: undefined;
   MyStockDetails: { stockId: string };
+  GrowthStocks: undefined;
 };
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -327,6 +329,13 @@ export default function AppNavigator() {
       <Stack.Screen
         name="MyStockDetails"
         component={MyStockDetails}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="GrowthStocks"
+        component={GrowthStocks}
         options={{
           headerShown: false,
         }}

@@ -11,6 +11,7 @@ export type Stock = {
   price: number;
   dividendPercent: number;
   logo: ImageSourcePropType;
+  targetPrice: number;
 };
 
 export type OwnedStock = {
@@ -177,7 +178,7 @@ export const useStocksStore = create<StocksState>()(
       },
     }),
     {
-      name: "stocks-storage-v7",
+      name: "stocks-storage-v9",
       storage: createJSONStorage(() => AsyncStorage),
     }
   )

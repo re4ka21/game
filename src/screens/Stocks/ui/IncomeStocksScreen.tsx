@@ -10,6 +10,7 @@ import { useNavigation } from "@react-navigation/native";
 import { RootStackParamList } from "@/app/navigation/AppNavigator";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useStocksStore } from "@/features/stocks";
+import { BackButton } from "@/shared";
 
 type StockDetailsNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -23,27 +24,32 @@ export const IncomeStocks = () => {
     (a, b) => b.dividendPercent - a.dividendPercent
   );
   return (
-    <FlatList
-      data={sortedMarket}
-      keyExtractor={(item) => item.id}
-      contentContainerStyle={{ padding: 20 }}
-      renderItem={({ item }) => {
-        return (
-          <TouchableOpacity
-            style={styles.row}
-            onPress={() => navigation.navigate("StockDetails", { stock: item })}
-          >
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <Image source={item.logo} style={styles.logo} />
-              <Text style={styles.name}>{item.name}</Text>
-            </View>
-            <Text style={styles.dividend}>
-              {(item.dividendPercent * 100).toFixed(2)} %
-            </Text>
-          </TouchableOpacity>
-        );
-      }}
-    />
+    <>
+      <BackButton style={styles.arrow} />
+      <FlatList
+        data={sortedMarket}
+        keyExtractor={(item) => item.id}
+        contentContainerStyle={{ padding: 20 }}
+        renderItem={({ item }) => {
+          return (
+            <TouchableOpacity
+              style={styles.row}
+              onPress={() =>
+                navigation.navigate("StockDetails", { stock: item })
+              }
+            >
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Image source={item.logo} style={styles.logo} />
+                <Text style={styles.name}>{item.name}</Text>
+              </View>
+              <Text style={styles.dividend}>
+                {(item.dividendPercent * 100).toFixed(2)} %
+              </Text>
+            </TouchableOpacity>
+          );
+        }}
+      />
+    </>
   );
 };
 
@@ -54,6 +60,10 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     borderBottomWidth: 1,
     borderColor: "#eee",
+  },
+  arrow: {
+    marginTop: 40,
+    marginLeft: 20,
   },
   name: {
     fontSize: 16,
