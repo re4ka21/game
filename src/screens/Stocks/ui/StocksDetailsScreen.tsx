@@ -36,7 +36,12 @@ export const StockDetails = () => {
 
       <TouchableOpacity
         style={styles.button}
-        onPress={() => navigation.navigate("BuyStock", { stock })}
+        onPress={() =>
+          navigation.navigate("BuySellStock", {
+            stock,
+            type: "buy",
+          })
+        }
       >
         <Text style={styles.buttonText}>Купить акции</Text>
       </TouchableOpacity>

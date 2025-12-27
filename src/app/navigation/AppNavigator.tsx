@@ -35,10 +35,16 @@ import { GarageItem } from "@/entities";
 import { NftItem } from "@/entities";
 import { ImageSourcePropType } from "react-native";
 import { Item } from "@/entities";
-import { BuyStock, StocksMarket, StockDetails } from "@/screens/Stocks";
+import {
+  BuySellStock,
+  StocksMarket,
+  StockDetails,
+  MyStockDetails,
+  IncomeStocks,
+} from "@/screens/Stocks";
 import { Stock } from "@/features/stocks/model/useStocksStore";
 import { Portfolio } from "@/screens/Stocks/ui/Portfolio";
-import { IncomeStocks } from "@/screens/Stocks";
+export type TradeType = "buy" | "sell";
 export type RootStackParamList = {
   Tabs: { screen?: string } | undefined;
   Upgrade: undefined;
@@ -77,9 +83,13 @@ export type RootStackParamList = {
   BuyItemsDetails: { item: Item };
   StocksMarket: undefined;
   StockDetails: { stock: Stock };
-  BuyStock: { stock: Stock };
+  BuySellStock: {
+    stock: Stock;
+    type: TradeType;
+  };
   Portfolio: undefined;
   IncomeStocks: undefined;
+  MyStockDetails: { stockId: string };
 };
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -280,8 +290,8 @@ export default function AppNavigator() {
         }}
       />
       <Stack.Screen
-        name="BuyStock"
-        component={BuyStock}
+        name="BuySellStock"
+        component={BuySellStock}
         options={{
           headerShown: false,
         }}
@@ -310,6 +320,13 @@ export default function AppNavigator() {
       <Stack.Screen
         name="IncomeStocks"
         component={IncomeStocks}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="MyStockDetails"
+        component={MyStockDetails}
         options={{
           headerShown: false,
         }}
