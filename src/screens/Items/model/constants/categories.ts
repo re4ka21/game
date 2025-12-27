@@ -1,5 +1,5 @@
 import { ShopCategory } from "@/entities";
-import { ItemCategory } from "@/features/items";
+import { ItemCategory } from "@/entities";
 export const categories: ShopCategory[] = [
   {
     label: "Монеты",
